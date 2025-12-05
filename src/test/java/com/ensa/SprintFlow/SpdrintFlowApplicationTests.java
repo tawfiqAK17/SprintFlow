@@ -1,10 +1,10 @@
-package com.ensa.SpdrintFlow;
+package com.ensa.SprintFlow;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpdrintFlowApplicationTests {
+class SprintFlowApplicationTests {
 
 	@Test
 	void contextLoads() {

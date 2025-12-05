@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.ensa</groupId>
-	<artifactId>SpdrintFlow</artifactId>
+	<artifactId>SprintFlow</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>SpdrintFlow</name>
+	<name>SprintFlow</name>
 	<description>Agile project management system</description>
 	<url/>
 	<licenses>
