@@ -1,0 +1,168 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0" version="29.2.5">
+  <diagram name="Page-1" id="67_uSes2lcNYQKUmgSt8">
+    <mxGraphModel dx="2066" dy="1318" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="system" parent="1" style="swimlane;startSize=30;" value="Scrum Management System" vertex="1">
+          <mxGeometry height="1360" width="700" x="220" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="uc1" parent="system" style="ellipse;whiteSpace=wrap;html=1;" value="Invite Scrum Master" vertex="1">
+          <mxGeometry height="60" width="140" x="160" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="uc2" parent="system" style="ellipse;whiteSpace=wrap;html=1;" value="Create User Stories" vertex="1">
+          <mxGeometry height="60" width="140" x="160" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="uc3" parent="system" style="ellipse;whiteSpace=wrap;html=1;" value="Prioritize User Stories" vertex="1">
+          <mxGeometry height="60" width="140" x="160" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="uc4" parent="system" style="ellipse;whiteSpace=wrap;html=1;" value="Create and Manage Epics" vertex="1">
+          <mxGeometry height="60" width="140" x="150" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="uc5" parent="system" style="ellipse;whiteSpace=wrap;html=1;" value="View Sprint Progress/Burndown" vertex="1">
+          <mxGeometry height="60" width="140" x="60" y="384" as="geometry" />
+        </mxCell>
+        <mxCell id="uc6" parent="system" style="ellipse;whiteSpace=wrap;html=1;" value="Invite Developers and Testers" vertex="1">
+          <mxGeometry height="60" width="140" x="340" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="uc7" parent="system" style="ellipse;whiteSpace=wrap;html=1;" value="Define User Stories Acceptance Criteria" vertex="1">
+          <mxGeometry height="60" width="140" x="510" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="uc8" parent="system" style="ellipse;whiteSpace=wrap;html=1;" value="Create and Manage Tasks" vertex="1">
+          <mxGeometry height="60" width="140" x="520" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="uc9" parent="system" style="ellipse;whiteSpace=wrap;html=1;" value="Create and Manage Sprints" vertex="1">
+          <mxGeometry height="60" width="140" x="520" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="uc10" parent="system" style="ellipse;whiteSpace=wrap;html=1;" value="Assign User Stories to Sprints" vertex="1">
+          <mxGeometry height="60" width="140" x="510" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="uc11" parent="system" style="ellipse;whiteSpace=wrap;html=1;" value="Assign Tasks to User Stories" vertex="1">
+          <mxGeometry height="60" width="140" x="510" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="uc12" parent="system" style="ellipse;whiteSpace=wrap;html=1;" value="Assign Tasks to Developer" vertex="1">
+          <mxGeometry height="60" width="140" x="510" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="uc13" parent="system" style="ellipse;whiteSpace=wrap;html=1;" value="Mark Task as Done" vertex="1">
+          <mxGeometry height="60" width="140" x="520" y="740" as="geometry" />
+        </mxCell>
+        <mxCell id="uc14" parent="system" style="ellipse;whiteSpace=wrap;html=1;" value="View Tasks Assigned to Me" vertex="1">
+          <mxGeometry height="60" width="140" x="330" y="777" as="geometry" />
+        </mxCell>
+        <mxCell id="uc15" parent="system" style="ellipse;whiteSpace=wrap;html=1;" value="Mark Task as IN_PROGRESS" vertex="1">
+          <mxGeometry height="60" width="140" x="350" y="860" as="geometry" />
+        </mxCell>
+        <mxCell id="uc16" parent="system" style="ellipse;whiteSpace=wrap;html=1;" value="Mark Task as TO_BE_TESTED" vertex="1">
+          <mxGeometry height="60" width="140" x="360" y="960" as="geometry" />
+        </mxCell>
+        <mxCell id="uc17" parent="system" style="ellipse;whiteSpace=wrap;html=1;" value="View Tasks Assigned to Me" vertex="1">
+          <mxGeometry height="60" width="140" x="60" y="1010" as="geometry" />
+        </mxCell>
+        <mxCell id="uc18" parent="system" style="ellipse;whiteSpace=wrap;html=1;" value="Mark Task as TESTED" vertex="1">
+          <mxGeometry height="60" width="140" x="90" y="1130.5" as="geometry" />
+        </mxCell>
+        <mxCell id="uc19" parent="system" style="ellipse;whiteSpace=wrap;html=1;" value="Reject Task and Mark as IN_PROGRESS" vertex="1">
+          <mxGeometry height="60" width="140" x="50" y="1250" as="geometry" />
+        </mxCell>
+        <mxCell id="uc20" parent="system" style="ellipse;whiteSpace=wrap;html=1;dashed=1;" value="Include Failed Test Case" vertex="1">
+          <mxGeometry height="50" width="120" x="325" y="1260" as="geometry" />
+        </mxCell>
+        <mxCell id="6lS7q2BwODhHYcmI01C5-3" parent="system" style="ellipse;whiteSpace=wrap;html=1;" value="validate the sprint" vertex="1">
+          <mxGeometry height="60" width="140" x="140" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="actor1" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Product Owner" vertex="1">
+          <mxGeometry height="60" width="30" x="80" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="actor2" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Scrum Master" vertex="1">
+          <mxGeometry height="60" width="30" x="80" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="actor3" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Developer" vertex="1">
+          <mxGeometry height="60" width="30" x="80" y="920" as="geometry" />
+        </mxCell>
+        <mxCell id="actor4" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Tester" vertex="1">
+          <mxGeometry height="60" width="30" x="80" y="1170" as="geometry" />
+        </mxCell>
+        <mxCell id="conn1" edge="1" parent="1" source="actor1" style="endArrow=none;html=1;" target="uc1" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="conn2" edge="1" parent="1" source="actor1" style="endArrow=none;html=1;" target="uc2" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="conn3" edge="1" parent="1" source="actor1" style="endArrow=none;html=1;" target="uc3" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="conn4" edge="1" parent="1" source="actor1" style="endArrow=none;html=1;" target="uc4" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="conn6" edge="1" parent="1" source="actor2" style="endArrow=none;html=1;" target="uc6" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="conn7" edge="1" parent="1" source="actor2" style="endArrow=none;html=1;" target="uc7" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="conn8" edge="1" parent="1" source="actor2" style="endArrow=none;html=1;" target="uc8" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="conn9" edge="1" parent="1" source="actor2" style="endArrow=none;html=1;" target="uc9" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="conn10" edge="1" parent="1" source="actor2" style="endArrow=none;html=1;" target="uc10" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="conn11" edge="1" parent="1" source="actor2" style="endArrow=none;html=1;" target="uc11" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="conn12" edge="1" parent="1" source="actor2" style="endArrow=none;html=1;" target="uc12" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="conn13" edge="1" parent="1" source="actor2" style="endArrow=none;html=1;" target="uc13" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="conn14" edge="1" parent="1" source="actor3" style="endArrow=none;html=1;" target="uc14" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="conn15" edge="1" parent="1" source="actor3" style="endArrow=none;html=1;" target="uc15" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="conn16" edge="1" parent="1" source="actor3" style="endArrow=none;html=1;" target="uc16" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="conn17" edge="1" parent="1" source="actor4" style="endArrow=none;html=1;" target="uc17" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="conn18" edge="1" parent="1" source="actor4" style="endArrow=none;html=1;" target="uc18" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="conn19" edge="1" parent="1" source="actor4" style="endArrow=none;html=1;" target="uc19" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="include1" edge="1" parent="1" source="uc19" style="endArrow=open;endSize=12;dashed=1;html=1;" target="uc20" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <mxPoint x="500" y="400" as="sourcePoint" />
+            <mxPoint x="660" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6lS7q2BwODhHYcmI01C5-4" edge="1" parent="1" source="actor1" style="endArrow=none;html=1;" target="6lS7q2BwODhHYcmI01C5-3" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="110" y="284" as="sourcePoint" />
+            <mxPoint x="379" y="348" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6lS7q2BwODhHYcmI01C5-5" edge="1" parent="1" source="actor1" style="endArrow=none;html=1;entryX=0;entryY=0;entryDx=0;entryDy=0;" target="uc5" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="150" y="300" as="sourcePoint" />
+            <mxPoint x="409" y="361" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6lS7q2BwODhHYcmI01C5-6" edge="1" parent="1" style="endArrow=none;html=1;entryX=0;entryY=1;entryDx=0;entryDy=0;" target="uc5" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="110" y="720" as="sourcePoint" />
+            <mxPoint x="349" y="561" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,25 @@
+productOwner:
+  - invite the scrumMaster
+  - create userStories
+  - prioritize user stories 
+  - create and manage Epics
+
+scrumMaster:
+  - invite developers and testers
+  - define userStories acceptance criterias
+  - create and manage tasks
+  - create and manage sprints
+  - assign userStories to sprints
+  - assign tasks to userStories
+  - assign tasks to developer
+  - mark a task as done
+
+developer:
+  - view tasks assigned to him
+  - mark a task as "TO_BE_TESTED"
+  - mark a task as "IN_PROGRESS"
+
+tester:
+  - view tasks assigned to him
+  - mark a task as "TESTED"
+  - reject a task and mark it as "IN_PROGRESS" --<include>--> (the failed test case)
