@@ -1,0 +1,24 @@
+package com.ensa.SprintFlow.security;
+
+import com.ensa.SprintFlow.model.User;
+import com.ensa.SprintFlow.repository.UserRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CustomUserDetailsService implements UserDetailsService {
+  UserRepository userRepository;
+
+  CustomUserDetailsService(UserRepository repository) {
+    userRepository = repository;
+  }
+
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    User user = userRepository.findByUsername(username);
+    UserDetails userDetails = new CustomUserDetails(user);
+    return userDetails;
+  }
+}
