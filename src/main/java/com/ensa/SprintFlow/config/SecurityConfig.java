@@ -12,13 +12,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.ensa.SprintFlow.filter.JwtAuthenticationFilter;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
   JwtAuthenticationFilter jwtAuthenticationFilter;
 
-  SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+  public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
     this.jwtAuthenticationFilter = jwtAuthenticationFilter;
   }
 
@@ -27,9 +29,9 @@ public class SecurityConfig {
     http.csrf(crsf -> crsf.disable())
         .authorizeHttpRequests(
             auth ->
-                auth.requestMatchers("/api/login")
+                auth.requestMatchers("/login")
                     .permitAll()
-                    .requestMatchers("/api/register")
+                    .requestMatchers("/register")
                     .permitAll())
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

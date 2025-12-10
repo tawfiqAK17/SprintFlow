@@ -1,8 +1,8 @@
 package com.ensa.SprintFlow.mapper;
 
-public interface Mapper<T, U> {
+public interface Mapper<Entity, RequestEntity, ResponseEntity> {
 
-  public U mapToDto(T entity);
+  public ResponseEntity mapToDto(Entity entity);
 
-  public T mapToEntity(U dto);
+  public Entity mapToEntity(RequestEntity dto);
 }
