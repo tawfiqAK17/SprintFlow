@@ -1,4 +1,4 @@
-package com.ensa.SprintFlow.service;
+package com.ensa.SprintFlow.service.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

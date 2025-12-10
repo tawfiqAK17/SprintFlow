@@ -1,4 +1,4 @@
-package com.ensa.SprintFlow.security;
+package com.ensa.SprintFlow.model.security;
 
 import com.ensa.SprintFlow.model.User;
 import java.util.ArrayList;

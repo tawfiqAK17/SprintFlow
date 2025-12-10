@@ -1,4 +1,4 @@
-package com.ensa.SprintFlow.service;
+package com.ensa.SprintFlow.service.security;
 
 import com.ensa.SprintFlow.exception.registrationException.PasswordConditionsException;
 import org.springframework.security.crypto.password.PasswordEncoder;

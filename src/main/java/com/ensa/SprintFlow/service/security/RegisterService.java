@@ -1,8 +1,10 @@
-package com.ensa.SprintFlow.service;
+package com.ensa.SprintFlow.service.security;
 
 import com.ensa.SprintFlow.exception.registrationException.EmailNotValidException;
 import com.ensa.SprintFlow.exception.registrationException.RegistrationException;
 import com.ensa.SprintFlow.model.User;
+import com.ensa.SprintFlow.service.UserService;
+
 import org.springframework.stereotype.Service;
 
 @Service

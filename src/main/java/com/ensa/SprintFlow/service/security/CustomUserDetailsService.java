@@ -1,11 +1,13 @@
-package com.ensa.SprintFlow.security;
+package com.ensa.SprintFlow.service.security;
 
-import com.ensa.SprintFlow.model.User;
-import com.ensa.SprintFlow.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import com.ensa.SprintFlow.model.User;
+import com.ensa.SprintFlow.repository.UserRepository;
+import com.ensa.SprintFlow.model.security.CustomUserDetails;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {

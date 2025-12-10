@@ -1,7 +1,7 @@
 package com.ensa.SprintFlow.filter;
 
-import com.ensa.SprintFlow.security.CustomUserDetailsService;
-import com.ensa.SprintFlow.service.JwtService;
+import com.ensa.SprintFlow.service.security.CustomUserDetailsService;
+import com.ensa.SprintFlow.service.security.JwtService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
