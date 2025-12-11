@@ -43,12 +43,16 @@
       <artifactId>spring-boot-starter-webmvc</artifactId>
     </dependency>
     <!-- Spring Security for authentication/authorization -->
-    <!-- WARNING: Version 4.0.0 doesn't exist. Should match parent version (3.x.x) -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-security</artifactId>
-      <!-- Remove version tag - inherit from parent -->
-      <!-- <version>4.0.0</version> -->
+      <version>4.0.0</version>
+    </dependency>
+    <!-- Spring mail for sending emails -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-mail</artifactId>
+      <version>4.0.0</version>
     </dependency>
     <!-- ============ DEVELOPMENT & RUNTIME ============ -->
     <!-- Tools for development and runtime dependencies -->

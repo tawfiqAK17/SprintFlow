@@ -22,6 +22,7 @@ public class RegisterMapper implements Mapper<User, RegisterRequestDto, Register
     user.setEmail(dto.getEmail());
     user.setUsername(dto.getUsername());
     user.setPassword(dto.getPassword());
+    user.setVerified(false);
     return user;
   }
 }

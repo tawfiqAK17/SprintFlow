@@ -1,4 +1,4 @@
-package com.ensa.SprintFlow.controller;
+package com.ensa.SprintFlow.controller.security;
 
 import com.ensa.SprintFlow.dto.request.RegisterRequestDto;
 import com.ensa.SprintFlow.mapper.RegisterMapper;
