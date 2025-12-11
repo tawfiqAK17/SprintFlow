@@ -1,6 +1,6 @@
 package com.ensa.SprintFlow.service.security;
 
-import com.ensa.SprintFlow.exception.registrationException.EmailConditionsException;
+import com.ensa.SprintFlow.exception.registrationException.userCredentialsConditionsExeption.EmailConditionsException;
 import com.ensa.SprintFlow.model.User;
 import com.ensa.SprintFlow.model.security.VerificationCode;
 import com.ensa.SprintFlow.repository.security.VerificationCodeRepository;
@@ -39,7 +39,7 @@ public class EmailService {
     verificationCodeEntity.setUser(user);
     verificationCodeEntity.setCode(verificationCode);
     // the code expired after one day
-    verificationCodeEntity.setExpirationDate(LocalDateTime.now().plusDays(1));
+    verificationCodeEntity.setExpirationDate(LocalDateTime.now().plusMinutes(10));
     verificationCodeRepository.save(verificationCodeEntity);
   }
 

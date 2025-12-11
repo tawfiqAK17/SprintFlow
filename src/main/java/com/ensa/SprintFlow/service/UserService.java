@@ -1,8 +1,8 @@
 package com.ensa.SprintFlow.service;
 
 
-import com.ensa.SprintFlow.exception.registrationException.DuplicatedEmailException;
-import com.ensa.SprintFlow.exception.registrationException.DuplicatedUsernameException;
+import com.ensa.SprintFlow.exception.registrationException.userDataIntegrityExeption.DuplicatedUsernameException;
+import com.ensa.SprintFlow.exception.registrationException.userDataIntegrityExeption.DuplicatedEmailException;
 import com.ensa.SprintFlow.exception.registrationException.RegistrationException;
 import com.ensa.SprintFlow.model.User;
 import com.ensa.SprintFlow.repository.UserRepository;
