@@ -4,6 +4,8 @@ import com.ensa.SprintFlow.exception.registrationException.RegistrationException
 import com.ensa.SprintFlow.model.User;
 import com.ensa.SprintFlow.service.UserService;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,5 +30,13 @@ public class RegisterService {
     user.setEnrollDate(LocalDateTime.now());
     user = userService.save(user);
     emailService.sendVerificationEmail(user);
+  }
+
+  public ArrayList<String> getPasswordConditions() {
+    return passwordService.getConditions();
+  }
+
+  public ArrayList<String> getEmailConditions() {
+    return emailService.getConditions();
   }
 }

@@ -1,10 +1,11 @@
 package com.ensa.SprintFlow.service.security;
 
-import com.ensa.SprintFlow.exception.registrationException.userCredentialsConditionsExeption.EmailConditionsException;
+import com.ensa.SprintFlow.exception.registrationException.userCredentialsConditionsException.EmailConditionsException;
 import com.ensa.SprintFlow.model.User;
 import com.ensa.SprintFlow.model.security.VerificationCode;
 import com.ensa.SprintFlow.repository.security.VerificationCodeRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Random;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -55,5 +56,11 @@ public class EmailService {
     Random random = new Random();
     Integer code = 100000 + random.nextInt(900000);
     return code.toString();
+  }
+
+  public ArrayList<String> getConditions() {
+    ArrayList<String> details = new ArrayList<>();
+    details.add("the email should contain '@'");
+    return details;
   }
 }

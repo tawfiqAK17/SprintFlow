@@ -1,6 +1,7 @@
 package com.ensa.SprintFlow.service.security;
 
-import com.ensa.SprintFlow.exception.registrationException.userCredentialsConditionsExeption.PasswordConditionsException;
+import com.ensa.SprintFlow.exception.registrationException.userCredentialsConditionsException.PasswordConditionsException;
+import java.util.ArrayList;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,5 +25,11 @@ public class PasswordService {
 
   public boolean isEquale(String password, String passwordHash) {
     return passwordEncoder.matches(password, passwordHash);
+  }
+
+  public ArrayList<String> getConditions() {
+    ArrayList<String> details = new ArrayList<>();
+    details.add("the password should be at least 8 character long");
+    return details;
   }
 }
