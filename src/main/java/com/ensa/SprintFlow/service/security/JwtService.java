@@ -28,9 +28,9 @@ public class JwtService {
     return claimsResolever.apply(claims);
   }
 
-  public String generateToken(UserDetails userDeltails) {
+  public String generateToken(UserDetails userDetails) {
     Jwts.builder()
-        .subject(userDeltails.getUsername())
+        .subject(userDetails.getUsername())
         .issuedAt(new Date())
         .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
         .signWith(getSecretKey())

@@ -1,9 +1,8 @@
 package com.ensa.SprintFlow.service;
 
-
-import com.ensa.SprintFlow.exception.registrationException.userDataIntegrityException.DuplicatedUsernameException;
-import com.ensa.SprintFlow.exception.registrationException.userDataIntegrityException.DuplicatedEmailException;
 import com.ensa.SprintFlow.exception.registrationException.RegistrationException;
+import com.ensa.SprintFlow.exception.registrationException.userDataIntegrityException.DuplicatedEmailException;
+import com.ensa.SprintFlow.exception.registrationException.userDataIntegrityException.DuplicatedUsernameException;
 import com.ensa.SprintFlow.model.User;
 import com.ensa.SprintFlow.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -29,5 +28,9 @@ public class UserService {
   public void verifyUser(User user) {
     user.setVerified(true);
     userRepository.save(user);
+  }
+
+  public User findByUsername(String username) {
+    return userRepository.findByUsername(username);
   }
 }

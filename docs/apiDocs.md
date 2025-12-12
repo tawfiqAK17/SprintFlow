@@ -4,9 +4,9 @@
 
 **Base URL:** `http://localhost:8080/api`
 
-**Authentication:** All endpoints except `/`, `/register`, and `/login` require JWT token in header:
+**Authentication:** All endpoints except `/`, `/register`,`/verify` and `/login` require JWT token in header:
 
-``` json
+```json
 Authorization: Bearer <jwt-token>
 ```
 
@@ -19,18 +19,12 @@ Authorization: Bearer <jwt-token>
 - `401` Unauthorized - Missing/invalid token
 - `403` Forbidden - Insufficient permissions
 - `404` Not Found - Resource doesn't exist
+- `409` conflict - violation of the data integrity
 - `500` Internal Server Error
 
 ---
 
 ## 1. AUTHENTICATION
-
-### GET `/`
-
-Health check endpoint
-
-- **Auth:** None
-- **Response:** `{ message: "API running", version: "1.0.0" }`
 
 ### POST `/register`
 
@@ -42,23 +36,20 @@ Register new user account
   {
     "first_name": "string (required, min 2 chars)",
     "last_name": "string (required, min 2 chars)",
+    "username": "string (required, min 2 chars)",
     "email": "string (required, valid email)",
     "password": "string (required, min 8 chars)"
   }
   ```
-- **Response (201):**
-  - **Headers:** `Authorization: Bearer <token>`
-  - **Body:**
-    ```json
-    {
-      "user": {
-        "id": "number",
-        "first_name": "string",
-        "last_name": "string",
-        "email": "string"
-      }
-    }
-    ```
+- **Response (201)**
+
+### POST `/verify`
+
+verify the user
+
+- **Query Params:**
+  - `code` (string): the verification code sent to the user via email
+- **Response(200)**
 
 ### POST `/login`
 
@@ -68,18 +59,23 @@ Authenticate user
 - **Request Body:**
   ```json
   {
-    "email": "string (required)",
+    "username": "string (required)",
     "password": "string (required)"
   }
   ```
-- **Response (200):** Same as register
+- **Response (200):**
+  ```json
+  {
+    "jwt": "string"
+  }
+  ```
 
 ### POST `/logout`
 
 Invalidate current token
 
 - **Auth:** Required
-- **Response (200):** `{ message: "Logged out successfully" }`
+- **Response (200)**
 
 ---
 
@@ -893,6 +889,7 @@ All errors follow this format:
 
 **Common Error Codes:**
 
+- `INTERNAL_SERVER_ERROR` - There is a problem in the server
 - `INVALID_INPUT` - Validation failed
 - `UNAUTHORIZED` - Missing/invalid token
 - `FORBIDDEN` - Insufficient permissions
