@@ -1,0 +1,8 @@
+DB_PORT=<the database connection port>
+DB_USER_NAME=<the database user name>
+DB_PASSWORD=<the database password>
+DB_NAME=<the database name>
+
+
+EMAIL=<the email with which the verification email would be sent to the user>
+EMAIL_APP_PASSWORD=<an email app password that you generate in your email settings>
