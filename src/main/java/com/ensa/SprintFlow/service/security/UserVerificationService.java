@@ -1,5 +1,7 @@
 package com.ensa.SprintFlow.service.security;
 
+import com.ensa.SprintFlow.exception.registrationException.verificationCodeException.VerificationCodeExpiredException;
+import com.ensa.SprintFlow.exception.registrationException.verificationCodeException.VerificationCodeNotFoundException;
 import com.ensa.SprintFlow.model.security.VerificationCode;
 import com.ensa.SprintFlow.repository.security.VerificationCodeRepository;
 import com.ensa.SprintFlow.service.UserService;
@@ -20,13 +22,11 @@ public class UserVerificationService {
   public void verify(String code) {
     VerificationCode verificationCode = verificationCodeRepository.findByCode(code);
     if (verificationCode == null) {
-      // TODO should throw a VerificationCodeIsInvalid
-      throw new UnsupportedOperationException("VerificationCodeIsInvalid");
+      throw new VerificationCodeNotFoundException();
     }
 
     if (verificationCode.getExpirationDate().isBefore(LocalDateTime.now())) {
-      // TODO should throw a VerificationCodeIsInvalid
-      throw new UnsupportedOperationException("VerificationCodeIsInvalid");
+      throw new VerificationCodeExpiredException();
     }
     userService.verifyUser(verificationCode.getUser());
   }

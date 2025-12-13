@@ -6,3 +6,5 @@ DB_NAME=<the database name>
 
 EMAIL=<the email with which the verification email would be sent to the user>
 EMAIL_APP_PASSWORD=<an email app password that you generate in your email settings>
+
+JWT_SECRET_KEY=<the secret key to sign the jwt (should be at least 32 character long)>

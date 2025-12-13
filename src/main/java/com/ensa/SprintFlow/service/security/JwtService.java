@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class JwtService {
 
-  @Value("JWT_SECRET_KEY")
+  @Value("${JWT_SECRET_KEY}")
   private String jwtSecretKey;
 
   public <T> T extractClaims(String jwt, Function<Claims, T> claimsResolever) {
@@ -29,13 +29,13 @@ public class JwtService {
   }
 
   public String generateToken(UserDetails userDetails) {
-    Jwts.builder()
+    String jwt = Jwts.builder()
         .subject(userDetails.getUsername())
         .issuedAt(new Date())
         .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
         .signWith(getSecretKey())
         .compact();
-    return null;
+    return jwt;
   }
 
   private Key getSecretKey() {

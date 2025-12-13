@@ -23,7 +23,7 @@ public class PasswordService {
     return passwordEncoder.encode(password);
   }
 
-  public boolean isEquale(String password, String passwordHash) {
+  public boolean match(String password, String passwordHash) {
     return passwordEncoder.matches(password, passwordHash);
   }
 

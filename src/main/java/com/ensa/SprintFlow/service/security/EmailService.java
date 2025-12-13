@@ -39,7 +39,7 @@ public class EmailService {
     VerificationCode verificationCodeEntity = new VerificationCode();
     verificationCodeEntity.setUser(user);
     verificationCodeEntity.setCode(verificationCode);
-    // the code expired after one day
+    // the code expired after 10 minutes
     verificationCodeEntity.setExpirationDate(LocalDateTime.now().plusMinutes(10));
     verificationCodeRepository.save(verificationCodeEntity);
   }
@@ -48,7 +48,7 @@ public class EmailService {
     SimpleMailMessage message = new SimpleMailMessage();
     message.setTo(destinationEmail);
     message.setSubject("Verification code");
-    message.setText("this is your verification code: " + verificationCode);
+    message.setText("your verification code is: " + verificationCode);
     return message;
   }
 

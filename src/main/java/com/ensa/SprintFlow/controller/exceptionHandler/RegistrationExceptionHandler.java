@@ -6,14 +6,20 @@ import com.ensa.SprintFlow.exception.registrationException.userCredentialsCondit
 import com.ensa.SprintFlow.exception.registrationException.userCredentialsConditionsException.PasswordConditionsException;
 import com.ensa.SprintFlow.exception.registrationException.userCredentialsConditionsException.UserCredentialsConditionsException;
 import com.ensa.SprintFlow.exception.registrationException.userDataIntegrityException.UserDataIntegrityException;
+import com.ensa.SprintFlow.exception.registrationException.verificationCodeException.VerificationCodeException;
+import com.ensa.SprintFlow.exception.registrationException.verificationCodeException.VerificationCodeExpiredException;
+import com.ensa.SprintFlow.exception.registrationException.verificationCodeException.VerificationCodeNotFoundException;
 import com.ensa.SprintFlow.service.security.RegisterService;
 import java.util.ArrayList;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class RegistrationExceptionHandler {
   RegisterService registerService;
 
@@ -22,14 +28,36 @@ public class RegistrationExceptionHandler {
   }
 
   @ExceptionHandler(RegistrationException.class)
-  private ResponseEntity<?> handleRegistrationException(RegistrationException e) {
+  public ResponseEntity<?> handleRegistrationException(RegistrationException e) {
     if (e instanceof UserDataIntegrityException) {
       return handleUserDataIntegrityException(e);
     }
     if (e instanceof UserCredentialsConditionsException) {
       return handleUserCredentialsConditionsException(e);
     }
-    return ResponseEntity.status(HttpStatus.CREATED).build();
+    if (e instanceof VerificationCodeException) {
+      return handleVerificationCodeException(e);
+    }
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("unknown server error");
+  }
+
+  private ResponseEntity<?> handleVerificationCodeException(RegistrationException e) {
+    String error = "";
+    HttpStatus status = HttpStatus.NOT_FOUND;
+    if (e instanceof VerificationCodeNotFoundException) {
+      error = "VERIFICATION_CODE_NOT_FOUND";
+      status = HttpStatus.NOT_FOUND;
+    }
+    if (e instanceof VerificationCodeExpiredException) {
+      error = "RESOURCE_EXPIRED";
+      status = HttpStatus.GONE;
+    }
+    return new ErrorResponseBuilder()
+        .error(error)
+        .message(e.getMessage())
+        .status(status)
+        .details(new ArrayList<>())
+        .build();
   }
 
   private ResponseEntity<?> handleUserDataIntegrityException(RegistrationException e) {
