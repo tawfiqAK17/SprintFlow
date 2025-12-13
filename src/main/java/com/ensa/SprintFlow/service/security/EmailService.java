@@ -1,6 +1,6 @@
 package com.ensa.SprintFlow.service.security;
 
-import com.ensa.SprintFlow.exception.registrationException.userCredentialsConditionsException.EmailConditionsException;
+import com.ensa.SprintFlow.exception.generalException.EmailConditionsException;
 import com.ensa.SprintFlow.model.User;
 import com.ensa.SprintFlow.model.security.VerificationCode;
 import com.ensa.SprintFlow.repository.security.VerificationCodeRepository;
@@ -24,7 +24,7 @@ public class EmailService {
 
   public void validateConditions(String email) throws EmailConditionsException {
     if (!email.contains("@")) {
-      throw new EmailConditionsException("the email should contain '@'");
+      throw new EmailConditionsException();
     }
   }
 
@@ -39,7 +39,7 @@ public class EmailService {
     VerificationCode verificationCodeEntity = new VerificationCode();
     verificationCodeEntity.setUser(user);
     verificationCodeEntity.setCode(verificationCode);
-    // the code expired after one day
+    // the code expired after 10 minutes
     verificationCodeEntity.setExpirationDate(LocalDateTime.now().plusMinutes(10));
     verificationCodeRepository.save(verificationCodeEntity);
   }
@@ -48,7 +48,7 @@ public class EmailService {
     SimpleMailMessage message = new SimpleMailMessage();
     message.setTo(destinationEmail);
     message.setSubject("Verification code");
-    message.setText("this is your verification code: " + verificationCode);
+    message.setText("your verification code is: " + verificationCode);
     return message;
   }
 
@@ -58,7 +58,7 @@ public class EmailService {
     return code.toString();
   }
 
-  public ArrayList<String> getConditions() {
+  public static ArrayList<String> getConditions() {
     ArrayList<String> details = new ArrayList<>();
     details.add("the email should contain '@'");
     return details;

@@ -890,6 +890,7 @@ All errors follow this format:
 **Common Error Codes:**
 
 - `INTERNAL_SERVER_ERROR` - There is a problem in the server
+- `RESOURCE_EXPIRED` - Target resource was expired
 - `INVALID_INPUT` - Validation failed
 - `UNAUTHORIZED` - Missing/invalid token
 - `FORBIDDEN` - Insufficient permissions

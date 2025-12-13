@@ -1,8 +1,6 @@
 package com.ensa.SprintFlow.service;
 
-import com.ensa.SprintFlow.exception.registrationException.RegistrationException;
-import com.ensa.SprintFlow.exception.registrationException.userDataIntegrityException.DuplicatedEmailException;
-import com.ensa.SprintFlow.exception.registrationException.userDataIntegrityException.DuplicatedUsernameException;
+import com.ensa.SprintFlow.exception.generalException.DataIntegrityViolationException;
 import com.ensa.SprintFlow.model.User;
 import com.ensa.SprintFlow.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -15,12 +13,12 @@ public class UserService {
     this.userRepository = userRepository;
   }
 
-  public User save(User user) throws RegistrationException {
+  public User save(User user) {
     if (userRepository.existsByUsername(user.getUsername())) {
-      throw new DuplicatedUsernameException();
+      throw new DataIntegrityViolationException("username already exists");
     }
     if (userRepository.existsByEmail(user.getEmail())) {
-      throw new DuplicatedEmailException();
+      throw new DataIntegrityViolationException("email already exists");
     }
     return userRepository.save(user);
   }

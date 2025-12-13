@@ -1,9 +1,10 @@
 package com.ensa.SprintFlow.service.security;
 
-import com.ensa.SprintFlow.exception.registrationException.userCredentialsConditionsException.PasswordConditionsException;
 import java.util.ArrayList;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.ensa.SprintFlow.exception.generalException.PasswordConditionsException;
 
 @Service
 public class PasswordService {
@@ -15,7 +16,7 @@ public class PasswordService {
 
   public void validateConditions(String password) throws PasswordConditionsException {
     if (password.length() < 8) {
-      throw new PasswordConditionsException("the password should be at least 8 characters long");
+      throw new PasswordConditionsException();
     }
   }
 
@@ -23,11 +24,11 @@ public class PasswordService {
     return passwordEncoder.encode(password);
   }
 
-  public boolean isEquale(String password, String passwordHash) {
+  public boolean match(String password, String passwordHash) {
     return passwordEncoder.matches(password, passwordHash);
   }
 
-  public ArrayList<String> getConditions() {
+  public static ArrayList<String> getConditions() {
     ArrayList<String> details = new ArrayList<>();
     details.add("the password should be at least 8 character long");
     return details;
