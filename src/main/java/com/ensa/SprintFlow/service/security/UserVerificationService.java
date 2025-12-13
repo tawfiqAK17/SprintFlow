@@ -1,8 +1,7 @@
 package com.ensa.SprintFlow.service.security;
 
 import com.ensa.SprintFlow.exception.generalException.NotFoundException;
-import com.ensa.SprintFlow.exception.registrationException.verificationCodeException.VerificationCodeExpiredException;
-import com.ensa.SprintFlow.exception.registrationException.verificationCodeException.VerificationCodeNotFoundException;
+import com.ensa.SprintFlow.exception.generalException.ResourceExpiredException;
 import com.ensa.SprintFlow.model.User;
 import com.ensa.SprintFlow.model.security.VerificationCode;
 import com.ensa.SprintFlow.repository.security.VerificationCodeRepository;
@@ -28,11 +27,11 @@ public class UserVerificationService {
   public void verify(String code) {
     VerificationCode verificationCode = verificationCodeRepository.findByCode(code);
     if (verificationCode == null) {
-      throw new VerificationCodeNotFoundException();
+      throw new NotFoundException("the given verification code was not found");
     }
 
     if (verificationCode.getExpirationDate().isBefore(LocalDateTime.now())) {
-      throw new VerificationCodeExpiredException();
+      throw new ResourceExpiredException("the give verification code was expired");
     }
     userService.verifyUser(verificationCode.getUser());
   }

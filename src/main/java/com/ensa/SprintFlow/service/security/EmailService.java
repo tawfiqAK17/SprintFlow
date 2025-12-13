@@ -1,6 +1,6 @@
 package com.ensa.SprintFlow.service.security;
 
-import com.ensa.SprintFlow.exception.registrationException.userCredentialsConditionsException.EmailConditionsException;
+import com.ensa.SprintFlow.exception.generalException.EmailConditionsException;
 import com.ensa.SprintFlow.model.User;
 import com.ensa.SprintFlow.model.security.VerificationCode;
 import com.ensa.SprintFlow.repository.security.VerificationCodeRepository;
@@ -24,7 +24,7 @@ public class EmailService {
 
   public void validateConditions(String email) throws EmailConditionsException {
     if (!email.contains("@")) {
-      throw new EmailConditionsException("the email should contain '@'");
+      throw new EmailConditionsException();
     }
   }
 
@@ -58,7 +58,7 @@ public class EmailService {
     return code.toString();
   }
 
-  public ArrayList<String> getConditions() {
+  public static ArrayList<String> getConditions() {
     ArrayList<String> details = new ArrayList<>();
     details.add("the email should contain '@'");
     return details;

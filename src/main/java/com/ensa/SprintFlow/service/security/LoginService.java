@@ -2,9 +2,8 @@ package com.ensa.SprintFlow.service.security;
 
 import com.ensa.SprintFlow.dto.request.LoginRequestDto;
 import com.ensa.SprintFlow.dto.response.LoginResponseDto;
-import com.ensa.SprintFlow.exception.loginException.IncorrectPasswordException;
-import com.ensa.SprintFlow.exception.loginException.UserNotVerifiedException;
-import com.ensa.SprintFlow.exception.loginException.UsernameNotFoundException;
+import com.ensa.SprintFlow.exception.generalException.NotFoundException;
+import com.ensa.SprintFlow.exception.generalException.UnauthorizedException;
 import com.ensa.SprintFlow.model.User;
 import com.ensa.SprintFlow.model.security.CustomUserDetails;
 import com.ensa.SprintFlow.service.UserService;
@@ -32,13 +31,13 @@ public class LoginService {
   public LoginResponseDto authenticateUser(LoginRequestDto dto) {
     User user = userService.findByUsername(dto.getUsername());
     if (user == null) {
-      throw new UsernameNotFoundException();
+      throw new NotFoundException("no user found with the given username");
     }
     if (!passwordService.match(dto.getPassword(), user.getPassword())) {
-      throw new IncorrectPasswordException();
+      throw new UnauthorizedException("wrong password");
     }
     if (!user.isVerified()) {
-      throw new UserNotVerifiedException();
+      throw new UnauthorizedException("user is not verified");
     }
     String jwt = jwtService.generateToken(new CustomUserDetails(user));
     String refreshToken = refreshTokenService.generateToken(user);
