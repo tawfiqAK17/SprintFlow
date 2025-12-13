@@ -1,5 +1,6 @@
 package com.ensa.SprintFlow.config;
 
+import com.ensa.SprintFlow.filter.FilerExceptionHandler;
 import com.ensa.SprintFlow.filter.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,9 +17,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
   JwtAuthenticationFilter jwtAuthenticationFilter;
+  FilerExceptionHandler filterExceptionHandler;
 
-  public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+  public SecurityConfig(
+      JwtAuthenticationFilter jwtAuthenticationFilter,
+      FilerExceptionHandler filterExceptionHandler) {
     this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    this.filterExceptionHandler = filterExceptionHandler;
   }
 
   @Bean
@@ -36,7 +41,8 @@ public class SecurityConfig {
                     .permitAll())
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(filterExceptionHandler, JwtAuthenticationFilter.class);
     return http.build();
   }
 
