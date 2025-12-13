@@ -31,6 +31,8 @@ public class SecurityConfig {
                     .requestMatchers("/register")
                     .permitAll()
                     .requestMatchers("/verify")
+                    .permitAll()
+                    .requestMatchers("/refresh-token")
                     .permitAll())
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

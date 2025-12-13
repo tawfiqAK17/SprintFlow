@@ -18,6 +18,17 @@ public class JwtService {
   @Value("${JWT_SECRET_KEY}")
   private String jwtSecretKey;
 
+  public String generateToken(UserDetails userDetails) {
+    String jwt =
+        Jwts.builder()
+            .subject(userDetails.getUsername())
+            .issuedAt(new Date())
+            .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+            .signWith(getSecretKey())
+            .compact();
+    return jwt;
+  }
+
   public <T> T extractClaims(String jwt, Function<Claims, T> claimsResolever) {
     Claims claims =
         Jwts.parser()
@@ -26,16 +37,6 @@ public class JwtService {
             .parseSignedClaims(jwt)
             .getPayload();
     return claimsResolever.apply(claims);
-  }
-
-  public String generateToken(UserDetails userDetails) {
-    String jwt = Jwts.builder()
-        .subject(userDetails.getUsername())
-        .issuedAt(new Date())
-        .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
-        .signWith(getSecretKey())
-        .compact();
-    return jwt;
   }
 
   private Key getSecretKey() {

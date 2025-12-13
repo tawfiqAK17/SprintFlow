@@ -15,11 +15,18 @@ public class LoginService {
   UserService userService;
   PasswordService passwordService;
   JwtService jwtService;
+  RefreshTokenService refreshTokenService;
 
-  LoginService(UserService userService, PasswordService passwordService, JwtService jwtService) {
+  LoginService(
+      UserService userService,
+      PasswordService passwordService,
+      JwtService jwtService,
+      RefreshTokenService refreshTokenService) {
+
     this.userService = userService;
     this.passwordService = passwordService;
     this.jwtService = jwtService;
+    this.refreshTokenService = refreshTokenService;
   }
 
   public LoginResponseDto authenticateUser(LoginRequestDto dto) {
@@ -34,7 +41,16 @@ public class LoginService {
       throw new UserNotVerifiedException();
     }
     String jwt = jwtService.generateToken(new CustomUserDetails(user));
+    String refreshToken = refreshTokenService.generateToken(user);
 
-    return new LoginResponseDto(jwt);
+    return new LoginResponseDto(jwt, refreshToken);
+  }
+
+  public LoginResponseDto refreshToken(String refreshToken) {
+    // check if the token is valid return the user if not an exception will be thrown
+    User user = refreshTokenService.getUser(refreshToken);
+
+    String jwt = jwtService.generateToken(new CustomUserDetails(user));
+    return new LoginResponseDto(jwt, refreshToken);
   }
 }
