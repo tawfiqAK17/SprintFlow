@@ -29,8 +29,15 @@ public class LoginController {
   }
 
   @PostMapping("/verify")
-  public void verify(@RequestParam String code) {
+  public ResponseEntity<?> verify(@RequestParam String code) {
     userVerificationService.verify(code);
+    return ResponseEntity.ok().build();
+  }
+
+  @GetMapping("/verify/resend")
+  public ResponseEntity<?> resendVerificationCode(@RequestParam String username) {
+    userVerificationService.resendVerificationCode(username);
+    return ResponseEntity.ok().build();
   }
 
   @GetMapping("/refresh-token")
