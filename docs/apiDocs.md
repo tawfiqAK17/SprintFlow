@@ -51,6 +51,27 @@ verify the user
   - `code` (string): the verification code sent to the user via email
 - **Response(200)**
 
+### GET `/verify/resend`
+
+resend the verification code to the user email
+
+- **Query Params:**
+  - `username` (string): the username to which the code will be sent 
+- **Response(200)**
+
+### GET `/refresh-token`
+
+get a new jwt token
+
+- **Query Params:**
+  - `refreshToken` (string): the refresh token of the user 
+- **Response(200)**:
+  ```json
+  {
+    "jwt": "string"
+    "refreshToken": "string"
+  }
+  ```
 ### POST `/login`
 
 Authenticate user

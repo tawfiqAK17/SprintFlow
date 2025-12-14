@@ -43,4 +43,16 @@ public class JwtService {
     byte[] keyBytes = Decoders.BASE64.decode(jwtSecretKey);
     return Keys.hmacShaKeyFor(keyBytes);
   }
+
+  public String extractUsername(String jwt) {
+    return extractClaims(jwt, Claims::getSubject);
+  }
+
+  private Date extractExpirationDate(String jwt) {
+    return extractClaims(jwt, Claims::getExpiration);
+  }
+
+  public boolean isExpired(String jwt) {
+    return extractExpirationDate(jwt).before(new Date());
+  }
 }
