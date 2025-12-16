@@ -72,6 +72,7 @@ get a new jwt token
     "refreshToken": "string"
   }
   ```
+
 ### POST `/login`
 
 Authenticate user
@@ -88,6 +89,7 @@ Authenticate user
   ```json
   {
     "jwt": "string"
+    "refreshToken": "string"
   }
   ```
 

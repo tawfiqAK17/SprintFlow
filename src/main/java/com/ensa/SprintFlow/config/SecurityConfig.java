@@ -38,7 +38,9 @@ public class SecurityConfig {
                     .requestMatchers("/verify/**")
                     .permitAll()
                     .requestMatchers("/refresh-token")
-                    .permitAll())
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated())
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
