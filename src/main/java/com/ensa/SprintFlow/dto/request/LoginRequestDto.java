@@ -1,7 +1,11 @@
 package com.ensa.SprintFlow.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class LoginRequestDto {
+  @NotBlank(message = "username is required")
   private String username;
+  @NotBlank(message = "password is required")
   private String password;
 
   public String getUsername() {

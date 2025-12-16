@@ -7,6 +7,7 @@ import com.ensa.SprintFlow.service.security.RegisterService;
 import com.ensa.SprintFlow.service.security.UserVerificationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,8 +31,8 @@ public class RegisterController {
   }
 
   @PostMapping("/register")
-  public ResponseEntity<?> userRegister(@RequestBody RegisterRequestDto dto) {
-    User user = registerMapper.mapToEntity(dto);
+  public ResponseEntity<?> userRegister(@Validated @RequestBody RegisterRequestDto dto) {
+    User user = registerMapper.mapToUser(dto);
     registerService.register(user);
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }

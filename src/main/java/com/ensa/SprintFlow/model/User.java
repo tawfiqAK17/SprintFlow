@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long userId;
+  private Long id;
 
   @Column(nullable = false)
   private String firstName;
@@ -50,13 +50,6 @@ public class User {
   }
 
   // Getters and Setters
-  public Long getUserId() {
-    return userId;
-  }
-
-  public void setUserId(Long userId) {
-    this.userId = userId;
-  }
 
   public String getFirstName() {
     return firstName;
@@ -136,5 +129,13 @@ public class User {
 
   public void setEnrollDate(LocalDateTime enrollDate) {
     this.enrollDate = enrollDate;
+  }
+
+  public Long getId() {
+	return id;
+  }
+
+  public void setId(Long id) {
+	this.id = id;
   }
 }
