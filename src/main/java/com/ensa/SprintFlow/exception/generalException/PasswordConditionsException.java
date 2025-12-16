@@ -8,8 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public class PasswordConditionsException extends ApplicationException {
-  public PasswordConditionsException() {
-    super("the password does not satisfies the conditions");
+  public PasswordConditionsException(String message) {
+    super(message);
   }
 
   @Override

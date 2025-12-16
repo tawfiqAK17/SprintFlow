@@ -56,7 +56,7 @@ verify the user
 resend the verification code to the user email
 
 - **Query Params:**
-  - `username` (string): the username to which the code will be sent 
+  - `username` (string): the username to which the code will be sent
 - **Response(200)**
 
 ### GET `/refresh-token`
@@ -64,7 +64,7 @@ resend the verification code to the user email
 get a new jwt token
 
 - **Query Params:**
-  - `refreshToken` (string): the refresh token of the user 
+  - `refreshToken` (string): the refresh token of the user
 - **Response(200)**:
   ```json
   {
@@ -72,6 +72,7 @@ get a new jwt token
     "refreshToken": "string"
   }
   ```
+
 ### POST `/login`
 
 Authenticate user
@@ -88,6 +89,7 @@ Authenticate user
   ```json
   {
     "jwt": "string"
+    "refreshToken": "string"
   }
   ```
 
@@ -197,9 +199,13 @@ Get specific user details
     "enroll_date": "date",
     "projects": [
       {
-        "id": "number",
-        "name": "string",
-        "role": "Role enum"
+         "id": "number";
+         "name": "string";
+         "description": "string";
+         "creationDate": "date";
+         "scrumMaster": {...};
+         "productOwner": {...};
+         "userRole": "enum Role";
       }
     ]
   }
@@ -225,18 +231,20 @@ Get all projects where user is a member
         "id": "number",
         "name": "string",
         "description": "string",
-        "created_at": "datetime",
+        "creation_date": "datetime",
         "scrum_master": {
           "id": "number",
           "first_name": "string",
           "last_name": "string"
+          "email": "string"
         },
         "product_owner": {
           "id": "number",
           "first_name": "string",
           "last_name": "string"
+          "email": "string"
         },
-        "my_role": "Role enum"
+        "user_role": "Role enum"
       }
     ],
     "pagination": { ... }
@@ -251,9 +259,9 @@ Create new project (user becomes Product Owner)
 - **Request Body:**
   ```json
   {
-    "name": "string (required, min 3 chars)",
+    "name": "string",
     "description": "string (required)",
-    "scrum_master_id": "number (optional)"
+    "scrum_master_username": "string (optional)"
   }
   ```
 - **Response (201):** Created project object
@@ -269,7 +277,7 @@ Get project details with all members
     "id": "number",
     "name": "string",
     "description": "string",
-    "created_at": "datetime",
+    "creation_date": "datetime",
     "scrum_master": { ... },
     "product_owner": { ... },
     "members": [

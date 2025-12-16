@@ -41,6 +41,7 @@ public class EmailService {
     verificationCodeEntity.setCode(verificationCode);
     // the code expired after 10 minutes
     verificationCodeEntity.setExpirationDate(LocalDateTime.now().plusMinutes(10));
+    System.out.println(user.getId() + "+++++++++++++++++++++++");
     verificationCodeRepository.save(verificationCodeEntity);
   }
 

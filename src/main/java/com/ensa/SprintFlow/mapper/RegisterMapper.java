@@ -6,16 +6,9 @@ import com.ensa.SprintFlow.dto.request.RegisterRequestDto;
 import com.ensa.SprintFlow.model.User;
 
 @Component
-public class RegisterMapper implements Mapper<User, RegisterRequestDto, RegisterRequestDto> {
+public class RegisterMapper {
 
-  @Override
-  public RegisterRequestDto mapToDto(User entity) {
-	// TODO Auto-generated method stub
-	throw new UnsupportedOperationException("Unimplemented method 'mapToDto'");
-  }
-
-  @Override
-  public User mapToEntity(RegisterRequestDto dto) {
+  public User mapToUser(RegisterRequestDto dto) {
     User user = new User();
     user.setFirstName(dto.getFirstName());
     user.setLastName(dto.getLastName());

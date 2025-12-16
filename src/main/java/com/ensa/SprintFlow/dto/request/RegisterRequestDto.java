@@ -1,14 +1,23 @@
 package com.ensa.SprintFlow.dto.request;
 
-import jakarta.annotation.Nonnull;
+import jakarta.validation.constraints.NotBlank;
 
 public class RegisterRequestDto {
 
-  @Nonnull private String firstName;
-  @Nonnull private String lastName;
-  @Nonnull private String username;
-  @Nonnull private String email;
-  @Nonnull private String password;
+  @NotBlank(message = "first name is required")
+  private String firstName;
+
+  @NotBlank(message = "last name is required")
+  private String lastName;
+
+  @NotBlank(message = "username is required")
+  private String username;
+
+  @NotBlank(message = "email is required")
+  private String email;
+
+  @NotBlank(message = "password is required")
+  private String password;
 
   public String getFirstName() {
     return firstName;

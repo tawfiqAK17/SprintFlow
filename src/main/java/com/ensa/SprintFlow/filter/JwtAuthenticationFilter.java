@@ -1,16 +1,15 @@
 package com.ensa.SprintFlow.filter;
 
+import com.ensa.SprintFlow.exception.generalException.ResourceExpiredException;
 import com.ensa.SprintFlow.exception.generalException.UnauthorizedException;
 import com.ensa.SprintFlow.service.security.CustomUserDetailsService;
 import com.ensa.SprintFlow.service.security.JwtService;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import org.hibernate.ResourceClosedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,10 +40,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     String username;
     try {
       username = jwtService.extractUsername(jwt);
-    } catch (SignatureException e) {
-      throw new UnauthorizedException("the jwt is not valid");
     } catch (ExpiredJwtException e) {
-      throw new ResourceClosedException("the jwt was expired");
+      throw new ResourceExpiredException("the jwt was expired");
+    } catch (Exception e) {
+      throw new UnauthorizedException("the jwt is not valid");
     }
 
     UserDetails userDetails = userDetailsService.loadUserByUsername(username);
