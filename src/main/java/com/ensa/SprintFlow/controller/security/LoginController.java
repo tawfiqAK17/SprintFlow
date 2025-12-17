@@ -1,5 +1,6 @@
 package com.ensa.SprintFlow.controller.security;
 
+import com.ensa.SprintFlow.builder.ResponseBuilder;
 import com.ensa.SprintFlow.dto.request.LoginRequestDto;
 import com.ensa.SprintFlow.dto.response.LoginResponseDto;
 import com.ensa.SprintFlow.service.security.LoginService;
@@ -15,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class LoginController {
   LoginService loginService;
+  ResponseBuilder responseBuilder;
 
-  LoginController(LoginService loginService) {
+  LoginController(LoginService loginService, ResponseBuilder responseBuilder) {
     this.loginService = loginService;
+    this.responseBuilder = responseBuilder;
   }
 
   @PostMapping("/login")
@@ -28,7 +31,7 @@ public class LoginController {
 
   @GetMapping("/refresh-token")
   public ResponseEntity<?> refreshToken(@RequestParam String refreshToken) {
-    LoginResponseDto responseDto = loginService.refreshToken(refreshToken);
-    return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+    String newJwtToken = loginService.refreshToken(refreshToken);
+    return responseBuilder.status(HttpStatus.OK).property("jwt", newJwtToken).build();
   }
 }

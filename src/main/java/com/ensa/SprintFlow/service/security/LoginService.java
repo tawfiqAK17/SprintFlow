@@ -45,11 +45,10 @@ public class LoginService {
     return new LoginResponseDto(jwt, refreshToken);
   }
 
-  public LoginResponseDto refreshToken(String refreshToken) {
+  public String refreshToken(String refreshToken) {
     // check if the token is valid return the user if not an exception will be thrown
     User user = refreshTokenService.getUser(refreshToken);
 
-    String jwt = jwtService.generateToken(new CustomUserDetails(user));
-    return new LoginResponseDto(jwt, refreshToken);
+    return jwtService.generateToken(new CustomUserDetails(user));
   }
 }
