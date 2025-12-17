@@ -5,6 +5,7 @@ import com.ensa.SprintFlow.model.Project;
 import com.ensa.SprintFlow.model.ProjectMember;
 import com.ensa.SprintFlow.model.User;
 import com.ensa.SprintFlow.repository.ProjectMemberRepository;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,5 +29,9 @@ public class ProjectMemberService {
 
   public ProjectMember findByProjectAndUserRole(Project project, Role role) {
     return projectMemberRepository.findByProjectAndUserRole(project, role);
+  }
+
+  public List<ProjectMember> findAllByUserIdAndProjectId(Long userId, Long projectId) {
+    return projectMemberRepository.findAllByUserIdAndProjectId(userId, projectId);
   }
 }

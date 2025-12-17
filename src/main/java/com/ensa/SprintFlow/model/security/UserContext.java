@@ -6,12 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserContext {
+  private Long id;
+
   private String username;
   private String email;
   // roles will hold the user roles in a project
   private List<Role> roles;
 
   public UserContext(User user) {
+    this.id = user.getId();
     this.username = user.getUserName();
     this.email = user.getEmail();
     this.roles = new ArrayList<>();
@@ -39,5 +42,13 @@ public class UserContext {
 
   public void setRoles(List<Role> roles) {
     this.roles = roles;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 }
