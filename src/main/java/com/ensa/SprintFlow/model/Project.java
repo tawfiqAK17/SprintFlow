@@ -14,6 +14,7 @@ public class Project {
 
   private String name;
   private String description;
+  @Column(nullable = false)
   private LocalDateTime creationDate;
 
   @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
