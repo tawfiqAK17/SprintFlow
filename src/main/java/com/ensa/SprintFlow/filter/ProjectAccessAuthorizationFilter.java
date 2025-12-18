@@ -1,5 +1,6 @@
 package com.ensa.SprintFlow.filter;
 
+import com.ensa.SprintFlow.enums.Role;
 import com.ensa.SprintFlow.exception.generalException.UnauthorizedException;
 import com.ensa.SprintFlow.model.security.UserContext;
 import com.ensa.SprintFlow.service.security.UserAuthorizationService;
@@ -44,6 +45,7 @@ public class ProjectAccessAuthorizationFilter extends OncePerRequestFilter {
     if (userContext.getRoles().isEmpty()) {
       throw new UnauthorizedException("the user should be a member of the project");
     }
+    if (userContext.getRoles().contains(Role.PRODUCT_OWNER))
     filterChain.doFilter(request, response);
   }
 }

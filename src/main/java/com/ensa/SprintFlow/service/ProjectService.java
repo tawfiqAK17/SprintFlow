@@ -3,6 +3,7 @@ package com.ensa.SprintFlow.service;
 import com.ensa.SprintFlow.dto.request.ProjectRequestDto;
 import com.ensa.SprintFlow.dto.response.ProjectMetaDataResponseDto;
 import com.ensa.SprintFlow.enums.Role;
+import com.ensa.SprintFlow.exception.generalException.NotFoundException;
 import com.ensa.SprintFlow.mapper.ProjectMapper;
 import com.ensa.SprintFlow.model.Project;
 import com.ensa.SprintFlow.model.security.UserContext;
@@ -11,6 +12,7 @@ import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +50,26 @@ public class ProjectService {
     return mapper.mapToMetaDataResponseDto(project);
   }
 
+  public ProjectMetaDataResponseDto update(Long projectId, ProjectRequestDto dto) {
+    Optional<Project> OptionalProject = projectRepository.findById(projectId);
+    if (OptionalProject.isEmpty()) {
+      throw new NotFoundException("no project found with the given id");
+    }
+    Project project = OptionalProject.get();
+    if (dto.getName() != null) {
+      project.setName(dto.getName());
+    }
+    if (dto.getDescription() != null) {
+      project.setDescription(dto.getDescription());
+    }
+    if (dto.getScrumMasterUsername() != null) {
+      replaceScrumMaster(project, dto.getScrumMasterUsername());
+    }
+    // save the project to the database
+    project = projectRepository.save(project);
+    return mapper.mapToMetaDataResponseDto(project);
+  }
+
   public List<ProjectMetaDataResponseDto> getProjects() {
     List<Project> projects = projectRepository.findAll();
     List<ProjectMetaDataResponseDto> projectsMetaData = new ArrayList<>();
@@ -55,5 +77,10 @@ public class ProjectService {
       projectsMetaData.add(mapper.mapToMetaDataResponseDto(project));
     }
     return projectsMetaData;
+  }
+
+  private void replaceScrumMaster(Project project, String scrumMasterUsername) {
+    projectMemberService.deleteProjectScrumMaster(project.getId());
+    projectMemberService.save(project, scrumMasterUsername, Role.SCRUM_MASTER);
   }
 }

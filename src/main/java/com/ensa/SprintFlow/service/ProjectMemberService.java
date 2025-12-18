@@ -34,4 +34,8 @@ public class ProjectMemberService {
   public List<ProjectMember> findAllByUserIdAndProjectId(Long userId, Long projectId) {
     return projectMemberRepository.findAllByUserIdAndProjectId(userId, projectId);
   }
+
+  public void deleteProjectScrumMaster(Long projectId) {
+    projectMemberRepository.deleteByProjectIdAndUserRole(projectId, Role.SCRUM_MASTER);
+  }
 }
