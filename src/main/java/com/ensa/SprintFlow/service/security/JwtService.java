@@ -1,5 +1,6 @@
 package com.ensa.SprintFlow.service.security;
 
+import com.ensa.SprintFlow.model.security.UserContext;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -9,7 +10,6 @@ import java.util.Date;
 import java.util.function.Function;
 import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,10 +18,10 @@ public class JwtService {
   @Value("${JWT_SECRET_KEY}")
   private String jwtSecretKey;
 
-  public String generateToken(UserDetails userDetails) {
+  public String generateToken(UserContext userContext) {
     String jwt =
         Jwts.builder()
-            .subject(userDetails.getUsername())
+            .subject(userContext.getUsername())
             .issuedAt(new Date())
             .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
             .signWith(getSecretKey())

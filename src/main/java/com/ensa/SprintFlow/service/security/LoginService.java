@@ -5,7 +5,7 @@ import com.ensa.SprintFlow.dto.response.LoginResponseDto;
 import com.ensa.SprintFlow.exception.generalException.NotFoundException;
 import com.ensa.SprintFlow.exception.generalException.UnauthorizedException;
 import com.ensa.SprintFlow.model.User;
-import com.ensa.SprintFlow.model.security.CustomUserDetails;
+import com.ensa.SprintFlow.model.security.UserContext;
 import com.ensa.SprintFlow.service.UserService;
 import org.springframework.stereotype.Service;
 
@@ -39,17 +39,16 @@ public class LoginService {
     if (!user.isVerified()) {
       throw new UnauthorizedException("user is not verified");
     }
-    String jwt = jwtService.generateToken(new CustomUserDetails(user));
+    String jwt = jwtService.generateToken(new UserContext(user));
     String refreshToken = refreshTokenService.generateToken(user);
 
     return new LoginResponseDto(jwt, refreshToken);
   }
 
-  public LoginResponseDto refreshToken(String refreshToken) {
+  public String refreshToken(String refreshToken) {
     // check if the token is valid return the user if not an exception will be thrown
     User user = refreshTokenService.getUser(refreshToken);
 
-    String jwt = jwtService.generateToken(new CustomUserDetails(user));
-    return new LoginResponseDto(jwt, refreshToken);
+    return jwtService.generateToken(new UserContext(user));
   }
 }

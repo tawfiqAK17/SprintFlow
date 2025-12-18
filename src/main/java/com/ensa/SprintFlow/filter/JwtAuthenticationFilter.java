@@ -2,8 +2,9 @@ package com.ensa.SprintFlow.filter;
 
 import com.ensa.SprintFlow.exception.generalException.ResourceExpiredException;
 import com.ensa.SprintFlow.exception.generalException.UnauthorizedException;
-import com.ensa.SprintFlow.service.security.CustomUserDetailsService;
+import com.ensa.SprintFlow.model.security.UserContext;
 import com.ensa.SprintFlow.service.security.JwtService;
+import com.ensa.SprintFlow.service.security.UserContextService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -12,7 +13,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -20,12 +20,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   JwtService jwtService;
-  CustomUserDetailsService userDetailsService;
+  UserContextService userContextService;
 
-  public JwtAuthenticationFilter(
-      JwtService jwtService, CustomUserDetailsService userDetailsService) {
+  public JwtAuthenticationFilter(JwtService jwtService, UserContextService userContextService) {
     this.jwtService = jwtService;
-    this.userDetailsService = userDetailsService;
+    this.userContextService = userContextService;
   }
 
   @Override
@@ -46,10 +45,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       throw new UnauthorizedException("the jwt is not valid");
     }
 
-    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+    UserContext userContext = userContextService.loadUserByUsername(username);
 
     UsernamePasswordAuthenticationToken authenticationToken =
-        new UsernamePasswordAuthenticationToken(userDetails, null, null);
+        new UsernamePasswordAuthenticationToken(userContext, null, null);
 
     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 

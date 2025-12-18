@@ -364,6 +364,7 @@ Update member's role
 
 ### DELETE `/projects/{project_id}/members/{user_id}`
 
+
 Remove member from project
 
 - **Auth:** Required (Scrum Master or Product Owner)

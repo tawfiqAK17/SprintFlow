@@ -1,6 +1,7 @@
 package com.ensa.SprintFlow.service;
 
 import com.ensa.SprintFlow.exception.generalException.DataIntegrityViolationException;
+import com.ensa.SprintFlow.exception.generalException.NotFoundException;
 import com.ensa.SprintFlow.model.User;
 import com.ensa.SprintFlow.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,10 @@ public class UserService {
   }
 
   public User findByUsername(String username) {
-    return userRepository.findByUsername(username);
+    User user = userRepository.findByUsername(username);
+    if (user == null) {
+      throw new NotFoundException("no user found with the given username");
+    }
+    return user;
   }
 }

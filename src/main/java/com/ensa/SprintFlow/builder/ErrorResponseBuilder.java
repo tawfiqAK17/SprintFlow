@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ErrorResponseBuilder {
   private String error = "";
   private String message = "";
