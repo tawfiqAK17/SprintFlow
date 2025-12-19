@@ -1,10 +1,12 @@
 package com.ensa.SprintFlow.config;
 
+import com.ensa.SprintFlow.enums.Role;
 import com.ensa.SprintFlow.filter.FilerExceptionHandler;
 import com.ensa.SprintFlow.filter.JwtAuthenticationFilter;
 import com.ensa.SprintFlow.filter.ProjectAccessAuthorizationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -12,16 +14,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.util.AntPathMatcher;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class SecurityConfiguration {
 
   JwtAuthenticationFilter jwtAuthenticationFilter;
   ProjectAccessAuthorizationFilter projectAccessAuthorizationFilter;
   FilerExceptionHandler filterExceptionHandler;
 
-  public SecurityConfig(
+  public SecurityConfiguration(
       JwtAuthenticationFilter jwtAuthenticationFilter,
       FilerExceptionHandler filterExceptionHandler,
       ProjectAccessAuthorizationFilter projectAccessAuthorizationFilter) {
@@ -51,6 +54,21 @@ public class SecurityConfig {
         .addFilterAfter(projectAccessAuthorizationFilter, JwtAuthenticationFilter.class)
         .addFilterBefore(filterExceptionHandler, JwtAuthenticationFilter.class);
     return http.build();
+  }
+
+  @Bean
+  public AuthorizationManager authorizationManager() {
+    AuthorizationManager authorizationManager = new AuthorizationManager();
+    return authorizationManager
+        .forUrl("/project/{id}")
+        .allow(Role.PRODUCT_OWNER) // authorize all http methods to the PRODUCT_OWNER
+        .allowMethods(Role.SCRUM_MASTER, HttpMethod.GET)
+        .done();
+  }
+
+  @Bean
+  public AntPathMatcher antPathMatcher() {
+    return new AntPathMatcher();
   }
 
   @Bean
