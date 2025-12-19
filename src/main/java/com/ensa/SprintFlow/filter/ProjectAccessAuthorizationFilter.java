@@ -32,6 +32,7 @@ public class ProjectAccessAuthorizationFilter extends OncePerRequestFilter {
 
     if (!pathMatcher.match(pattern, uri)) {
       filterChain.doFilter(request, response);
+      return;
     }
 
     Map<String, String> pathVariables = pathMatcher.extractUriTemplateVariables(pattern, uri);

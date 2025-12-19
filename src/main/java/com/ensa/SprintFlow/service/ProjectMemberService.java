@@ -24,8 +24,24 @@ public class ProjectMemberService {
     return projectMemberRepository.save(projectMember);
   }
 
-  public ProjectMember findByProjectAndUserRole(Project project, Role role) {
-    return projectMemberRepository.findByProjectAndUserRole(project, role);
+  public User getProjectProductOwner(Long projectId) {
+    return findByProjectIdAndUserRole(projectId, Role.PRODUCT_OWNER).getUser();
+  }
+
+  public User getProjectScrumMaster(Long projectId) {
+    ProjectMember scrumMasterProjectMember = findByProjectIdAndUserRole(projectId, Role.SCRUM_MASTER);
+    if (scrumMasterProjectMember != null) {
+      return scrumMasterProjectMember.getUser();
+    }
+    return null;
+  }
+
+  public List<ProjectMember> getAllMembers(Long projectId) {
+    return projectMemberRepository.findAllByProjectId(projectId);
+  }
+
+  public List<ProjectMember> findAllByProjectAndUserRole(Long projectId, Role role) {
+    return projectMemberRepository.findAllByProjectIdAndUserRole(projectId, role);
   }
 
   public List<ProjectMember> findAllByUserIdAndProjectId(Long userId, Long projectId) {
@@ -34,5 +50,9 @@ public class ProjectMemberService {
 
   public void deleteProjectScrumMaster(Long projectId) {
     projectMemberRepository.deleteByProjectIdAndUserRole(projectId, Role.SCRUM_MASTER);
+  }
+
+  private ProjectMember findByProjectIdAndUserRole(Long projectId, Role role) {
+    return projectMemberRepository.findByProjectIdAndUserRole(projectId, role);
   }
 }

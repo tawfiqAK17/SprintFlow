@@ -8,6 +8,9 @@ import com.ensa.SprintFlow.model.User;
 @Component
 public class UserMapper {
   public UserMetaDataResponseDto mapToMetaDataDto(User user) {
+    if (user == null) {
+      return null;
+    }
     UserMetaDataResponseDto dto = new UserMetaDataResponseDto();
     dto.setId(user.getId());
     dto.setEmail(user.getEmail());

@@ -2,6 +2,7 @@ package com.ensa.SprintFlow.service;
 
 import com.ensa.SprintFlow.dto.request.ProjectRequestDto;
 import com.ensa.SprintFlow.dto.response.ProjectMetaDataResponseDto;
+import com.ensa.SprintFlow.dto.response.ProjectResponseDto;
 import com.ensa.SprintFlow.enums.Role;
 import com.ensa.SprintFlow.exception.generalException.NotFoundException;
 import com.ensa.SprintFlow.mapper.ProjectMapper;
@@ -44,11 +45,7 @@ public class ProjectService {
   }
 
   public ProjectMetaDataResponseDto update(Long projectId, ProjectRequestDto dto) {
-    Optional<Project> OptionalProject = projectRepository.findById(projectId);
-    if (OptionalProject.isEmpty()) {
-      throw new NotFoundException("no project found with the given id");
-    }
-    Project project = OptionalProject.get();
+    Project project = findById(projectId);
     if (dto.getName() != null) {
       project.setName(dto.getName());
     }
@@ -72,8 +69,21 @@ public class ProjectService {
     return projectsMetaData;
   }
 
+  public ProjectResponseDto getProject(Long projectId) {
+    Project project = findById(projectId);
+    return mapper.mapToResponseDto(project);
+  }
+
   private void replaceScrumMaster(Project project, String scrumMasterUsername) {
     projectMemberService.deleteProjectScrumMaster(project.getId());
     projectMemberService.save(project, scrumMasterUsername, Role.SCRUM_MASTER);
+  }
+
+  private Project findById(Long projectId) {
+    Optional<Project> optionalProject = projectRepository.findById(projectId);
+    if (optionalProject.isEmpty()) {
+      throw new NotFoundException("no project found with the given id");
+    }
+    return optionalProject.get();
   }
 }
