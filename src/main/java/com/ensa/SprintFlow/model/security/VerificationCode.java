@@ -10,8 +10,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "verification_codes")
 public class VerificationCode {
 
@@ -28,36 +32,4 @@ public class VerificationCode {
   @ManyToOne
   @JoinColumn(name = "user_id")
   private User user;
-
-  public Long getVerificationCodeId() {
-    return verificationCodeId;
-  }
-
-  public void setVerificationCodeId(Long verificationCodeId) {
-    this.verificationCodeId = verificationCodeId;
-  }
-
-  public String getCode() {
-    return code;
-  }
-
-  public void setCode(String code) {
-    this.code = code;
-  }
-
-  public User getUser() {
-    return user;
-  }
-
-  public void setUser(User user) {
-    this.user = user;
-  }
-
-  public LocalDateTime getExpirationDate() {
-    return expirationDate;
-  }
-
-  public void setExpirationDate(LocalDateTime expirationDate) {
-    this.expirationDate = expirationDate;
-  }
 }

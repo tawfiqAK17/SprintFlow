@@ -13,24 +13,17 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class ProjectService {
 
   private ProjectRepository projectRepository;
   ProjectMemberService projectMemberService;
   private ProjectMapper mapper;
-
-  ProjectService(
-      ProjectRepository projectRepository,
-      ProjectMemberService projectMemberService,
-      ProjectMapper mapper) {
-    this.projectRepository = projectRepository;
-    this.projectMemberService = projectMemberService;
-    this.mapper = mapper;
-  }
 
   @Transactional
   public ProjectMetaDataResponseDto save(ProjectRequestDto dto) {

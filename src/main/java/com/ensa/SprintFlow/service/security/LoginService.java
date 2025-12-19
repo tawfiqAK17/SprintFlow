@@ -7,26 +7,16 @@ import com.ensa.SprintFlow.exception.generalException.UnauthorizedException;
 import com.ensa.SprintFlow.model.User;
 import com.ensa.SprintFlow.model.security.UserContext;
 import com.ensa.SprintFlow.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class LoginService {
   UserService userService;
   PasswordService passwordService;
   JwtService jwtService;
   RefreshTokenService refreshTokenService;
-
-  LoginService(
-      UserService userService,
-      PasswordService passwordService,
-      JwtService jwtService,
-      RefreshTokenService refreshTokenService) {
-
-    this.userService = userService;
-    this.passwordService = passwordService;
-    this.jwtService = jwtService;
-    this.refreshTokenService = refreshTokenService;
-  }
 
   public LoginResponseDto authenticateUser(LoginRequestDto dto) {
     User user = userService.findByUsername(dto.getUsername());

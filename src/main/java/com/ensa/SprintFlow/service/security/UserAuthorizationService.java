@@ -5,15 +5,13 @@ import com.ensa.SprintFlow.model.ProjectMember;
 import com.ensa.SprintFlow.service.ProjectMemberService;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class UserAuthorizationService {
   ProjectMemberService projectMemberService;
-
-  UserAuthorizationService(ProjectMemberService projectMemberService) {
-    this.projectMemberService = projectMemberService;
-  }
 
   public List<Role> getRoles(Long projectId, Long userId) {
     List<ProjectMember> relations =

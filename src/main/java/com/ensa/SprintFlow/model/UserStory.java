@@ -3,9 +3,15 @@ package com.ensa.SprintFlow.model;
 import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "user_stories")
+@Getter
+@Setter
+@NoArgsConstructor
 public class UserStory {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,84 +42,9 @@ public class UserStory {
   private UserStoryDescription userStoryDescription;
 
   // Constructors
-  public UserStory() {}
 
   public UserStory(String title, Integer priority) {
     this.title = title;
     this.priority = priority;
-  }
-
-  // Getters and Setters
-
-  public String getTitle() {
-    return title;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public Integer getPriority() {
-    return priority;
-  }
-
-  public void setPriority(Integer priority) {
-    this.priority = priority;
-  }
-
-  public User getUser() {
-    return user;
-  }
-
-  public void setUser(User user) {
-    this.user = user;
-  }
-
-  public ProductBacklog getProductBacklog() {
-    return productBacklog;
-  }
-
-  public void setProductBacklog(ProductBacklog productBacklog) {
-    this.productBacklog = productBacklog;
-  }
-
-  public Epic getEpic() {
-    return epic;
-  }
-
-  public void setEpic(Epic epic) {
-    this.epic = epic;
-  }
-
-  public Set<Task> getTasks() {
-    return tasks;
-  }
-
-  public void setTasks(Set<Task> tasks) {
-    this.tasks = tasks;
-  }
-
-  public Set<SprintBacklog> getSprintBacklogs() {
-    return sprintBacklogs;
-  }
-
-  public void setSprintBacklogs(Set<SprintBacklog> sprintBacklogs) {
-    this.sprintBacklogs = sprintBacklogs;
-  }
-
-  public UserStoryDescription getUserStoryDescription() {
-    return userStoryDescription;
-  }
-
-  public void setUserStoryDescription(UserStoryDescription userStoryDescription) {
-    this.userStoryDescription = userStoryDescription;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
   }
 }

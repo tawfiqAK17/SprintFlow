@@ -6,17 +6,14 @@ import com.ensa.SprintFlow.model.ProjectMember;
 import com.ensa.SprintFlow.model.User;
 import com.ensa.SprintFlow.repository.ProjectMemberRepository;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class ProjectMemberService {
   ProjectMemberRepository projectMemberRepository;
   UserService userService;
-
-  ProjectMemberService(ProjectMemberRepository projectMemberRepository, UserService userService) {
-    this.projectMemberRepository = projectMemberRepository;
-    this.userService = userService;
-  }
 
   public ProjectMember save(Project project, String username, Role role) {
     ProjectMember projectMember = new ProjectMember();

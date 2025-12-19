@@ -6,18 +6,17 @@ import com.ensa.SprintFlow.enums.Role;
 import com.ensa.SprintFlow.model.Project;
 import com.ensa.SprintFlow.model.ProjectMember;
 import com.ensa.SprintFlow.service.ProjectMemberService;
+
+import lombok.AllArgsConstructor;
+
 import org.springframework.stereotype.Component;
 
 @Component
+@AllArgsConstructor
 public class ProjectMapper {
 
   UserMapper userMapper;
   ProjectMemberService projectMemberService;
-
-  ProjectMapper(UserMapper userMapper, ProjectMemberService projectMemberService) {
-    this.userMapper = userMapper;
-    this.projectMemberService = projectMemberService;
-  }
 
   public Project mapToProject(ProjectRequestDto dto) {
     Project project = new Project();

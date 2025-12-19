@@ -4,6 +4,9 @@ import com.ensa.SprintFlow.builder.ResponseBuilder;
 import com.ensa.SprintFlow.dto.request.ProjectRequestDto;
 import com.ensa.SprintFlow.dto.response.ProjectMetaDataResponseDto;
 import com.ensa.SprintFlow.service.ProjectService;
+
+import lombok.AllArgsConstructor;
+
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,14 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
+@AllArgsConstructor
 public class ProjectController {
   private ProjectService productService;
   private ResponseBuilder responseBuilder;
-
-  ProjectController(ProjectService productService, ResponseBuilder responseBuilder) {
-    this.productService = productService;
-    this.responseBuilder = responseBuilder;
-  }
 
   @PostMapping("/projects")
   public ResponseEntity<?> createProject(@Validated @RequestBody ProjectRequestDto dto) {

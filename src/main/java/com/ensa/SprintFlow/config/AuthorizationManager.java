@@ -5,21 +5,17 @@ import com.ensa.SprintFlow.exception.generalException.UnauthorizedException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+
 import org.springframework.http.HttpMethod;
 import org.springframework.util.AntPathMatcher;
 
+@AllArgsConstructor
 @NoArgsConstructor
 public class AuthorizationManager {
   private AntPathMatcher pathMatcher;
   private HashMap<String, UrlPermition> urlsPermitions = new HashMap<>();
-
-  AuthorizationManager(AntPathMatcher pathMatcher) {
-    this.pathMatcher = pathMatcher;
-  }
-
-  AuthorizationManager() {}
-  ;
 
   class UrlPermition {
     private AuthorizationManager authorizationManager;

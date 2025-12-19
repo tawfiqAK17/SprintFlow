@@ -4,6 +4,7 @@ import com.ensa.SprintFlow.enums.Role;
 import com.ensa.SprintFlow.filter.FilerExceptionHandler;
 import com.ensa.SprintFlow.filter.JwtAuthenticationFilter;
 import com.ensa.SprintFlow.filter.ProjectAccessAuthorizationFilter;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,24 +15,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.util.AntPathMatcher;
 
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 public class SecurityConfiguration {
 
   JwtAuthenticationFilter jwtAuthenticationFilter;
   ProjectAccessAuthorizationFilter projectAccessAuthorizationFilter;
   FilerExceptionHandler filterExceptionHandler;
-
-  public SecurityConfiguration(
-      JwtAuthenticationFilter jwtAuthenticationFilter,
-      FilerExceptionHandler filterExceptionHandler,
-      ProjectAccessAuthorizationFilter projectAccessAuthorizationFilter) {
-    this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-    this.projectAccessAuthorizationFilter = projectAccessAuthorizationFilter;
-    this.filterExceptionHandler = filterExceptionHandler;
-  }
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) {
@@ -64,11 +56,6 @@ public class SecurityConfiguration {
         .allow(Role.PRODUCT_OWNER) // authorize all http methods to the PRODUCT_OWNER
         .allowMethods(Role.SCRUM_MASTER, HttpMethod.GET)
         .done();
-  }
-
-  @Bean
-  public AntPathMatcher antPathMatcher() {
-    return new AntPathMatcher();
   }
 
   @Bean
