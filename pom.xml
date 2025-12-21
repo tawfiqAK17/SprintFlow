@@ -101,6 +101,12 @@
     </dependency>
     <!-- ============ TESTING ============ -->
     <!-- Test dependencies -->
+    <!-- Spring boot tests starter -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
     <!-- Spring Data JPA testing support -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -111,6 +117,12 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-webmvc-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- h2 database for testing -->
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
       <scope>test</scope>
     </dependency>
     <!-- Spring validation starter -->
