@@ -260,8 +260,8 @@ Create new project (user becomes Product Owner)
   ```json
   {
     "name": "string",
-    "description": "string (required)",
-    "scrum_master_username": "string (optional)"
+    "description": "string",
+    "scrum_master_username": "string"
   }
   ```
 - **Response (201):** Created project object
@@ -310,6 +310,7 @@ Update project details
   {
     "name": "string (optional)",
     "description": "string (optional)"
+    "scrum_master_username": "string (optional)"
   }
   ```
 - **Response (200):** Updated project
@@ -363,7 +364,6 @@ Update member's role
 - **Response (200):** Updated member
 
 ### DELETE `/projects/{project_id}/members/{user_id}`
-
 
 Remove member from project
 

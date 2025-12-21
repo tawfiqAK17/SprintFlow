@@ -1,16 +1,12 @@
 package com.ensa.SprintFlow.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
 
-public class ProjectRequestDto {
+public class ProjectUpdateRequestDto {
 
-  @NotBlank(message = "name is required")
   private String name;
 
-  @NotBlank(message = "description is required")
   private String description;
 
-  @NotBlank(message = "scrum master username is required")
   private String scrumMasterUsername;
 
   public String getName() {

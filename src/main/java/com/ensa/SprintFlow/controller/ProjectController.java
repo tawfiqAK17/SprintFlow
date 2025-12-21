@@ -2,6 +2,7 @@ package com.ensa.SprintFlow.controller;
 
 import com.ensa.SprintFlow.builder.ResponseBuilder;
 import com.ensa.SprintFlow.dto.request.ProjectRequestDto;
+import com.ensa.SprintFlow.dto.request.ProjectUpdateRequestDto;
 import com.ensa.SprintFlow.dto.response.ProjectMetaDataResponseDto;
 import com.ensa.SprintFlow.service.ProjectService;
 import java.util.List;
@@ -30,7 +31,7 @@ public class ProjectController {
 
   @PutMapping("/projects/{id}")
   public ResponseEntity<?> updateProject(
-      @RequestParam Long id, @RequestBody ProjectRequestDto dto) {
+      @RequestParam Long id, @RequestBody ProjectUpdateRequestDto dto) {
     return ResponseEntity.status(HttpStatus.CREATED).body(projectService.update(id, dto));
   }
 

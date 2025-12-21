@@ -1,6 +1,7 @@
 package com.ensa.SprintFlow.service;
 
 import com.ensa.SprintFlow.dto.request.ProjectRequestDto;
+import com.ensa.SprintFlow.dto.request.ProjectUpdateRequestDto;
 import com.ensa.SprintFlow.dto.response.ProjectMetaDataResponseDto;
 import com.ensa.SprintFlow.dto.response.ProjectResponseDto;
 import com.ensa.SprintFlow.enums.Role;
@@ -37,14 +38,12 @@ public class ProjectService {
         (UserContext) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     // save the user as the product owner of the project
     projectMemberService.save(project, userContext.getUsername(), Role.PRODUCT_OWNER);
-    // if the scrum master was provided in the request than we save the relation
-    if (dto.getScrumMasterUsername() != null) {
-      projectMemberService.save(project, dto.getScrumMasterUsername(), Role.SCRUM_MASTER);
-    }
+    // save the scrum master relation
+    projectMemberService.save(project, dto.getScrumMasterUsername(), Role.SCRUM_MASTER);
     return mapper.mapToMetaDataResponseDto(project);
   }
 
-  public ProjectMetaDataResponseDto update(Long projectId, ProjectRequestDto dto) {
+  public ProjectMetaDataResponseDto update(Long projectId, ProjectUpdateRequestDto dto) {
     Project project = findById(projectId);
     if (dto.getName() != null) {
       project.setName(dto.getName());
