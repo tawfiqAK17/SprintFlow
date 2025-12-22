@@ -1,5 +1,6 @@
 package com.ensa.SprintFlow.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -178,7 +179,7 @@ public class ProductServiceTest {
 
   @Nested
   @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-  class ProjectUpdateTest {
+  class ProjectUpdateAndDeleteTest {
     private Long projectId;
 
     @BeforeAll
@@ -235,6 +236,25 @@ public class ProductServiceTest {
           .andExpect(status().isCreated())
           .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(projectId))
           .andExpect(MockMvcResultMatchers.jsonPath("$.scrumMaster.username").value("userTest"));
+    }
+
+    @Test
+    public void testProjectDeletion() throws Exception {
+      mockMvc
+          .perform(
+              delete("/projects/" + this.projectId)
+                  .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt))
+          .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void testDeletionOfNoneExistingProject() throws Exception {
+      mockMvc
+          .perform(delete("/projects/6969").header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt))
+          .andExpect(
+              status()
+                  .isUnauthorized()); // unauthorized because the user considered as not a member of
+                                      // the project
     }
   }
 }

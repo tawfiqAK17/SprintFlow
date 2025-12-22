@@ -85,4 +85,8 @@ public class ProjectService {
     }
     return optionalProject.get();
   }
+
+  public void deleteProject(Long id) {
+    projectRepository.deleteById(id);
+  }
 }
