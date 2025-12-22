@@ -1,7 +1,9 @@
 package com.ensa.SprintFlow.service;
 
 import com.ensa.SprintFlow.dto.request.ProjectRequestDto;
+import com.ensa.SprintFlow.dto.request.ProjectUpdateRequestDto;
 import com.ensa.SprintFlow.dto.response.ProjectMetaDataResponseDto;
+import com.ensa.SprintFlow.dto.response.ProjectResponseDto;
 import com.ensa.SprintFlow.enums.Role;
 import com.ensa.SprintFlow.exception.generalException.NotFoundException;
 import com.ensa.SprintFlow.mapper.ProjectMapper;
@@ -13,24 +15,17 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class ProjectService {
 
   private ProjectRepository projectRepository;
   ProjectMemberService projectMemberService;
   private ProjectMapper mapper;
-
-  ProjectService(
-      ProjectRepository projectRepository,
-      ProjectMemberService projectMemberService,
-      ProjectMapper mapper) {
-    this.projectRepository = projectRepository;
-    this.projectMemberService = projectMemberService;
-    this.mapper = mapper;
-  }
 
   @Transactional
   public ProjectMetaDataResponseDto save(ProjectRequestDto dto) {
@@ -43,19 +38,13 @@ public class ProjectService {
         (UserContext) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     // save the user as the product owner of the project
     projectMemberService.save(project, userContext.getUsername(), Role.PRODUCT_OWNER);
-    // if the scrum master was provided in the request than we save the relation
-    if (dto.getScrumMasterUsername() != null) {
-      projectMemberService.save(project, dto.getScrumMasterUsername(), Role.SCRUM_MASTER);
-    }
+    // save the scrum master relation
+    projectMemberService.save(project, dto.getScrumMasterUsername(), Role.SCRUM_MASTER);
     return mapper.mapToMetaDataResponseDto(project);
   }
 
-  public ProjectMetaDataResponseDto update(Long projectId, ProjectRequestDto dto) {
-    Optional<Project> OptionalProject = projectRepository.findById(projectId);
-    if (OptionalProject.isEmpty()) {
-      throw new NotFoundException("no project found with the given id");
-    }
-    Project project = OptionalProject.get();
+  public ProjectMetaDataResponseDto update(Long projectId, ProjectUpdateRequestDto dto) {
+    Project project = findById(projectId);
     if (dto.getName() != null) {
       project.setName(dto.getName());
     }
@@ -79,8 +68,21 @@ public class ProjectService {
     return projectsMetaData;
   }
 
+  public ProjectResponseDto getProject(Long projectId) {
+    Project project = findById(projectId);
+    return mapper.mapToResponseDto(project);
+  }
+
   private void replaceScrumMaster(Project project, String scrumMasterUsername) {
     projectMemberService.deleteProjectScrumMaster(project.getId());
     projectMemberService.save(project, scrumMasterUsername, Role.SCRUM_MASTER);
+  }
+
+  private Project findById(Long projectId) {
+    Optional<Project> optionalProject = projectRepository.findById(projectId);
+    if (optionalProject.isEmpty()) {
+      throw new NotFoundException("no project found with the given id");
+    }
+    return optionalProject.get();
   }
 }

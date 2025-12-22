@@ -3,21 +3,15 @@ package com.ensa.SprintFlow.service.security;
 import com.ensa.SprintFlow.model.User;
 import com.ensa.SprintFlow.service.UserService;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class RegisterService {
   UserService userService;
   PasswordService passwordService;
   EmailService emailService;
-
-  public RegisterService(
-      UserService userService, PasswordService passwordService, EmailService emailService) {
-
-    this.userService = userService;
-    this.passwordService = passwordService;
-    this.emailService = emailService;
-  }
 
   public void register(User user) {
 

@@ -1,9 +1,15 @@
 package com.ensa.SprintFlow.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "user_story_descriptions")
+@Getter
+@Setter
+@NoArgsConstructor
 public class UserStoryDescription {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,53 +28,10 @@ public class UserStoryDescription {
   private UserStory userStory;
 
   // Constructors
-  public UserStoryDescription() {}
 
   public UserStoryDescription(String as, String what, String forDescription) {
     this.as = as;
     this.what = what;
     this.forDescription = forDescription;
-  }
-
-  // Getters and Setters
-
-  public String getAs() {
-    return as;
-  }
-
-  public void setAs(String as) {
-    this.as = as;
-  }
-
-  public String getWhat() {
-    return what;
-  }
-
-  public void setWhat(String what) {
-    this.what = what;
-  }
-
-  public String getForDescription() {
-    return forDescription;
-  }
-
-  public void setForDescription(String forDescription) {
-    this.forDescription = forDescription;
-  }
-
-  public UserStory getUserStory() {
-    return userStory;
-  }
-
-  public void setUserStory(UserStory userStory) {
-    this.userStory = userStory;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
   }
 }

@@ -4,6 +4,9 @@ import com.ensa.SprintFlow.builder.ResponseBuilder;
 import com.ensa.SprintFlow.dto.request.LoginRequestDto;
 import com.ensa.SprintFlow.dto.response.LoginResponseDto;
 import com.ensa.SprintFlow.service.security.LoginService;
+
+import lombok.AllArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,14 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@AllArgsConstructor
 public class LoginController {
   LoginService loginService;
   ResponseBuilder responseBuilder;
-
-  LoginController(LoginService loginService, ResponseBuilder responseBuilder) {
-    this.loginService = loginService;
-    this.responseBuilder = responseBuilder;
-  }
 
   @PostMapping("/login")
   public ResponseEntity<?> login(@Validated @RequestBody LoginRequestDto dto) {

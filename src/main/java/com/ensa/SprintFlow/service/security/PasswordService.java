@@ -2,16 +2,14 @@ package com.ensa.SprintFlow.service.security;
 
 import com.ensa.SprintFlow.exception.generalException.PasswordConditionsException;
 import java.util.ArrayList;
+import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class PasswordService {
   PasswordEncoder passwordEncoder;
-
-  public PasswordService(PasswordEncoder passwordEncoder) {
-    this.passwordEncoder = passwordEncoder;
-  }
 
   public void validateConditions(String password) throws PasswordConditionsException {
     if (password.length() < 8) {

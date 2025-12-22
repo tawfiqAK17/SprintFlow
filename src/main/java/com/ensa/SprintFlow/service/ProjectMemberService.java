@@ -6,17 +6,14 @@ import com.ensa.SprintFlow.model.ProjectMember;
 import com.ensa.SprintFlow.model.User;
 import com.ensa.SprintFlow.repository.ProjectMemberRepository;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class ProjectMemberService {
   ProjectMemberRepository projectMemberRepository;
   UserService userService;
-
-  ProjectMemberService(ProjectMemberRepository projectMemberRepository, UserService userService) {
-    this.projectMemberRepository = projectMemberRepository;
-    this.userService = userService;
-  }
 
   public ProjectMember save(Project project, String username, Role role) {
     ProjectMember projectMember = new ProjectMember();
@@ -27,8 +24,24 @@ public class ProjectMemberService {
     return projectMemberRepository.save(projectMember);
   }
 
-  public ProjectMember findByProjectAndUserRole(Project project, Role role) {
-    return projectMemberRepository.findByProjectAndUserRole(project, role);
+  public User getProjectProductOwner(Long projectId) {
+    return findByProjectIdAndUserRole(projectId, Role.PRODUCT_OWNER).getUser();
+  }
+
+  public User getProjectScrumMaster(Long projectId) {
+    ProjectMember scrumMasterProjectMember = findByProjectIdAndUserRole(projectId, Role.SCRUM_MASTER);
+    if (scrumMasterProjectMember != null) {
+      return scrumMasterProjectMember.getUser();
+    }
+    return null;
+  }
+
+  public List<ProjectMember> getAllMembers(Long projectId) {
+    return projectMemberRepository.findAllByProjectId(projectId);
+  }
+
+  public List<ProjectMember> findAllByProjectAndUserRole(Long projectId, Role role) {
+    return projectMemberRepository.findAllByProjectIdAndUserRole(projectId, role);
   }
 
   public List<ProjectMember> findAllByUserIdAndProjectId(Long userId, Long projectId) {
@@ -37,5 +50,9 @@ public class ProjectMemberService {
 
   public void deleteProjectScrumMaster(Long projectId) {
     projectMemberRepository.deleteByProjectIdAndUserRole(projectId, Role.SCRUM_MASTER);
+  }
+
+  private ProjectMember findByProjectIdAndUserRole(Long projectId, Role role) {
+    return projectMemberRepository.findByProjectIdAndUserRole(projectId, role);
   }
 }

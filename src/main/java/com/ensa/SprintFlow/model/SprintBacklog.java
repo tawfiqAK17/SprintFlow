@@ -1,9 +1,15 @@
 package com.ensa.SprintFlow.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "sprint_backlogs")
+@Getter
+@Setter
+@NoArgsConstructor
 public class SprintBacklog {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,53 +29,10 @@ public class SprintBacklog {
   private AcceptanceCriteria acceptanceCriteria;
 
   // Constructors
-  public SprintBacklog() {}
 
   public SprintBacklog(String name, Sprint sprint, UserStory userStory) {
     this.name = name;
     this.sprint = sprint;
     this.userStory = userStory;
-  }
-
-  // Getters and Setters
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public Sprint getSprint() {
-    return sprint;
-  }
-
-  public void setSprint(Sprint sprint) {
-    this.sprint = sprint;
-  }
-
-  public UserStory getUserStory() {
-    return userStory;
-  }
-
-  public void setUserStory(UserStory userStory) {
-    this.userStory = userStory;
-  }
-
-  public AcceptanceCriteria getAcceptanceCriteria() {
-    return acceptanceCriteria;
-  }
-
-  public void setAcceptanceCriteria(AcceptanceCriteria acceptanceCriteria) {
-    this.acceptanceCriteria = acceptanceCriteria;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
   }
 }

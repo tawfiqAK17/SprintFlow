@@ -8,15 +8,13 @@ import com.ensa.SprintFlow.repository.security.RefreshTokenRepository;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.Base64;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class RefreshTokenService {
   RefreshTokenRepository refreshTokenRepository;
-
-  RefreshTokenService(RefreshTokenRepository refreshTokenRepository) {
-    this.refreshTokenRepository = refreshTokenRepository;
-  }
 
   public String generateToken(User user) {
     String refreshTokenString = generateTokenString();

@@ -9,10 +9,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "refresh_tokens")
+@Getter
+@Setter
 public class RefreshToken {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,36 +32,4 @@ public class RefreshToken {
   @ManyToOne
   @JoinColumn(name = "user_id")
   private User user;
-
-  public Long getRefreshTokenId() {
-    return refreshTokenId;
-  }
-
-  public void setRefreshTokenId(Long refreshTokenId) {
-    this.refreshTokenId = refreshTokenId;
-  }
-
-  public LocalDateTime getExpirationDate() {
-    return expirationDate;
-  }
-
-  public void setExpirationDate(LocalDateTime expirationDate) {
-    this.expirationDate = expirationDate;
-  }
-
-  public String getToken() {
-    return token;
-  }
-
-  public void setToken(String token) {
-    this.token = token;
-  }
-
-  public User getUser() {
-    return user;
-  }
-
-  public void setUser(User user) {
-    this.user = user;
-  }
 }

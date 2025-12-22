@@ -1,10 +1,13 @@
 package com.ensa.SprintFlow.config;
 
+import com.ensa.SprintFlow.enums.Role;
 import com.ensa.SprintFlow.filter.FilerExceptionHandler;
 import com.ensa.SprintFlow.filter.JwtAuthenticationFilter;
 import com.ensa.SprintFlow.filter.ProjectAccessAuthorizationFilter;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -15,20 +18,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+@AllArgsConstructor
+public class SecurityConfiguration {
 
   JwtAuthenticationFilter jwtAuthenticationFilter;
   ProjectAccessAuthorizationFilter projectAccessAuthorizationFilter;
   FilerExceptionHandler filterExceptionHandler;
-
-  public SecurityConfig(
-      JwtAuthenticationFilter jwtAuthenticationFilter,
-      FilerExceptionHandler filterExceptionHandler,
-      ProjectAccessAuthorizationFilter projectAccessAuthorizationFilter) {
-    this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-    this.projectAccessAuthorizationFilter = projectAccessAuthorizationFilter;
-    this.filterExceptionHandler = filterExceptionHandler;
-  }
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) {
@@ -51,6 +46,16 @@ public class SecurityConfig {
         .addFilterAfter(projectAccessAuthorizationFilter, JwtAuthenticationFilter.class)
         .addFilterBefore(filterExceptionHandler, JwtAuthenticationFilter.class);
     return http.build();
+  }
+
+  @Bean
+  public AuthorizationManager authorizationManager() {
+    AuthorizationManager authorizationManager = new AuthorizationManager();
+    return authorizationManager
+        .forUrl("/project/{id}")
+        .allow(Role.PRODUCT_OWNER) // authorize all http methods to the PRODUCT_OWNER
+        .allowMethods(Role.SCRUM_MASTER, HttpMethod.GET)
+        .done();
   }
 
   @Bean

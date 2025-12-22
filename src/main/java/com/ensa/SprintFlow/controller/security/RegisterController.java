@@ -5,6 +5,9 @@ import com.ensa.SprintFlow.mapper.RegisterMapper;
 import com.ensa.SprintFlow.model.User;
 import com.ensa.SprintFlow.service.security.RegisterService;
 import com.ensa.SprintFlow.service.security.UserVerificationService;
+
+import lombok.AllArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,20 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@AllArgsConstructor
 public class RegisterController {
 
   RegisterMapper registerMapper;
   RegisterService registerService;
   UserVerificationService userVerificationService;
-
-  public RegisterController(
-      RegisterService registerService,
-      RegisterMapper registerMapper,
-      UserVerificationService userVerificationService) {
-    this.registerMapper = registerMapper;
-    this.registerService = registerService;
-    this.userVerificationService = userVerificationService;
-  }
 
   @PostMapping("/register")
   public ResponseEntity<?> userRegister(@Validated @RequestBody RegisterRequestDto dto) {

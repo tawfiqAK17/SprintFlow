@@ -7,20 +7,16 @@ import com.ensa.SprintFlow.repository.security.VerificationCodeRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Random;
+import lombok.AllArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class EmailService {
   private VerificationCodeRepository verificationCodeRepository;
   private JavaMailSender javaMailSender;
-
-  EmailService(
-      VerificationCodeRepository verificationCodeRepository, JavaMailSender javaMailSender) {
-    this.verificationCodeRepository = verificationCodeRepository;
-    this.javaMailSender = javaMailSender;
-  }
 
   public void validateConditions(String email) throws EmailConditionsException {
     if (!email.contains("@")) {
@@ -41,7 +37,6 @@ public class EmailService {
     verificationCodeEntity.setCode(verificationCode);
     // the code expired after 10 minutes
     verificationCodeEntity.setExpirationDate(LocalDateTime.now().plusMinutes(10));
-    System.out.println(user.getId() + "+++++++++++++++++++++++");
     verificationCodeRepository.save(verificationCodeEntity);
   }
 

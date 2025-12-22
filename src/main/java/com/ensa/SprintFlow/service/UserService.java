@@ -4,15 +4,13 @@ import com.ensa.SprintFlow.exception.generalException.DataIntegrityViolationExce
 import com.ensa.SprintFlow.exception.generalException.NotFoundException;
 import com.ensa.SprintFlow.model.User;
 import com.ensa.SprintFlow.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class UserService {
   UserRepository userRepository;
-
-  UserService(UserRepository userRepository) {
-    this.userRepository = userRepository;
-  }
 
   public User save(User user) {
     if (userRepository.existsByUsername(user.getUsername())) {

@@ -7,22 +7,15 @@ import com.ensa.SprintFlow.model.security.VerificationCode;
 import com.ensa.SprintFlow.repository.security.VerificationCodeRepository;
 import com.ensa.SprintFlow.service.UserService;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class UserVerificationService {
   VerificationCodeRepository verificationCodeRepository;
   UserService userService;
   EmailService emailService;
-
-  public UserVerificationService(
-      VerificationCodeRepository verificationCodeRepository,
-      UserService userService,
-      EmailService emailService) {
-    this.verificationCodeRepository = verificationCodeRepository;
-    this.userService = userService;
-    this.emailService = emailService;
-  }
 
   public void verify(String code) {
     VerificationCode verificationCode = verificationCodeRepository.findByCode(code);

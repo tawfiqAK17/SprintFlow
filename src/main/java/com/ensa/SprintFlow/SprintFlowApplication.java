@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SprintFlowApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SprintFlowApplication.class, args);
-	}
-
+  public static void main(String[] args) {
+    SpringApplication.run(SprintFlowApplication.class, args);
+  }
 }
