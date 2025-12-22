@@ -115,6 +115,7 @@ Get current user's profile with projects and tasks
     "id": "number",
     "first_name": "string",
     "last_name": "string",
+    "username": "string",
     "email": "string",
     "enroll_date": "date",
     "projects": [
@@ -148,6 +149,7 @@ Update current user's profile
   {
     "first_name": "string (optional)",
     "last_name": "string (optional)",
+    "username": "string",
     "email": "string (optional)",
     "password": "string (optional, min 8 chars)"
   }
@@ -172,6 +174,7 @@ Search users
         "id": "number",
         "first_name": "string",
         "last_name": "string",
+        "username": "string",
         "email": "string"
       }
     ],
@@ -195,6 +198,7 @@ Get specific user details
     "id": "number",
     "first_name": "string",
     "last_name": "string",
+    "username": "string",
     "email": "string",
     "enroll_date": "date",
     "projects": [
@@ -236,12 +240,14 @@ Get all projects where user is a member
           "id": "number",
           "first_name": "string",
           "last_name": "string"
+          "username": "string",
           "email": "string"
         },
         "product_owner": {
           "id": "number",
           "first_name": "string",
           "last_name": "string"
+          "username": "string",
           "email": "string"
         },
         "user_role": "Role enum"
@@ -264,7 +270,31 @@ Create new project (user becomes Product Owner)
     "scrum_master_username": "string"
   }
   ```
-- **Response (201):** Created project object
+- **Response (201):**
+
+```json
+    {
+      "id": "number"
+      "name": "string",
+      "description": "string",
+      "creation_date": "date"
+      "scrum_master": {
+        "id": "string"
+        "first_name": "string",
+        "last_name": "string",
+        "username": "string",
+        "email": "string"
+        },
+      "productOwner": {
+        "id": "string"
+        "first_name": "string",
+        "last_name": "string",
+        "username": "string",
+        "email": "string"
+        },
+      "user_role": PRODUCT_OWNER
+    }
+```
 
 ### GET `/projects/{project_id}`
 

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
@@ -31,7 +30,7 @@ public class ProjectController {
 
   @PutMapping("/projects/{id}")
   public ResponseEntity<?> updateProject(
-      @RequestParam Long id, @RequestBody ProjectUpdateRequestDto dto) {
+      @PathVariable Long id, @RequestBody ProjectUpdateRequestDto dto) {
     return ResponseEntity.status(HttpStatus.CREATED).body(projectService.update(id, dto));
   }
 

@@ -14,6 +14,7 @@ public class UserMapper {
     UserMetaDataResponseDto dto = new UserMetaDataResponseDto();
     dto.setId(user.getId());
     dto.setEmail(user.getEmail());
+    dto.setUsername(user.getUsername());
     dto.setLastName(user.getLastName());
     dto.setFirstName(user.getFirstName());
     return dto;
