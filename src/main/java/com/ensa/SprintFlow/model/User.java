@@ -1,19 +1,30 @@
 package com.ensa.SprintFlow.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
+@Builder
 public class User {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -24,10 +35,10 @@ public class User {
   @Column(nullable = false)
   private String lastName;
 
-  @Column(unique = true, nullable = false)
+  @Column(nullable = false)
   private String username;
 
-  @Column(nullable = false, unique = true)
+  @Column(nullable = false)
   private String email;
 
   @Column(nullable = false)
@@ -37,18 +48,11 @@ public class User {
   private LocalDateTime enrollDate;
 
   @Column(nullable = false)
-  private boolean verified;
+  private boolean isVerified;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-  private Set<ProjectMember> projectMembers = new HashSet<>();
+  private List<ProjectMember> projectMembers;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-  private Set<UserStory> userStories = new HashSet<>();
-
-  // Constructors
-
-  public User(String firstName, String lastName) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-  }
+  private List<Report> reports;
 }

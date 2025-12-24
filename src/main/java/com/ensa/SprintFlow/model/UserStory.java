@@ -1,8 +1,18 @@
 package com.ensa.SprintFlow.model;
 
-import jakarta.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,39 +22,31 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UserStory {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-
-  private String title;
-  private Integer priority;
-
-  @ManyToOne
-  @JoinColumn(name = "user_id")
-  private User user;
-
-  @ManyToOne
-  @JoinColumn(name = "product_backlog_id")
-  private ProductBacklog productBacklog;
-
-  @ManyToOne
-  @JoinColumn(name = "epic_id")
-  private Epic epic;
-
-  @OneToMany(mappedBy = "userStory", cascade = CascadeType.ALL)
-  private Set<Task> tasks = new HashSet<>();
-
-  @OneToMany(mappedBy = "userStory", cascade = CascadeType.ALL)
-  private Set<SprintBacklog> sprintBacklogs = new HashSet<>();
-
-  @OneToOne(mappedBy = "userStory", cascade = CascadeType.ALL)
-  private UserStoryDescription userStoryDescription;
-
-  // Constructors
-
-  public UserStory(String title, Integer priority) {
-    this.title = title;
-    this.priority = priority;
-  }
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    private String title;
+    private Integer priority;
+    
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
+    
+    @ManyToOne
+    @JoinColumn(name = "sprint_id")
+    private Sprint sprint;
+    
+    @OneToMany(mappedBy = "userStory", cascade = CascadeType.ALL)
+    private List<UserStoryDescription> descriptions;
+    
+    @OneToMany(mappedBy = "userStory", cascade = CascadeType.ALL)
+    private List<Task> tasks;
+    
+    @OneToMany(mappedBy = "userStory", cascade = CascadeType.ALL)
+    private List<Epic> epics;
 }

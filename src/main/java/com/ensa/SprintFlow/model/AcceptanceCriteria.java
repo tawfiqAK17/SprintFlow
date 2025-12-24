@@ -1,6 +1,18 @@
 package com.ensa.SprintFlow.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,27 +22,27 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class AcceptanceCriteria {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(nullable = false)
   private String given;
 
-  @Column(name = "when_condition")
+  @Column(nullable = false)
   private String when;
 
-  @Column(name = "then_condition")
-  private Integer then;
+  @Column(nullable = false)
+  private String then;
 
-  @OneToOne
-  @JoinColumn(name = "sprint_backlog_id")
-  private SprintBacklog sprintBacklog;
+  @ManyToOne
+  @JoinColumn(name = "user_story_description_id")
+  private UserStoryDescription userStoryDescription;
 
-  // Constructors
-  public AcceptanceCriteria(String given, String when, Integer then) {
-    this.given = given;
-    this.when = when;
-    this.then = then;
-  }
+  @OneToMany(mappedBy = "acceptanceCriteria", cascade = CascadeType.ALL)
+  private List<And> ands;
 }
