@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,6 +41,12 @@ public class Project {
 
   @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
   private List<ProjectMember> projectMembers;
+
+  @OneToOne(mappedBy = "project", cascade = CascadeType.ALL)
+  private Epic defaultEpic;
+
+  @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+  private List<Epic> epics;
 
   @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
   private List<Sprint> sprints;

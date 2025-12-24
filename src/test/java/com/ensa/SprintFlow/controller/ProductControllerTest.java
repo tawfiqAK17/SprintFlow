@@ -17,6 +17,7 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -36,7 +37,7 @@ import tools.jackson.databind.ObjectMapper;
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ProductServiceTest {
+public class ProductControllerTest {
 
   @Autowired private MockMvc mockMvc;
 
@@ -48,33 +49,39 @@ public class ProductServiceTest {
 
   private void createUsers() {
     // Create product owner
-    User productOwner = new User();
-    productOwner.setFirstName("productOwner");
-    productOwner.setLastName("test");
-    productOwner.setUsername("productOwnerTest");
-    productOwner.setEmail("productOwner@gmail.com");
-    productOwner.setPassword("productOwnertestPassword");
-    productOwner.setVerified(true);
+    User productOwner =
+        User.builder()
+            .firstName("productOwner")
+            .lastName("test")
+            .username("productOwnerTest")
+            .email("productOwner@gmail.com")
+            .password("productOwnertestPassword")
+            .verified(true)
+            .build();
     registerService.register(productOwner);
 
     // Create scrum master
-    User scrumMaster = new User();
-    scrumMaster.setFirstName("scrumMaster");
-    scrumMaster.setLastName("test");
-    scrumMaster.setUsername("scrumMasterTest");
-    scrumMaster.setEmail("scrumMaster@gmail.com");
-    scrumMaster.setPassword("scrumMasterPassword");
-    scrumMaster.setVerified(true);
+    User scrumMaster =
+        User.builder()
+            .firstName("scrumMaster")
+            .lastName("test")
+            .username("scrumMasterTest")
+            .email("scrumMaster@gmail.com")
+            .password("scrumMasterPassword")
+            .verified(true)
+            .build();
     registerService.register(scrumMaster);
 
     // Create a user
-    User user = new User();
-    user.setFirstName("user");
-    user.setLastName("test");
-    user.setUsername("userTest");
-    user.setEmail("userTest@gmail.com");
-    user.setPassword("userPasswordTest");
-    user.setVerified(true);
+    User user =
+        User.builder()
+            .firstName("user")
+            .lastName("test")
+            .username("userTest")
+            .email("userTest@gmail.com")
+            .password("userPasswordTest")
+            .verified(true)
+            .build();
     registerService.register(user);
   }
 
@@ -101,6 +108,7 @@ public class ProductServiceTest {
   }
 
   @Nested
+  @Order(1)
   class ProjectCreationTest {
 
     @Test
@@ -224,6 +232,7 @@ public class ProductServiceTest {
     }
 
     @Test
+    @Order(2)
     public void testChangingProjectScrumMaster() throws JacksonException, Exception {
       ProjectUpdateRequestDto projectDto = new ProjectUpdateRequestDto();
       projectDto.setScrumMasterUsername("userTest");

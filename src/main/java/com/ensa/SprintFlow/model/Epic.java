@@ -1,6 +1,7 @@
 package com.ensa.SprintFlow.model;
 
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.*;
 
 @Entity
@@ -23,6 +24,9 @@ public class Epic {
   private String description;
 
   @ManyToOne
-  @JoinColumn(name = "user_story_id")
-  private UserStory userStory;
+  @JoinColumn(name = "project_id")
+  private Project project;
+
+  @OneToMany(mappedBy = "epic", cascade = CascadeType.ALL)
+  private List<UserStory> userStories;
 }
