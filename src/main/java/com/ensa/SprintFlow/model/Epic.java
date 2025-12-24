@@ -1,32 +1,28 @@
 package com.ensa.SprintFlow.model;
 
 import jakarta.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "epics")
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Epic {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(nullable = false)
   private String title;
+
+  @Column(nullable = false)
   private String description;
 
-  @OneToMany(mappedBy = "epic", cascade = CascadeType.ALL)
-  private Set<UserStory> userStories = new HashSet<>();
-
-  // Constructors
-
-  public Epic(String title, String description) {
-    this.title = title;
-    this.description = description;
-  }
+  @ManyToOne
+  @JoinColumn(name = "user_story_id")
+  private UserStory userStory;
 }

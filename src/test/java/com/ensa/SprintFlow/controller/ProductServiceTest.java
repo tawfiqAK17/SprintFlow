@@ -254,7 +254,7 @@ public class ProductServiceTest {
           .andExpect(
               status()
                   .isUnauthorized()); // unauthorized because the user considered as not a member of
-                                      // the project
+      // the project
     }
   }
 }

@@ -1,15 +1,16 @@
 package com.ensa.SprintFlow.model;
 
-import jakarta.persistence.CascadeType;
+import com.ensa.SprintFlow.enums.ReportStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,33 +18,29 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "projects")
+@Table(name = "reports")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Project {
+public class Report {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @Column(nullable = false)
-  private String name;
-
-  @Column(nullable = false)
   private String description;
 
-  @Column(nullable = false)
-  private LocalDateTime creationDate;
+  @Enumerated(EnumType.STRING)
+  private ReportStatus status;
 
-  @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-  private List<ProjectMember> projectMembers;
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private User user;
 
-  @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-  private List<Sprint> sprints;
-
-  @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-  private List<UserStory> userStories;
+  @ManyToOne
+  @JoinColumn(name = "task_id")
+  private Task task;
 }
