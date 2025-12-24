@@ -7,8 +7,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -27,7 +27,7 @@ public class UserStoryDescription {
   private Long id;
 
   @Column(nullable = false)
-  private String as;
+  private String asWho;
 
   @Column(nullable = false)
   private String what;
@@ -35,8 +35,8 @@ public class UserStoryDescription {
   @Column(nullable = false)
   private String forDesc;
 
-  @ManyToOne
-  @JoinColumn(name = "user_story_id")
+  @OneToOne
+  @JoinColumn(name = "userStoryId")
   private UserStory userStory;
 
   @OneToMany(mappedBy = "userStoryDescription", cascade = CascadeType.ALL)

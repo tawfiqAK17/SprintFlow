@@ -7,6 +7,7 @@ import com.ensa.SprintFlow.dto.response.ProjectResponseDto;
 import com.ensa.SprintFlow.enums.Role;
 import com.ensa.SprintFlow.exception.generalException.NotFoundException;
 import com.ensa.SprintFlow.mapper.ProjectMapper;
+import com.ensa.SprintFlow.model.Epic;
 import com.ensa.SprintFlow.model.Project;
 import com.ensa.SprintFlow.model.security.UserContext;
 import com.ensa.SprintFlow.repository.ProjectRepository;
@@ -26,6 +27,7 @@ public class ProjectService {
   private ProjectRepository projectRepository;
   ProjectMemberService projectMemberService;
   private ProjectMapper mapper;
+  private EpicService epicService;
 
   @Transactional
   public ProjectMetaDataResponseDto save(ProjectRequestDto dto) {
@@ -40,6 +42,15 @@ public class ProjectService {
     projectMemberService.save(project, userContext.getUsername(), Role.PRODUCT_OWNER);
     // save the scrum master relation
     projectMemberService.save(project, dto.getScrumMasterUsername(), Role.SCRUM_MASTER);
+
+    // create the default project epic
+    Epic defaultEpic =
+        epicService.save(
+            Epic.builder()
+                .title("Global Epic")
+                .description("the default epic for the project")
+                .build());
+    project.setDefaultEpic(defaultEpic);
     return mapper.mapToMetaDataResponseDto(project);
   }
 

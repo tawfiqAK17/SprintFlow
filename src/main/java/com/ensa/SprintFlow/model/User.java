@@ -48,7 +48,7 @@ public class User {
   private LocalDateTime enrollDate;
 
   @Column(nullable = false)
-  private boolean isVerified;
+  private boolean verified;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<ProjectMember> projectMembers;

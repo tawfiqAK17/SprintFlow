@@ -48,33 +48,39 @@ public class ProductServiceTest {
 
   private void createUsers() {
     // Create product owner
-    User productOwner = new User();
-    productOwner.setFirstName("productOwner");
-    productOwner.setLastName("test");
-    productOwner.setUsername("productOwnerTest");
-    productOwner.setEmail("productOwner@gmail.com");
-    productOwner.setPassword("productOwnertestPassword");
-    productOwner.setVerified(true);
+    User productOwner =
+        User.builder()
+            .firstName("productOwner")
+            .lastName("test")
+            .username("productOwnerTest")
+            .email("productOwner@gmail.com")
+            .password("productOwnertestPassword")
+            .verified(true)
+            .build();
     registerService.register(productOwner);
 
     // Create scrum master
-    User scrumMaster = new User();
-    scrumMaster.setFirstName("scrumMaster");
-    scrumMaster.setLastName("test");
-    scrumMaster.setUsername("scrumMasterTest");
-    scrumMaster.setEmail("scrumMaster@gmail.com");
-    scrumMaster.setPassword("scrumMasterPassword");
-    scrumMaster.setVerified(true);
+    User scrumMaster =
+        User.builder()
+            .firstName("scrumMaster")
+            .lastName("test")
+            .username("scrumMasterTest")
+            .email("scrumMaster@gmail.com")
+            .password("scrumMasterPassword")
+            .verified(true)
+            .build();
     registerService.register(scrumMaster);
 
     // Create a user
-    User user = new User();
-    user.setFirstName("user");
-    user.setLastName("test");
-    user.setUsername("userTest");
-    user.setEmail("userTest@gmail.com");
-    user.setPassword("userPasswordTest");
-    user.setVerified(true);
+    User user =
+        User.builder()
+            .firstName("user")
+            .lastName("test")
+            .username("userTest")
+            .email("userTest@gmail.com")
+            .password("userPasswordTest")
+            .verified(true)
+            .build();
     registerService.register(user);
   }
 
