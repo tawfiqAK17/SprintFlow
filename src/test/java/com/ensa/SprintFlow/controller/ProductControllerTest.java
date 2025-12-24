@@ -17,6 +17,7 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -36,7 +37,7 @@ import tools.jackson.databind.ObjectMapper;
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ProductServiceTest {
+public class ProductControllerTest {
 
   @Autowired private MockMvc mockMvc;
 
@@ -107,6 +108,7 @@ public class ProductServiceTest {
   }
 
   @Nested
+  @Order(1)
   class ProjectCreationTest {
 
     @Test
@@ -230,6 +232,7 @@ public class ProductServiceTest {
     }
 
     @Test
+    @Order(2)
     public void testChangingProjectScrumMaster() throws JacksonException, Exception {
       ProjectUpdateRequestDto projectDto = new ProjectUpdateRequestDto();
       projectDto.setScrumMasterUsername("userTest");

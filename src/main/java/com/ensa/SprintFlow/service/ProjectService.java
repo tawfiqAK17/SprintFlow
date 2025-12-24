@@ -84,17 +84,17 @@ public class ProjectService {
     return mapper.mapToResponseDto(project);
   }
 
-  private void replaceScrumMaster(Project project, String scrumMasterUsername) {
-    projectMemberService.deleteProjectScrumMaster(project.getId());
-    projectMemberService.save(project, scrumMasterUsername, Role.SCRUM_MASTER);
-  }
-
-  private Project findById(Long projectId) {
+  public Project findById(Long projectId) {
     Optional<Project> optionalProject = projectRepository.findById(projectId);
     if (optionalProject.isEmpty()) {
       throw new NotFoundException("no project found with the given id");
     }
     return optionalProject.get();
+  }
+
+  private void replaceScrumMaster(Project project, String scrumMasterUsername) {
+    projectMemberService.deleteProjectScrumMaster(project.getId());
+    projectMemberService.save(project, scrumMasterUsername, Role.SCRUM_MASTER);
   }
 
   public void deleteProject(Long id) {

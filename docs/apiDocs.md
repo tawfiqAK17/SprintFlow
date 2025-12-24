@@ -434,7 +434,15 @@ Create new epic
     "description": "string (required)"
   }
   ```
-- **Response (201):** Created epic
+- **Response (201):**
+  ```json
+  {
+    "id": "number",
+    "title": "string",
+    "description": "string",
+    "user_stories_count": "number"
+  }
+  ```
 
 ### GET `/projects/{project_id}/epics/{epic_id}`
 
