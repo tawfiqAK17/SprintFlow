@@ -22,13 +22,13 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class ProjectService {
+  private ProjectMapper mapper;
 
   private ProjectRepository projectRepository;
   ProjectMemberService projectMemberService;
-  private ProjectMapper mapper;
 
   @Transactional
-  public ProjectMetaDataResponseDto save(ProjectRequestDto dto) {
+  public Project save(ProjectRequestDto dto) {
     Project project = mapper.mapToProject(dto);
     project.setCreationDate(LocalDateTime.now());
     // save the project to the database
@@ -40,10 +40,11 @@ public class ProjectService {
     projectMemberService.save(project, userContext.getUsername(), Role.PRODUCT_OWNER);
     // save the scrum master relation
     projectMemberService.save(project, dto.getScrumMasterUsername(), Role.SCRUM_MASTER);
-    return mapper.mapToMetaDataResponseDto(project);
+
+    return  project;
   }
 
-  public ProjectMetaDataResponseDto update(Long projectId, ProjectUpdateRequestDto dto) {
+  public Project update(Long projectId, ProjectUpdateRequestDto dto) {
     Project project = findById(projectId);
     if (dto.getName() != null) {
       project.setName(dto.getName());
@@ -56,21 +57,17 @@ public class ProjectService {
     }
     // save the project to the database
     project = projectRepository.save(project);
-    return mapper.mapToMetaDataResponseDto(project);
+    return project;
   }
 
-  public List<ProjectMetaDataResponseDto> getProjects() {
+  public List<Project> getProjects() {
     List<Project> projects = projectRepository.findAll();
-    List<ProjectMetaDataResponseDto> projectsMetaData = new ArrayList<>();
-    for (Project project : projects) {
-      projectsMetaData.add(mapper.mapToMetaDataResponseDto(project));
-    }
-    return projectsMetaData;
+    return projects;
   }
 
-  public ProjectResponseDto getProject(Long projectId) {
+  public Project getProject(Long projectId) {
     Project project = findById(projectId);
-    return mapper.mapToResponseDto(project);
+    return project;
   }
 
   private void replaceScrumMaster(Project project, String scrumMasterUsername) {

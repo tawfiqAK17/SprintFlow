@@ -4,7 +4,12 @@ import com.ensa.SprintFlow.builder.ResponseBuilder;
 import com.ensa.SprintFlow.dto.request.ProjectRequestDto;
 import com.ensa.SprintFlow.dto.request.ProjectUpdateRequestDto;
 import com.ensa.SprintFlow.dto.response.ProjectMetaDataResponseDto;
+import com.ensa.SprintFlow.dto.response.ProjectResponseDto;
+import com.ensa.SprintFlow.mapper.ProjectMapper;
+import com.ensa.SprintFlow.model.Project;
 import com.ensa.SprintFlow.service.ProjectService;
+
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,29 +26,41 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController()
 @AllArgsConstructor
 public class ProjectController {
+  private ProjectMapper mapper;
+
   private ProjectService projectService;
   private ResponseBuilder responseBuilder;
 
   @PostMapping("/projects")
   public ResponseEntity<?> createProject(@Validated @RequestBody ProjectRequestDto dto) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(projectService.save(dto));
+    Project project = projectService.save( dto);
+    ProjectMetaDataResponseDto projectResponse = mapper.mapToMetaDataResponseDto(project);
+    return ResponseEntity.status(HttpStatus.CREATED).body( projectResponse);
   }
 
   @PutMapping("/projects/{id}")
   public ResponseEntity<?> updateProject(
       @PathVariable Long id, @RequestBody ProjectUpdateRequestDto dto) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(projectService.update(id, dto));
+    Project project = projectService.update(id, dto);
+    ProjectMetaDataResponseDto projectResponse = mapper.mapToMetaDataResponseDto(project);
+    return ResponseEntity.status(HttpStatus.CREATED).body( projectResponse);
   }
 
   @GetMapping("/projects")
   public ResponseEntity<?> getProjects() {
-    List<ProjectMetaDataResponseDto> projects = projectService.getProjects();
-    return responseBuilder.status(HttpStatus.OK).property("projects", projects).build();
+    List<Project> projects = projectService.getProjects();
+    List<ProjectMetaDataResponseDto> projectsMetaData = new ArrayList<>();
+    for (Project project : projects) {
+      projectsMetaData.add(mapper.mapToMetaDataResponseDto(project));
+    }
+    return responseBuilder.status(HttpStatus.OK).property("projects", projectsMetaData).build();
   }
 
   @GetMapping("/projects/{id}")
   public ResponseEntity<?> getProject(@PathVariable Long id) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(projectService.getProject(id));
+    Project project = projectService.getProject(id);
+    ProjectResponseDto projectResponse = mapper.mapToResponseDto(project);
+    return ResponseEntity.status(HttpStatus.CREATED).body( projectResponse);
   }
 
   @DeleteMapping("/projects/{id}")
