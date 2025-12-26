@@ -1,6 +1,14 @@
 package com.ensa.SprintFlow.dto.request;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
+@Builder
+@AllArgsConstructor
+@Getter
+@Setter
 public class ProjectUpdateRequestDto {
 
   private String name;
@@ -8,28 +16,4 @@ public class ProjectUpdateRequestDto {
   private String description;
 
   private String scrumMasterUsername;
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public String getScrumMasterUsername() {
-    return scrumMasterUsername;
-  }
-
-  public void setScrumMasterUsername(String scrumMasterUsername) {
-    this.scrumMasterUsername = scrumMasterUsername;
-  }
 }

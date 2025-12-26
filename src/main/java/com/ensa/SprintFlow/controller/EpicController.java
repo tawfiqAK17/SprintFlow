@@ -9,10 +9,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
@@ -28,16 +30,16 @@ public class EpicController {
 
   @PostMapping("/projects/{projectId}/epics")
   public ResponseEntity<?> create(
-      @PathVariable Long projectId, @RequestBody EpicCreationRequestDto dto) {
+      @PathVariable Long projectId, @Validated @RequestBody EpicCreationRequestDto dto) {
     Project project = projectService.findById(projectId);
     return ResponseEntity.status(HttpStatus.CREATED).body(epicService.createEpic(project, dto));
   }
 
-  @PostMapping("/projects/{projectId}/epics/{epicId}")
+  @PutMapping("/projects/{projectId}/epics/{epicId}")
   public ResponseEntity<?> update(
       @PathVariable Long epicId,
       @RequestBody EpicUpdateRequestDto dto) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(epicService.update(epicId, dto));
+    return ResponseEntity.status(HttpStatus.OK).body(epicService.update(epicId, dto));
   }
   
   @DeleteMapping("/projects/{projectId}/epics/{epicId}")

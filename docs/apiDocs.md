@@ -478,7 +478,7 @@ Update epic
     "description": "string (optional)"
   }
   ```
-- **Response (200):** Updated epic
+- **Response (200)**
 
 ### DELETE `/projects/{project_id}/epics/{epic_id}`
 

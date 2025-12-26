@@ -2,8 +2,6 @@ package com.ensa.SprintFlow.service;
 
 import com.ensa.SprintFlow.dto.request.ProjectRequestDto;
 import com.ensa.SprintFlow.dto.request.ProjectUpdateRequestDto;
-import com.ensa.SprintFlow.dto.response.ProjectMetaDataResponseDto;
-import com.ensa.SprintFlow.dto.response.ProjectResponseDto;
 import com.ensa.SprintFlow.enums.Role;
 import com.ensa.SprintFlow.exception.generalException.NotFoundException;
 import com.ensa.SprintFlow.mapper.ProjectMapper;
@@ -13,7 +11,6 @@ import com.ensa.SprintFlow.model.security.UserContext;
 import com.ensa.SprintFlow.repository.ProjectRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
@@ -23,14 +20,14 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class ProjectService {
+  private ProjectMapper mapper;
 
   private ProjectRepository projectRepository;
   ProjectMemberService projectMemberService;
-  private ProjectMapper mapper;
   private EpicService epicService;
 
   @Transactional
-  public ProjectMetaDataResponseDto save(ProjectRequestDto dto) {
+  public Project save(ProjectRequestDto dto) {
     Project project = mapper.mapToProject(dto);
     project.setCreationDate(LocalDateTime.now());
     // save the project to the database
@@ -51,10 +48,10 @@ public class ProjectService {
                 .description("the default epic for the project")
                 .build());
     project.setDefaultEpic(defaultEpic);
-    return mapper.mapToMetaDataResponseDto(project);
+    return project;
   }
 
-  public ProjectMetaDataResponseDto update(Long projectId, ProjectUpdateRequestDto dto) {
+  public Project update(Long projectId, ProjectUpdateRequestDto dto) {
     Project project = findById(projectId);
     if (dto.getName() != null) {
       project.setName(dto.getName());
@@ -67,21 +64,17 @@ public class ProjectService {
     }
     // save the project to the database
     project = projectRepository.save(project);
-    return mapper.mapToMetaDataResponseDto(project);
+    return project;
   }
 
-  public List<ProjectMetaDataResponseDto> getProjects() {
+  public List<Project> getProjects() {
     List<Project> projects = projectRepository.findAll();
-    List<ProjectMetaDataResponseDto> projectsMetaData = new ArrayList<>();
-    for (Project project : projects) {
-      projectsMetaData.add(mapper.mapToMetaDataResponseDto(project));
-    }
-    return projectsMetaData;
+    return projects;
   }
 
-  public ProjectResponseDto getProject(Long projectId) {
+  public Project getProject(Long projectId) {
     Project project = findById(projectId);
-    return mapper.mapToResponseDto(project);
+    return project;
   }
 
   public Project findById(Long projectId) {
