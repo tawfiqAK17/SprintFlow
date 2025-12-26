@@ -38,7 +38,7 @@ public class EpicControllerTest extends ControllerTest {
               .build();
       mockMvc
           .perform(
-              post("/projects/" + testProjectId + "/epics")
+              post("/projects/" + testProject.getId() + "/epics")
                   .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
                   .contentType(MediaType.APPLICATION_JSON)
                   .content(objectMapper.writeValueAsString(creationDto)))
@@ -51,7 +51,7 @@ public class EpicControllerTest extends ControllerTest {
           EpicCreationRequestDto.builder().description("an epic for testing").build();
       mockMvc
           .perform(
-              post("/projects/" + testProjectId + "/epics")
+              post("/projects/" + testProject.getId() + "/epics")
                   .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
                   .contentType(MediaType.APPLICATION_JSON)
                   .content(objectMapper.writeValueAsString(creationDto)))
@@ -68,7 +68,7 @@ public class EpicControllerTest extends ControllerTest {
           EpicCreationRequestDto.builder().title("test epic").build();
       mockMvc
           .perform(
-              post("/projects/" + testProjectId + "/epics")
+              post("/projects/" + testProject.getId() + "/epics")
                   .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
                   .contentType(MediaType.APPLICATION_JSON)
                   .content(objectMapper.writeValueAsString(creationDto)))
@@ -84,7 +84,7 @@ public class EpicControllerTest extends ControllerTest {
       EpicCreationRequestDto creationDto = EpicCreationRequestDto.builder().build();
       mockMvc
           .perform(
-              post("/projects/" + testProjectId + "/epics")
+              post("/projects/" + testProject.getId() + "/epics")
                   .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
                   .contentType(MediaType.APPLICATION_JSON)
                   .content(objectMapper.writeValueAsString(creationDto)))
