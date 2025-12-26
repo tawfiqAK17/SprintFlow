@@ -48,9 +48,11 @@ abstract class ControllerTest {
   }
 
   private void loginAndGetJwtToken() throws Exception {
-    LoginRequestDto dto = new LoginRequestDto();
-    dto.setUsername("productOwnerTest");
-    dto.setPassword("productOwnertestPassword");
+    LoginRequestDto dto =
+        LoginRequestDto.builder()
+            .username("productOwnerTest")
+            .password("productOwnertestPassword")
+            .build();
 
     MvcResult result =
         mockMvc
@@ -119,10 +121,12 @@ abstract class ControllerTest {
     SecurityContextHolder.setContext(securityContext);
 
     // create the project
-    ProjectRequestDto dto = new ProjectRequestDto();
-    dto.setName("test project");
-    dto.setDescription("a project for testing the end points");
-    dto.setScrumMasterUsername("scrumMasterTest");
+    ProjectRequestDto dto =
+        ProjectRequestDto.builder()
+            .name("test project")
+            .description("a project for testing the end points")
+            .scrumMasterUsername("scrumMasterTest")
+            .build();
     return projectService.save(dto);
   }
 

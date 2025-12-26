@@ -1,7 +1,15 @@
 package com.ensa.SprintFlow.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
+@Builder
+@AllArgsConstructor
+@Getter
+@Setter
 public class ProjectRequestDto {
 
   @NotBlank(message = "name is required")
@@ -12,28 +20,4 @@ public class ProjectRequestDto {
 
   @NotBlank(message = "scrum master username is required")
   private String scrumMasterUsername;
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public String getScrumMasterUsername() {
-    return scrumMasterUsername;
-  }
-
-  public void setScrumMasterUsername(String scrumMasterUsername) {
-    this.scrumMasterUsername = scrumMasterUsername;
-  }
 }

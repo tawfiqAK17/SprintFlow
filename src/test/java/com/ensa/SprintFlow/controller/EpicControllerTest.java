@@ -1,9 +1,12 @@
 package com.ensa.SprintFlow.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.ensa.SprintFlow.dto.request.EpicCreationRequestDto;
+import com.ensa.SprintFlow.dto.request.EpicUpdateRequestDto;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Nested;
@@ -24,6 +27,7 @@ import tools.jackson.core.JacksonException;
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+// providing each test class with it own database
 @TestPropertySource(properties = {"spring.datasource.url=jdbc:h2:mem:epic-test"})
 public class EpicControllerTest extends ControllerTest {
 
@@ -94,6 +98,64 @@ public class EpicControllerTest extends ControllerTest {
               MockMvcResultMatchers.jsonPath(
                   "$.details",
                   Matchers.containsInAnyOrder("description is required", "title is required")));
+    }
+  }
+
+  @Nested
+  public class EpicUpdateTest {
+    @Test
+    public void testUpdateAllEpicFields() throws JacksonException, Exception {
+      EpicUpdateRequestDto requestDto =
+          EpicUpdateRequestDto.builder()
+              .title("updated epic")
+              .description("this epic was updated")
+              .build();
+      mockMvc
+          .perform(
+              put("/projects/" + testProject.getId() + "/epics/" + testEpic.getId())
+                  .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
+                  .contentType(MediaType.APPLICATION_JSON)
+                  .content(objectMapper.writeValueAsString(requestDto)))
+          .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testUpdateEpicTitle() throws JacksonException, Exception {
+      EpicUpdateRequestDto requestDto =
+          EpicUpdateRequestDto.builder().title("updated epic").build();
+      mockMvc
+          .perform(
+              put("/projects/" + testProject.getId() + "/epics/" + testEpic.getId())
+                  .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
+                  .contentType(MediaType.APPLICATION_JSON)
+                  .content(objectMapper.writeValueAsString(requestDto)))
+          .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testUpdateEpicDescription() throws JacksonException, Exception {
+      EpicUpdateRequestDto requestDto =
+          EpicUpdateRequestDto.builder().description("this epic was updated").build();
+      mockMvc
+          .perform(
+              put("/projects/" + testProject.getId() + "/epics/" + testEpic.getId())
+                  .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
+                  .contentType(MediaType.APPLICATION_JSON)
+                  .content(objectMapper.writeValueAsString(requestDto)))
+          .andExpect(status().isOk());
+    }
+  }
+
+  @Nested
+  class EpicDeletionTest {
+    @Test
+    public void testEpicDeletion() throws Exception {
+      mockMvc
+          .perform(
+              delete("/projects/" + testProject.getId() + "/epics/" + testEpic.getId())
+                  .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
+                  .contentType(MediaType.APPLICATION_JSON))
+          .andExpect(status().isNoContent());
     }
   }
 }
