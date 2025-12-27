@@ -1,4 +1,4 @@
-package com.ensa.SprintFlow.model.security;
+package com.ensa.SprintFlow.security.model;
 
 import com.ensa.SprintFlow.enums.Role;
 import com.ensa.SprintFlow.model.User;

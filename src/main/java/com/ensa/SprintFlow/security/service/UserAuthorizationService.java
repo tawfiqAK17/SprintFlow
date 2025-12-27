@@ -1,4 +1,4 @@
-package com.ensa.SprintFlow.service.security;
+package com.ensa.SprintFlow.security.service;
 
 import com.ensa.SprintFlow.enums.Role;
 import com.ensa.SprintFlow.model.ProjectMember;

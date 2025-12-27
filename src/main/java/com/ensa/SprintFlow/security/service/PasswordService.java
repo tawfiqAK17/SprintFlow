@@ -1,10 +1,13 @@
-package com.ensa.SprintFlow.service.security;
+package com.ensa.SprintFlow.security.service;
 
-import com.ensa.SprintFlow.exception.generalException.PasswordConditionsException;
 import java.util.ArrayList;
-import lombok.AllArgsConstructor;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.ensa.SprintFlow.exception.generalException.PasswordConditionsException;
+
+import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor

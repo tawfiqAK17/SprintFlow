@@ -1,22 +1,24 @@
-package com.ensa.SprintFlow.filter;
+package com.ensa.SprintFlow.security.filter;
+
+import java.io.IOException;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.ensa.SprintFlow.exception.generalException.ResourceExpiredException;
 import com.ensa.SprintFlow.exception.generalException.UnauthorizedException;
-import com.ensa.SprintFlow.model.security.UserContext;
-import com.ensa.SprintFlow.service.security.JwtService;
-import com.ensa.SprintFlow.service.security.UserContextService;
+import com.ensa.SprintFlow.security.model.UserContext;
+import com.ensa.SprintFlow.security.service.JwtService;
+import com.ensa.SprintFlow.security.service.UserContextService;
+
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-
-import java.io.IOException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
 @AllArgsConstructor

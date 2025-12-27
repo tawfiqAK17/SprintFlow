@@ -1,14 +1,17 @@
-package com.ensa.SprintFlow.service.security;
+package com.ensa.SprintFlow.security.service;
+
+import java.time.LocalDateTime;
+
+import org.springframework.stereotype.Service;
 
 import com.ensa.SprintFlow.exception.generalException.NotFoundException;
 import com.ensa.SprintFlow.exception.generalException.ResourceExpiredException;
 import com.ensa.SprintFlow.model.User;
-import com.ensa.SprintFlow.model.security.VerificationCode;
-import com.ensa.SprintFlow.repository.security.VerificationCodeRepository;
+import com.ensa.SprintFlow.security.model.VerificationCode;
+import com.ensa.SprintFlow.security.repository.VerificationCodeRepository;
 import com.ensa.SprintFlow.service.UserService;
-import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor

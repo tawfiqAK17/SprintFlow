@@ -1,6 +1,9 @@
-package com.ensa.SprintFlow.model.security;
+package com.ensa.SprintFlow.security.model;
+
+import java.time.LocalDateTime;
 
 import com.ensa.SprintFlow.model.User;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,19 +15,18 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "refresh_tokens")
 @Getter
 @Setter
-public class RefreshToken {
+@Table(name = "verification_codes")
+public class VerificationCode {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long refreshTokenId;
+  private Long verificationCodeId;
 
   @Column(nullable = false)
-  private String token;
+  private String code;
 
   @Column(nullable = false)
   private LocalDateTime expirationDate;

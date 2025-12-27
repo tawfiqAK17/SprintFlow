@@ -1,16 +1,19 @@
-package com.ensa.SprintFlow.service.security;
+package com.ensa.SprintFlow.security.service;
 
-import com.ensa.SprintFlow.exception.generalException.EmailConditionsException;
-import com.ensa.SprintFlow.model.User;
-import com.ensa.SprintFlow.model.security.VerificationCode;
-import com.ensa.SprintFlow.repository.security.VerificationCodeRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Random;
-import lombok.AllArgsConstructor;
+
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+
+import com.ensa.SprintFlow.exception.generalException.EmailConditionsException;
+import com.ensa.SprintFlow.model.User;
+import com.ensa.SprintFlow.security.model.VerificationCode;
+import com.ensa.SprintFlow.security.repository.VerificationCodeRepository;
+
+import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor

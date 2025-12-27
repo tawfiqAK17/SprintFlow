@@ -1,7 +1,8 @@
-package com.ensa.SprintFlow.repository.security;
+package com.ensa.SprintFlow.security.repository;
 
-import com.ensa.SprintFlow.model.security.VerificationCode;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.ensa.SprintFlow.security.model.VerificationCode;
 
 public interface VerificationCodeRepository extends JpaRepository<VerificationCode, Long> {
   public VerificationCode findByCode(String code);

@@ -1,10 +1,12 @@
-package com.ensa.SprintFlow.service.security;
+package com.ensa.SprintFlow.security.service;
+
+import org.springframework.stereotype.Service;
 
 import com.ensa.SprintFlow.model.User;
-import com.ensa.SprintFlow.model.security.UserContext;
 import com.ensa.SprintFlow.repository.UserRepository;
+import com.ensa.SprintFlow.security.model.UserContext;
+
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor

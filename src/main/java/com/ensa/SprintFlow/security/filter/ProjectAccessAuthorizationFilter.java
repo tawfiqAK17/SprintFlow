@@ -1,20 +1,23 @@
-package com.ensa.SprintFlow.filter;
+package com.ensa.SprintFlow.security.filter;
 
-import com.ensa.SprintFlow.enums.Role;
-import com.ensa.SprintFlow.exception.generalException.UnauthorizedException;
-import com.ensa.SprintFlow.model.security.UserContext;
-import com.ensa.SprintFlow.service.security.UserAuthorizationService;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
-import lombok.AllArgsConstructor;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.ensa.SprintFlow.enums.Role;
+import com.ensa.SprintFlow.exception.generalException.UnauthorizedException;
+import com.ensa.SprintFlow.security.model.UserContext;
+import com.ensa.SprintFlow.security.service.UserAuthorizationService;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 
 @Component
 @AllArgsConstructor

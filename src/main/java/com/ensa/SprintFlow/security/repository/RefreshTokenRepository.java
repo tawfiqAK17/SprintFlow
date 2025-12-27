@@ -1,8 +1,9 @@
-package com.ensa.SprintFlow.repository.security;
+package com.ensa.SprintFlow.security.repository;
 
-import com.ensa.SprintFlow.model.security.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import com.ensa.SprintFlow.security.model.RefreshToken;
 
 @Repository
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {

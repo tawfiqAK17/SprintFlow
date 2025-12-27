@@ -1,10 +1,5 @@
 package com.ensa.SprintFlow.config;
 
-import com.ensa.SprintFlow.enums.Role;
-import com.ensa.SprintFlow.filter.FilerExceptionHandler;
-import com.ensa.SprintFlow.filter.JwtAuthenticationFilter;
-import com.ensa.SprintFlow.filter.ProjectAccessAuthorizationFilter;
-import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,6 +10,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.ensa.SprintFlow.enums.Role;
+import com.ensa.SprintFlow.filter.FilerExceptionHandler;
+import com.ensa.SprintFlow.security.filter.JwtAuthenticationFilter;
+import com.ensa.SprintFlow.security.filter.ProjectAccessAuthorizationFilter;
+
+import lombok.AllArgsConstructor;
 
 @Configuration
 @EnableWebSecurity

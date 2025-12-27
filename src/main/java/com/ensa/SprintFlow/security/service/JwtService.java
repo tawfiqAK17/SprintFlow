@@ -1,16 +1,20 @@
-package com.ensa.SprintFlow.service.security;
+package com.ensa.SprintFlow.security.service;
 
-import com.ensa.SprintFlow.model.security.UserContext;
+import java.security.Key;
+import java.util.Date;
+import java.util.function.Function;
+
+import javax.crypto.SecretKey;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.ensa.SprintFlow.security.model.UserContext;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import java.security.Key;
-import java.util.Date;
-import java.util.function.Function;
-import javax.crypto.SecretKey;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 @Service
 public class JwtService {

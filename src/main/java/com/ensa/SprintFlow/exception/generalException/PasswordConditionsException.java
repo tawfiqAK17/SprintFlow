@@ -1,11 +1,11 @@
 package com.ensa.SprintFlow.exception.generalException;
 
-import com.ensa.SprintFlow.builder.ErrorResponseBuilder;
-import com.ensa.SprintFlow.exception.ApplicationException;
-import com.ensa.SprintFlow.service.security.PasswordService;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import com.ensa.SprintFlow.builder.ErrorResponseBuilder;
+import com.ensa.SprintFlow.exception.ApplicationException;
+import com.ensa.SprintFlow.security.service.PasswordService;
 
 public class PasswordConditionsException extends ApplicationException {
   public PasswordConditionsException(String message) {

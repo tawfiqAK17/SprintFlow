@@ -3,17 +3,6 @@ package com.ensa.SprintFlow.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.ensa.SprintFlow.dto.request.LoginRequestDto;
-import com.ensa.SprintFlow.dto.request.ProjectRequestDto;
-import com.ensa.SprintFlow.dto.response.LoginResponseDto;
-import com.ensa.SprintFlow.model.Epic;
-import com.ensa.SprintFlow.model.Project;
-import com.ensa.SprintFlow.model.User;
-import com.ensa.SprintFlow.model.security.UserContext;
-import com.ensa.SprintFlow.repository.UserRepository;
-import com.ensa.SprintFlow.service.EpicService;
-import com.ensa.SprintFlow.service.ProjectService;
-import com.ensa.SprintFlow.service.security.RegisterService;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -22,6 +11,19 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+
+import com.ensa.SprintFlow.dto.request.LoginRequestDto;
+import com.ensa.SprintFlow.dto.request.ProjectRequestDto;
+import com.ensa.SprintFlow.dto.response.LoginResponseDto;
+import com.ensa.SprintFlow.model.Epic;
+import com.ensa.SprintFlow.model.Project;
+import com.ensa.SprintFlow.model.User;
+import com.ensa.SprintFlow.repository.UserRepository;
+import com.ensa.SprintFlow.security.model.UserContext;
+import com.ensa.SprintFlow.security.service.RegisterService;
+import com.ensa.SprintFlow.service.EpicService;
+import com.ensa.SprintFlow.service.ProjectService;
+
 import tools.jackson.databind.ObjectMapper;
 
 abstract class ControllerTest {
