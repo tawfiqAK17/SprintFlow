@@ -72,7 +72,9 @@ public class ProjectAuthorizationAspect {
     List<Role> userRoles =
         userAuthorizationService.getRoles(userContext.getProject().getId(), userContext.getId());
     for (Role role : roles) {
-      return userRoles.contains(role);
+      if (userRoles.contains(role)){
+        return true;
+      }
     }
     return false;
   }
