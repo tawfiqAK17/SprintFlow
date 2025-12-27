@@ -3,15 +3,6 @@ package com.ensa.SprintFlow.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-
 import com.ensa.SprintFlow.dto.request.LoginRequestDto;
 import com.ensa.SprintFlow.dto.request.ProjectRequestDto;
 import com.ensa.SprintFlow.dto.response.LoginResponseDto;
@@ -23,7 +14,14 @@ import com.ensa.SprintFlow.security.model.UserContext;
 import com.ensa.SprintFlow.security.service.RegisterService;
 import com.ensa.SprintFlow.service.EpicService;
 import com.ensa.SprintFlow.service.ProjectService;
-
+import org.junit.jupiter.api.BeforeAll;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import tools.jackson.databind.ObjectMapper;
 
 abstract class ControllerTest {
@@ -45,15 +43,37 @@ abstract class ControllerTest {
   @BeforeAll
   public void setUp() throws Exception {
     createUsers();
-    loginAndGetJwtToken();
+    loginAsProductOwner();
     setUpTestData();
   }
 
-  private void loginAndGetJwtToken() throws Exception {
+  protected void loginAsProductOwner() throws Exception {
     LoginRequestDto dto =
         LoginRequestDto.builder()
             .username("productOwnerTest")
-            .password("productOwnertestPassword")
+            .password("productOwnerPassword")
+            .build();
+
+    MvcResult result =
+        mockMvc
+            .perform(
+                post("/login")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(dto)))
+            .andExpect(status().isOk())
+            .andReturn();
+
+    String responseBodyAsString = result.getResponse().getContentAsString();
+    LoginResponseDto responseDto =
+        objectMapper.readValue(responseBodyAsString, LoginResponseDto.class);
+    this.jwt = responseDto.getJwt();
+  }
+
+  protected void loginAsScrumMaster() throws Exception {
+    LoginRequestDto dto =
+        LoginRequestDto.builder()
+            .username("scrumMasterTest")
+            .password("scrumMasterPassword")
             .build();
 
     MvcResult result =
@@ -79,7 +99,7 @@ abstract class ControllerTest {
             .lastName("test")
             .username("productOwnerTest")
             .email("productOwner@gmail.com")
-            .password("productOwnertestPassword")
+            .password("productOwnerPassword")
             .verified(true)
             .build();
     registerService.register(productOwner);

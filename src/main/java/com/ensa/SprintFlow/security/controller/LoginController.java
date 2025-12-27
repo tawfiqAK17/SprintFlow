@@ -1,4 +1,4 @@
-package com.ensa.SprintFlow.controller.security;
+package com.ensa.SprintFlow.security.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

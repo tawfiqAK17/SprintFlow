@@ -34,7 +34,6 @@ public class ProductControllerTest extends ControllerTest {
   @Nested
   @Order(1)
   class ProjectCreationTest {
-
     @Test
     public void testProjectCreationWithValidInput() throws Exception {
       ProjectRequestDto projectRequestDto =
@@ -119,7 +118,7 @@ public class ProductControllerTest extends ControllerTest {
 
   @Nested
   @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-  class ProjectUpdateAndDeleteTest {
+  class ProjectUpdateTest {
     @Test
     public void testProjectUpdateWithValidInput() throws JacksonException, Exception {
       String name = "updated test project";
@@ -132,7 +131,7 @@ public class ProductControllerTest extends ControllerTest {
                   .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
                   .contentType(MediaType.APPLICATION_JSON)
                   .content(objectMapper.writeValueAsString(projectDto)))
-          .andExpect(status().isCreated())
+          .andExpect(status().isOk())
           .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(testProject.getId()))
           .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(name))
           .andExpect(MockMvcResultMatchers.jsonPath("$.description").value(description));
@@ -148,7 +147,7 @@ public class ProductControllerTest extends ControllerTest {
                   .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
                   .contentType(MediaType.APPLICATION_JSON)
                   .content(objectMapper.writeValueAsString(projectDto)))
-          .andExpect(status().isCreated())
+          .andExpect(status().isOk())
           .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(testProject.getId()))
           .andExpect(MockMvcResultMatchers.jsonPath("$.scrumMaster.username").value("userTest"));
     }
@@ -169,10 +168,18 @@ public class ProductControllerTest extends ControllerTest {
     public void testDeletionOfNoneExistingProject() throws Exception {
       mockMvc
           .perform(delete("/projects/6969").header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt))
-          .andExpect(
-              status()
-                  .isUnauthorized()); // unauthorized because the user considered as not a member of
-      // the project
+          .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testDeletionOfProjectAsScrumMaster() throws Exception {
+      loginAsScrumMaster();
+      mockMvc
+          .perform(
+              delete("/projects/" + testProject.getId())
+                  .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt))
+          .andExpect(status().isUnauthorized());
+      loginAsProductOwner();
     }
   }
 }

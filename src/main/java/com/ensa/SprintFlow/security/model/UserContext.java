@@ -1,6 +1,7 @@
 package com.ensa.SprintFlow.security.model;
 
 import com.ensa.SprintFlow.enums.Role;
+import com.ensa.SprintFlow.model.Project;
 import com.ensa.SprintFlow.model.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,8 @@ public class UserContext {
 
   private String username;
   private String email;
+  // the project the user trying to access
+  private Project project;
   // roles will hold the user roles in a project
   private List<Role> roles;
 
