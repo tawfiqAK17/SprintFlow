@@ -37,8 +37,14 @@ public class ProjectController {
 
   @PostMapping("/projects")
   public ResponseEntity<?> createProject(@Validated @RequestBody ProjectRequestDto dto) {
-    Project project = projectService.save(dto);
+    // Extract data from dto
+    Project project = mapper.mapToProject(dto);
+    String scrumMasterUserName = dto.getScrumMasterUsername();
+    // Delegate the task to Project Service
+    project = projectService.save(project, scrumMasterUserName);
+
     ProjectMetaDataResponseDto projectResponse = mapper.mapToMetaDataResponseDto(project);
+
     return ResponseEntity.status(HttpStatus.CREATED).body(projectResponse);
   }
 
