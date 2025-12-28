@@ -29,7 +29,7 @@ import tools.jackson.core.JacksonException;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestPropertySource(properties = {"spring.datasource.url=jdbc:h2:mem:project-test"})
-public class ProductControllerTest extends ControllerTest {
+public class ProjectControllerTest extends ControllerTest {
 
   @Nested
   @Order(1)
