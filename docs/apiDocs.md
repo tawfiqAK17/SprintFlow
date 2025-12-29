@@ -460,7 +460,12 @@ Get epic details with user stories
         "id": "number",
         "title": "string",
         "priority": "number",
-        "sprint": { ... }
+        "sprint": { 
+            "id": "number",
+            "title": "string",
+            "startDate": "date",
+            "endDate": "date",
+        }
       }
     ]
   }

@@ -1,9 +1,8 @@
 package com.ensa.SprintFlow.mapper;
 
-import org.springframework.stereotype.Component;
-
 import com.ensa.SprintFlow.dto.response.UserMetaDataResponseDto;
 import com.ensa.SprintFlow.model.User;
+import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
@@ -11,12 +10,12 @@ public class UserMapper {
     if (user == null) {
       return null;
     }
-    UserMetaDataResponseDto dto = new UserMetaDataResponseDto();
-    dto.setId(user.getId());
-    dto.setEmail(user.getEmail());
-    dto.setUsername(user.getUsername());
-    dto.setLastName(user.getLastName());
-    dto.setFirstName(user.getFirstName());
-    return dto;
+    return UserMetaDataResponseDto.builder()
+        .id(user.getId())
+        .email(user.getEmail())
+        .username(user.getUsername())
+        .lastName(user.getLastName())
+        .firstName(user.getFirstName())
+        .build();
   }
 }

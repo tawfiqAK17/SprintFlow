@@ -6,6 +6,7 @@ import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeRol
 import com.ensa.SprintFlow.security.model.UserContext;
 import com.ensa.SprintFlow.security.service.UserAuthorizationService;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -28,7 +29,7 @@ public class ProjectAuthorizationAspect {
     if (isUserHasRoles(Role.PRODUCT_OWNER)) {
       return (ResponseEntity<?>) joinPoint.proceed();
     }
-    throw new UnauthorizedException("the user should be a ProductOwner");
+    throw new UnauthorizedException("the user should be a PRODUCT_OWNER");
   }
 
   @Around(
@@ -37,7 +38,7 @@ public class ProjectAuthorizationAspect {
     if (isUserHasRoles(Role.SCRUM_MASTER)) {
       return (ResponseEntity<?>) joinPoint.proceed();
     }
-    throw new UnauthorizedException("the user should be a ScrumMaster");
+    throw new UnauthorizedException("the user should be a SCRUM_MASTER");
   }
 
   @Around(
@@ -46,7 +47,7 @@ public class ProjectAuthorizationAspect {
     if (isUserHasRoles(Role.DEVELOPER)) {
       return (ResponseEntity<?>) joinPoint.proceed();
     }
-    throw new UnauthorizedException("the user should be a Developer");
+    throw new UnauthorizedException("the user should be a DEVELOPER");
   }
 
   @Around(
@@ -55,7 +56,7 @@ public class ProjectAuthorizationAspect {
     if (isUserHasRoles(Role.TESTER)) {
       return (ResponseEntity<?>) joinPoint.proceed();
     }
-    throw new UnauthorizedException("the user should be a Tester");
+    throw new UnauthorizedException("the user should be a TESTER");
   }
 
   @Around(
@@ -64,13 +65,13 @@ public class ProjectAuthorizationAspect {
     if (isUserHasRoles(Role.PRODUCT_OWNER, Role.SCRUM_MASTER, Role.DEVELOPER, Role.TESTER)) {
       return (ResponseEntity<?>) joinPoint.proceed();
     }
-    throw new UnauthorizedException("the user should be a Member");
+    throw new UnauthorizedException("the user should be a MEMBER");
   }
 
   @Around(
       "@annotation(com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeRoles)")
   public ResponseEntity<?> AuthorizeRoles(ProceedingJoinPoint joinPoint) throws Throwable {
-    // extract the method signature 
+    // extract the method signature
     MethodSignature methodSignature = (MethodSignature) (joinPoint.getSignature());
     // extract the method from its signature
     Method method = methodSignature.getMethod();
@@ -79,7 +80,8 @@ public class ProjectAuthorizationAspect {
     if (isUserHasRoles(annotation.roles())) {
       return (ResponseEntity<?>) joinPoint.proceed();
     }
-    throw new UnauthorizedException("the user should be a Member");
+    throw new UnauthorizedException(
+        "the user should be a one of: " + Arrays.toString(annotation.roles()));
   }
 
   private boolean isUserHasRoles(Role... roles) {

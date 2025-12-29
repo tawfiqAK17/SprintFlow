@@ -2,9 +2,12 @@ package com.ensa.SprintFlow.dto.response;
 
 import com.ensa.SprintFlow.enums.Role;
 import java.time.LocalDateTime;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+@Builder
 @Getter
 @Setter
 public class ProjectMetaDataResponseDto {

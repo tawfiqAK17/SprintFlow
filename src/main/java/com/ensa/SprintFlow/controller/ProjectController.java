@@ -5,13 +5,10 @@ import com.ensa.SprintFlow.dto.request.ProjectRequestDto;
 import com.ensa.SprintFlow.dto.request.ProjectUpdateRequestDto;
 import com.ensa.SprintFlow.dto.response.ProjectMetaDataResponseDto;
 import com.ensa.SprintFlow.dto.response.ProjectResponseDto;
-import com.ensa.SprintFlow.enums.Role;
 import com.ensa.SprintFlow.mapper.ProjectMapper;
 import com.ensa.SprintFlow.model.Project;
 import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeMember;
 import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeProductOwner;
-import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeRoles;
-import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeScrumMaster;
 import com.ensa.SprintFlow.service.ProjectService;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +39,7 @@ public class ProjectController {
     return ResponseEntity.status(HttpStatus.CREATED).body(projectResponse);
   }
 
-  @AuthorizeRoles(roles = {Role.PRODUCT_OWNER})
+  @AuthorizeProductOwner
   @PutMapping("/projects/{id}")
   public ResponseEntity<?> updateProject(
       @PathVariable Long id, @RequestBody ProjectUpdateRequestDto dto) {

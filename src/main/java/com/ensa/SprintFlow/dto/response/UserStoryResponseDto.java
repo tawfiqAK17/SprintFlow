@@ -1,5 +1,6 @@
 package com.ensa.SprintFlow.dto.response;
 
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,10 +8,9 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-public class UserMetaDataResponseDto {
+public class UserStoryResponseDto {
   private Long id;
-  private String firstName;
-  private String lastName;
-  private String username;
-  private String email;
+  private String title;
+  private Integer priority;
+  private SprintMetaDateResponseDto sprint;
 }
