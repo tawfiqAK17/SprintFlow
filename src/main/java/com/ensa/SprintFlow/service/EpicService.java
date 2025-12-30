@@ -24,8 +24,16 @@ public class EpicService {
     return epicRepository.save(epic);
   }
 
-  public List<EpicMetaDataResponseDto> getAllEpics(Long projectId) {
+  public List<Epic> getAllEpics(Long projectId) {
     return epicRepository.findAllByProjectId(projectId);
+  }
+
+  public Epic getEpic(Long epicId) {
+    Optional<Epic> optionalEpic = epicRepository.findById(epicId);
+    if (optionalEpic.isEmpty()) {
+      throw new NotFoundException("no epic found with the given id");
+    }
+    return optionalEpic.get();
   }
 
   public EpicMetaDataResponseDto createEpic(Project project, EpicCreationRequestDto dto) {

@@ -20,20 +20,19 @@ public class ProjectMapper {
   ProjectMemberService projectMemberService;
 
   public Project mapToProject(ProjectRequestDto dto) {
-    Project project = new Project();
-    project.setName(dto.getName());
-    project.setDescription(dto.getDescription());
-    return project;
+    return Project.builder().name(dto.getName()).description(dto.getDescription()).build();
   }
 
   public ProjectMetaDataResponseDto mapToMetaDataResponseDto(Project project) {
     if (project == null) {
       return null;
     }
-    ProjectMetaDataResponseDto dto = new ProjectMetaDataResponseDto();
-    dto.setName(project.getName());
-    dto.setId(project.getId());
-    dto.setDescription(project.getDescription());
+    ProjectMetaDataResponseDto dto =
+        ProjectMetaDataResponseDto.builder()
+            .name(project.getName())
+            .id(project.getId())
+            .description(project.getDescription())
+            .build();
     User scrumMaster = projectMemberService.getProjectScrumMaster(project.getId());
     User productOwner = projectMemberService.getProjectProductOwner(project.getId());
     if (scrumMaster != null) {
@@ -50,15 +49,19 @@ public class ProjectMapper {
     if (project == null) {
       return null;
     }
-    ProjectResponseDto dto = new ProjectResponseDto();
-    dto.setId(project.getId());
-    dto.setName(project.getName());
-    dto.setDescription(project.getDescription());
-    dto.setCreationDate(project.getCreationDate());
-    dto.setScrumMaster(
-        userMapper.mapToMetaDataDto(projectMemberService.getProjectScrumMaster(project.getId())));
-    dto.setProductOwner(
-        userMapper.mapToMetaDataDto(projectMemberService.getProjectProductOwner(project.getId())));
+    ProjectResponseDto dto =
+        ProjectResponseDto.builder()
+            .id(project.getId())
+            .name(project.getName())
+            .description(project.getDescription())
+            .creationDate(project.getCreationDate())
+            .scrumMaster(
+                userMapper.mapToMetaDataDto(
+                    projectMemberService.getProjectScrumMaster(project.getId())))
+            .productOwner(
+                userMapper.mapToMetaDataDto(
+                    projectMemberService.getProjectProductOwner(project.getId())))
+            .build();
     // get all the member except the scrum master and the product owner
     List<ProjectMember> projectMembers =
         projectMemberService.getAllMembers(project.getId()).stream()

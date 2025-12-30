@@ -36,6 +36,7 @@ public class ProjectControllerTest extends ControllerTest {
   class ProjectCreationTest {
     @Test
     public void testProjectCreationWithValidInput() throws Exception {
+      loginAsProductOwner();
       ProjectRequestDto projectRequestDto =
           ProjectRequestDto.builder()
               .name("testProject")
@@ -54,6 +55,7 @@ public class ProjectControllerTest extends ControllerTest {
 
     @Test
     public void testProjectCreationWithOutScrumMaster() throws Exception {
+      loginAsProductOwner();
       ProjectRequestDto projectRequestDto =
           ProjectRequestDto.builder()
               .name("testProject")
@@ -75,6 +77,7 @@ public class ProjectControllerTest extends ControllerTest {
 
     @Test
     public void testProjectCreationWithName() throws Exception {
+      loginAsProductOwner();
       ProjectRequestDto projectRequestDto =
           ProjectRequestDto.builder()
               .description("a project to test the end point POST /projects")
@@ -96,6 +99,7 @@ public class ProjectControllerTest extends ControllerTest {
 
     @Test
     public void testProjectCreationWithOutDescription() throws Exception {
+      loginAsProductOwner();
       ProjectRequestDto projectRequestDto =
           ProjectRequestDto.builder()
               .name("testProject")
@@ -121,6 +125,7 @@ public class ProjectControllerTest extends ControllerTest {
   class ProjectUpdateTest {
     @Test
     public void testProjectUpdateWithValidInput() throws JacksonException, Exception {
+      loginAsProductOwner();
       String name = "updated test project";
       String description = "updated description of a project to test the project update endpoint";
       ProjectUpdateRequestDto projectDto =
@@ -139,6 +144,7 @@ public class ProjectControllerTest extends ControllerTest {
 
     @Test
     public void testChangingProjectScrumMaster() throws JacksonException, Exception {
+      loginAsProductOwner();
       ProjectUpdateRequestDto projectDto =
           ProjectUpdateRequestDto.builder().scrumMasterUsername("userTest").build();
       mockMvc
@@ -150,6 +156,23 @@ public class ProjectControllerTest extends ControllerTest {
           .andExpect(status().isOk())
           .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(testProject.getId()))
           .andExpect(MockMvcResultMatchers.jsonPath("$.scrumMaster.username").value("userTest"));
+    }
+
+    @Test
+    public void testUpdateProjectAsScrumMaster() throws JacksonException, Exception {
+      loginAsScrumMaster();
+      ProjectUpdateRequestDto projectDto =
+          ProjectUpdateRequestDto.builder().description("this should not be updated").build();
+      mockMvc
+          .perform(
+              put("/projects/" + testProject.getId())
+                  .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
+                  .contentType(MediaType.APPLICATION_JSON)
+                  .content(objectMapper.writeValueAsString(projectDto)))
+          .andExpect(status().isUnauthorized())
+          .andExpect(
+              MockMvcResultMatchers.jsonPath("$.message")
+                  .value("the user should be a PRODUCT_OWNER"));
     }
   }
 
