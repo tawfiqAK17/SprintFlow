@@ -455,19 +455,7 @@ Get epic details with user stories
     "id": "number",
     "title": "string",
     "description": "string",
-    "user_stories": [
-      {
-        "id": "number",
-        "title": "string",
-        "priority": "number",
-        "sprint": { 
-            "id": "number",
-            "title": "string",
-            "startDate": "date",
-            "endDate": "date",
-        }
-      }
-    ]
+    "user_stories_count": "number"
   }
   ```
 
@@ -496,13 +484,14 @@ Delete epic (removes epic association from user stories)
 
 ## 6. USER STORIES
 
-### GET `/projects/{project_id}/product_backlog`
+### GET `/projects/{project_id}/user_stories`
 
-Get prioritized product backlog
+Get project user stories
 
 - **Auth:** Required (must be project member)
 - **Query Params:**
-  - `epic_id` (number): Filter by epic
+  - `epicId` (number): Filter by epic
+  - `sprintId` (number): Filter by epic
   - `unassigned` (boolean): Show only stories not in sprint
 - **Response (200):**
   ```json
@@ -523,17 +512,6 @@ Get prioritized product backlog
   ]
   ```
 
-### GET `/projects/{project_id}/user_stories`
-
-Get all user stories
-
-- **Auth:** Required (must be project member)
-- **Query Params:**
-  - `sprint_id` (number): Filter by sprint
-  - `epic_id` (number): Filter by epic
-  - `page`, `limit`: Pagination
-- **Response (200):** Array of user stories
-
 ### POST `/projects/{project_id}/user_stories`
 
 Create user story
@@ -543,8 +521,7 @@ Create user story
   ```json
   {
     "title": "string (required)",
-    "priority": "number (required, min 1)",
-    "epic_id": "number (optional)",
+    "priority": "number (optional)",
     "description": {
       "as": "string (required, 'As a [user type]')",
       "what": "string (required, 'I want [goal]')",
@@ -565,8 +542,14 @@ Get user story details with tasks and criteria
     "id": "number",
     "title": "string",
     "priority": "number",
-    "epic": { ... },
-    "sprint": { ... },
+      "epic": {
+        "id": "number",
+        "title": "string"
+      },
+      "sprint": {
+        "id": "number",
+        "title": "string"
+      }
     "description": {
       "as": "string",
       "what": "string",
@@ -577,21 +560,14 @@ Get user story details with tasks and criteria
         "id": "number",
         "given": "string",
         "when": "string",
+        "ands": [
+            {
+                "and": "string"
+            }
+        ](optional)
         "then": "string"
       }
     ],
-    "tasks": [
-      {
-        "id": "number",
-        "title": "string",
-        "status": "Status enum",
-        "assigned_to": {
-          "id": "number",
-          "first_name": "string",
-          "last_name": "string"
-        }
-      }
-    ]
   }
   ```
 
@@ -620,6 +596,11 @@ Add acceptance criteria
   {
     "given": "string (required, 'Given [context]')",
     "when": "string (required, 'When [action]')",
+    "ands": [
+        {
+            "and": "string"
+        }
+      ](optional)
     "then": "string (required, 'Then [outcome]')"
   }
   ```
@@ -629,7 +610,7 @@ Add acceptance criteria
 
 Update acceptance criteria
 
-- **Auth:** Required (Scrum Master only)
+- **Auth:** Required (Scrum Master)
 - **Request Body:** Same as POST (all optional)
 - **Response (200):** Updated criteria
 
