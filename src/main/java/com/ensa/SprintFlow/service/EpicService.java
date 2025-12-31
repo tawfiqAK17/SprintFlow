@@ -36,26 +36,26 @@ public class EpicService {
     return optionalEpic.get();
   }
 
-//  public EpicMetaDataResponseDto createEpic(Project project, EpicCreationRequestDto dto) {
-//    Epic epic = epicRepository.save(mapper.mapToEpic(project, dto));
-//    return mapper.mapToEpicMetaDataResponseDto(epic);
-//  }
+  public EpicMetaDataResponseDto createEpic(Project project, EpicCreationRequestDto dto) {
+    Epic epic = epicRepository.save(mapper.mapToEpic(project, dto));
+    return mapper.mapToEpicMetaDataResponseDto(epic);
+  }
 
-//  public EpicMetaDataResponseDto update(Long epicId, EpicUpdateRequestDto dto) {
-//    Optional<Epic> optionalEpic = epicRepository.findById(epicId);
-//    if (optionalEpic.isEmpty()) {
-//      throw new NotFoundException("there is no epic with the given id");
-//    }
-//    Epic epic = optionalEpic.get();
-//    if (dto.getTitle() != null) {
-//      epic.setTitle(dto.getTitle());
-//    }
-//    if (dto.getDescription() != null) {
-//      epic.setDescription(dto.getDescription());
-//    }
-//    epic = epicRepository.save(epic);
-//    return mapper.mapToEpicMetaDataResponseDto(epic);
-//  }
+  public EpicMetaDataResponseDto update(Long epicId, EpicUpdateRequestDto dto) {
+    Optional<Epic> optionalEpic = epicRepository.findById(epicId);
+    if (optionalEpic.isEmpty()) {
+      throw new NotFoundException("there is no epic with the given id");
+    }
+    Epic epic = optionalEpic.get();
+    if (dto.getTitle() != null) {
+      epic.setTitle(dto.getTitle());
+    }
+    if (dto.getDescription() != null) {
+      epic.setDescription(dto.getDescription());
+    }
+    epic = epicRepository.save(epic);
+    return mapper.mapToEpicMetaDataResponseDto(epic);
+  }
 
   public void delete(Long epicId) {
     epicRepository.deleteById(epicId);
