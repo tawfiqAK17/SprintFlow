@@ -1,10 +1,11 @@
 package com.ensa.SprintFlow.exception.generalException;
 
-import com.ensa.SprintFlow.builder.ErrorResponseBuilder;
-import com.ensa.SprintFlow.exception.ApplicationException;
-import com.ensa.SprintFlow.service.security.EmailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import com.ensa.SprintFlow.builder.ErrorResponseBuilder;
+import com.ensa.SprintFlow.exception.ApplicationException;
+import com.ensa.SprintFlow.security.service.EmailService;
 
 public class EmailConditionsException extends ApplicationException {
   public EmailConditionsException() {

@@ -7,8 +7,9 @@ import com.ensa.SprintFlow.dto.response.ProjectMetaDataResponseDto;
 import com.ensa.SprintFlow.dto.response.ProjectResponseDto;
 import com.ensa.SprintFlow.mapper.ProjectMapper;
 import com.ensa.SprintFlow.model.Project;
+import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeMember;
+import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeProductOwner;
 import com.ensa.SprintFlow.service.ProjectService;
-
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -33,17 +34,18 @@ public class ProjectController {
 
   @PostMapping("/projects")
   public ResponseEntity<?> createProject(@Validated @RequestBody ProjectRequestDto dto) {
-    Project project = projectService.save( dto);
+    Project project = projectService.save(dto);
     ProjectMetaDataResponseDto projectResponse = mapper.mapToMetaDataResponseDto(project);
-    return ResponseEntity.status(HttpStatus.CREATED).body( projectResponse);
+    return ResponseEntity.status(HttpStatus.CREATED).body(projectResponse);
   }
 
+  @AuthorizeProductOwner
   @PutMapping("/projects/{id}")
   public ResponseEntity<?> updateProject(
       @PathVariable Long id, @RequestBody ProjectUpdateRequestDto dto) {
     Project project = projectService.update(id, dto);
     ProjectMetaDataResponseDto projectResponse = mapper.mapToMetaDataResponseDto(project);
-    return ResponseEntity.status(HttpStatus.CREATED).body( projectResponse);
+    return ResponseEntity.status(HttpStatus.OK).body(projectResponse);
   }
 
   @GetMapping("/projects")
@@ -56,13 +58,15 @@ public class ProjectController {
     return responseBuilder.status(HttpStatus.OK).property("projects", projectsMetaData).build();
   }
 
+  @AuthorizeMember
   @GetMapping("/projects/{id}")
   public ResponseEntity<?> getProject(@PathVariable Long id) {
     Project project = projectService.getProject(id);
     ProjectResponseDto projectResponse = mapper.mapToResponseDto(project);
-    return ResponseEntity.status(HttpStatus.CREATED).body( projectResponse);
+    return ResponseEntity.status(HttpStatus.CREATED).body(projectResponse);
   }
 
+  @AuthorizeProductOwner
   @DeleteMapping("/projects/{id}")
   public ResponseEntity<?> deleteProject(@PathVariable Long id) {
     projectService.deleteProject(id);

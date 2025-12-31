@@ -5,8 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.ensa.SprintFlow.dto.request.EpicCreationRequestDto;
-import com.ensa.SprintFlow.dto.request.EpicUpdateRequestDto;
+import com.ensa.SprintFlow.dto.request.EpicRequestDto;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Nested;
@@ -35,11 +34,8 @@ public class EpicControllerTest extends ControllerTest {
   class EpicCreationTest {
     @Test
     public void testEpicCreationWithValidInput() throws JacksonException, Exception {
-      EpicCreationRequestDto creationDto =
-          EpicCreationRequestDto.builder()
-              .title("test epic")
-              .description("an epic for testing")
-              .build();
+      EpicRequestDto creationDto =
+          EpicRequestDto.builder().title("test epic").description("an epic for testing").build();
       mockMvc
           .perform(
               post("/projects/" + testProject.getId() + "/epics")
@@ -51,8 +47,8 @@ public class EpicControllerTest extends ControllerTest {
 
     @Test
     public void testEpicCreationWithOutTitle() throws JacksonException, Exception {
-      EpicCreationRequestDto creationDto =
-          EpicCreationRequestDto.builder().description("an epic for testing").build();
+      EpicRequestDto creationDto =
+          EpicRequestDto.builder().description("an epic for testing").build();
       mockMvc
           .perform(
               post("/projects/" + testProject.getId() + "/epics")
@@ -68,8 +64,7 @@ public class EpicControllerTest extends ControllerTest {
 
     @Test
     public void testEpicCreationWithOutDescription() throws JacksonException, Exception {
-      EpicCreationRequestDto creationDto =
-          EpicCreationRequestDto.builder().title("test epic").build();
+      EpicRequestDto creationDto = EpicRequestDto.builder().title("test epic").build();
       mockMvc
           .perform(
               post("/projects/" + testProject.getId() + "/epics")
@@ -85,7 +80,7 @@ public class EpicControllerTest extends ControllerTest {
 
     @Test
     public void testEpicCreationWithOutDescriptionAndTitle() throws JacksonException, Exception {
-      EpicCreationRequestDto creationDto = EpicCreationRequestDto.builder().build();
+      EpicRequestDto creationDto = EpicRequestDto.builder().build();
       mockMvc
           .perform(
               post("/projects/" + testProject.getId() + "/epics")
@@ -105,8 +100,8 @@ public class EpicControllerTest extends ControllerTest {
   public class EpicUpdateTest {
     @Test
     public void testUpdateAllEpicFields() throws JacksonException, Exception {
-      EpicUpdateRequestDto requestDto =
-          EpicUpdateRequestDto.builder()
+      EpicRequestDto requestDto =
+          EpicRequestDto.builder()
               .title("updated epic")
               .description("this epic was updated")
               .build();
@@ -121,8 +116,7 @@ public class EpicControllerTest extends ControllerTest {
 
     @Test
     public void testUpdateEpicTitle() throws JacksonException, Exception {
-      EpicUpdateRequestDto requestDto =
-          EpicUpdateRequestDto.builder().title("updated epic").build();
+      EpicRequestDto requestDto = EpicRequestDto.builder().title("updated epic").build();
       mockMvc
           .perform(
               put("/projects/" + testProject.getId() + "/epics/" + testEpic.getId())
@@ -134,8 +128,8 @@ public class EpicControllerTest extends ControllerTest {
 
     @Test
     public void testUpdateEpicDescription() throws JacksonException, Exception {
-      EpicUpdateRequestDto requestDto =
-          EpicUpdateRequestDto.builder().description("this epic was updated").build();
+      EpicRequestDto requestDto =
+          EpicRequestDto.builder().description("this epic was updated").build();
       mockMvc
           .perform(
               put("/projects/" + testProject.getId() + "/epics/" + testEpic.getId())

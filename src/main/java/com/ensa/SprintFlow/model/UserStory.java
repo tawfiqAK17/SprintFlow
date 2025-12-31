@@ -41,13 +41,13 @@ public class UserStory {
   @JoinColumn(name = "sprint_id")
   private Sprint sprint;
 
+  @ManyToOne
+  @JoinColumn(name = "epic_id")
+  private Epic epic;
+
   @OneToOne(mappedBy = "userStory", cascade = CascadeType.ALL)
   private UserStoryDescription userStoryDescription;
 
   @OneToMany(mappedBy = "userStory", cascade = CascadeType.ALL)
   private List<Task> tasks;
-
-  @ManyToOne
-  @JoinColumn(name = "epic_id")
-  private Epic epic;
 }

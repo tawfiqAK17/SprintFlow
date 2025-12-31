@@ -9,11 +9,11 @@ import com.ensa.SprintFlow.dto.response.LoginResponseDto;
 import com.ensa.SprintFlow.model.Epic;
 import com.ensa.SprintFlow.model.Project;
 import com.ensa.SprintFlow.model.User;
-import com.ensa.SprintFlow.model.security.UserContext;
 import com.ensa.SprintFlow.repository.UserRepository;
+import com.ensa.SprintFlow.security.model.UserContext;
+import com.ensa.SprintFlow.security.service.RegisterService;
 import com.ensa.SprintFlow.service.EpicService;
 import com.ensa.SprintFlow.service.ProjectService;
-import com.ensa.SprintFlow.service.security.RegisterService;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -43,15 +43,37 @@ abstract class ControllerTest {
   @BeforeAll
   public void setUp() throws Exception {
     createUsers();
-    loginAndGetJwtToken();
+    loginAsProductOwner();
     setUpTestData();
   }
 
-  private void loginAndGetJwtToken() throws Exception {
+  protected void loginAsProductOwner() throws Exception {
     LoginRequestDto dto =
         LoginRequestDto.builder()
             .username("productOwnerTest")
-            .password("productOwnertestPassword")
+            .password("productOwnerPassword")
+            .build();
+
+    MvcResult result =
+        mockMvc
+            .perform(
+                post("/login")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(dto)))
+            .andExpect(status().isOk())
+            .andReturn();
+
+    String responseBodyAsString = result.getResponse().getContentAsString();
+    LoginResponseDto responseDto =
+        objectMapper.readValue(responseBodyAsString, LoginResponseDto.class);
+    this.jwt = responseDto.getJwt();
+  }
+
+  protected void loginAsScrumMaster() throws Exception {
+    LoginRequestDto dto =
+        LoginRequestDto.builder()
+            .username("scrumMasterTest")
+            .password("scrumMasterPassword")
             .build();
 
     MvcResult result =
@@ -77,7 +99,7 @@ abstract class ControllerTest {
             .lastName("test")
             .username("productOwnerTest")
             .email("productOwner@gmail.com")
-            .password("productOwnertestPassword")
+            .password("productOwnerPassword")
             .verified(true)
             .build();
     registerService.register(productOwner);
