@@ -38,26 +38,26 @@ public class EpicController {
   }
 
   @AuthorizeMember
-  @GetMapping("/projects/{projectId}/epics/{epicId}")
-  public ResponseEntity<?> getEpic(@PathVariable Long epicId) {
-    return ResponseEntity.status(HttpStatus.OK)
-        .body(epicMapper.mapToEpicResponseDto(epicService.getEpic(epicId)));
-  }
+//  @GetMapping("/projects/{projectId}/epics/{epicId}")
+//  public ResponseEntity<?> getEpic(@PathVariable Long epicId) {
+//    return ResponseEntity.status(HttpStatus.OK)
+//        .body(epicMapper.mapToEpicResponseDto(epicService.getEpic(epicId)));
+//  }
 
-  @AuthorizeProductOwner
-  @PostMapping("/projects/{projectId}/epics")
-  public ResponseEntity<?> create(
-      @PathVariable Long projectId, @Validated @RequestBody EpicCreationRequestDto dto) {
-    Project project = projectService.findById(projectId);
-    return ResponseEntity.status(HttpStatus.CREATED).body(epicService.createEpic(project, dto));
-  }
-
-  @AuthorizeProductOwner
-  @PutMapping("/projects/{projectId}/epics/{epicId}")
-  public ResponseEntity<?> update(
-      @PathVariable Long epicId, @RequestBody EpicUpdateRequestDto dto) {
-    return ResponseEntity.status(HttpStatus.OK).body(epicService.update(epicId, dto));
-  }
+//  @AuthorizeProductOwner
+//  @PostMapping("/projects/{projectId}/epics")
+//  public ResponseEntity<?> create(
+//      @PathVariable Long projectId, @Validated @RequestBody EpicCreationRequestDto dto) {
+//    Project project = projectService.findById(projectId);
+//    return ResponseEntity.status(HttpStatus.CREATED).body(epicService.createEpic(project, dto));
+//  }
+//
+//  @AuthorizeProductOwner
+//  @PutMapping("/projects/{projectId}/epics/{epicId}")
+//  public ResponseEntity<?> update(
+//      @PathVariable Long epicId, @RequestBody EpicUpdateRequestDto dto) {
+//    return ResponseEntity.status(HttpStatus.OK).body(epicService.update(epicId, dto));
+//  }
 
   @AuthorizeProductOwner
   @DeleteMapping("/projects/{projectId}/epics/{epicId}")

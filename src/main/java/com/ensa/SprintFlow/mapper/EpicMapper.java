@@ -14,8 +14,6 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class EpicMapper {
 
-  UserStoryMapper userStoryMapper;
-
   public Epic mapToEpic(Project project, EpicCreationRequestDto dto) {
     return Epic.builder()
         .title(dto.getTitle())
