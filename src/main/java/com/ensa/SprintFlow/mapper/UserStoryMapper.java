@@ -1,8 +1,11 @@
 package com.ensa.SprintFlow.mapper;
 
+import org.springframework.stereotype.Component;
+
 import com.ensa.SprintFlow.dto.response.UserStoryResponseDto;
 import com.ensa.SprintFlow.model.UserStory;
 
+@Component
 public class UserStoryMapper {
 
   SprintMapper sprintMapper;

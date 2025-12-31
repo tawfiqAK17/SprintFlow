@@ -1,6 +1,5 @@
 package com.ensa.SprintFlow.dto.response;
 
-import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,5 +11,5 @@ public class EpicResponseDto {
   private Long id;
   private String title;
   private String description;
-  private List<UserStoryResponseDto> userStories;
+  private Long userStoriesCount;
 }

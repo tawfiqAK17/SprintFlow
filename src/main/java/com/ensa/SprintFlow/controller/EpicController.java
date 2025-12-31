@@ -1,7 +1,6 @@
 package com.ensa.SprintFlow.controller;
 
-import com.ensa.SprintFlow.dto.request.EpicCreationRequestDto;
-import com.ensa.SprintFlow.dto.request.EpicUpdateRequestDto;
+import com.ensa.SprintFlow.dto.request.EpicRequestDto;
 import com.ensa.SprintFlow.mapper.EpicMapper;
 import com.ensa.SprintFlow.model.Project;
 import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeMember;
@@ -33,7 +32,7 @@ public class EpicController {
     return ResponseEntity.status(HttpStatus.OK)
         .body(
             epicService.getAllEpics(projectId).stream()
-                .map(e -> epicMapper.mapToEpicMetaDataResponseDto(e))
+                .map(e -> epicMapper.mapToEpicResponseDto(e))
                 .toList());
   }
 
@@ -47,7 +46,7 @@ public class EpicController {
   @AuthorizeProductOwner
   @PostMapping("/projects/{projectId}/epics")
   public ResponseEntity<?> create(
-      @PathVariable Long projectId, @Validated @RequestBody EpicCreationRequestDto dto) {
+      @PathVariable Long projectId, @Validated @RequestBody EpicRequestDto dto) {
     Project project = projectService.findById(projectId);
     return ResponseEntity.status(HttpStatus.CREATED).body(epicService.createEpic(project, dto));
   }
@@ -55,7 +54,7 @@ public class EpicController {
   @AuthorizeProductOwner
   @PutMapping("/projects/{projectId}/epics/{epicId}")
   public ResponseEntity<?> update(
-      @PathVariable Long epicId, @RequestBody EpicUpdateRequestDto dto) {
+      @PathVariable Long epicId, @RequestBody EpicRequestDto dto) {
     return ResponseEntity.status(HttpStatus.OK).body(epicService.update(epicId, dto));
   }
 

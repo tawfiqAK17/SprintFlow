@@ -1,8 +1,7 @@
 package com.ensa.SprintFlow.service;
 
-import com.ensa.SprintFlow.dto.request.EpicCreationRequestDto;
-import com.ensa.SprintFlow.dto.request.EpicUpdateRequestDto;
-import com.ensa.SprintFlow.dto.response.EpicMetaDataResponseDto;
+import com.ensa.SprintFlow.dto.request.EpicRequestDto;
+import com.ensa.SprintFlow.dto.response.EpicResponseDto;
 import com.ensa.SprintFlow.exception.generalException.NotFoundException;
 import com.ensa.SprintFlow.mapper.EpicMapper;
 import com.ensa.SprintFlow.model.Epic;
@@ -36,12 +35,12 @@ public class EpicService {
     return optionalEpic.get();
   }
 
-  public EpicMetaDataResponseDto createEpic(Project project, EpicCreationRequestDto dto) {
+  public EpicResponseDto createEpic(Project project, EpicRequestDto dto) {
     Epic epic = epicRepository.save(mapper.mapToEpic(project, dto));
-    return mapper.mapToEpicMetaDataResponseDto(epic);
+    return mapper.mapToEpicResponseDto(epic);
   }
 
-  public EpicMetaDataResponseDto update(Long epicId, EpicUpdateRequestDto dto) {
+  public EpicResponseDto update(Long epicId, EpicRequestDto dto) {
     Optional<Epic> optionalEpic = epicRepository.findById(epicId);
     if (optionalEpic.isEmpty()) {
       throw new NotFoundException("there is no epic with the given id");
@@ -54,7 +53,7 @@ public class EpicService {
       epic.setDescription(dto.getDescription());
     }
     epic = epicRepository.save(epic);
-    return mapper.mapToEpicMetaDataResponseDto(epic);
+    return mapper.mapToEpicResponseDto(epic);
   }
 
   public void delete(Long epicId) {
