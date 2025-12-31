@@ -3,7 +3,9 @@ package com.ensa.SprintFlow.mapper;
 import com.ensa.SprintFlow.dto.sprint.response.SprintMetaDataResponseDto;
 import com.ensa.SprintFlow.model.Sprint;
 import com.ensa.SprintFlow.repository.projection.SprintView;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SprintMapper {
 
   public SprintMetaDataResponseDto mapToSprintMetaDadaResponseDto(SprintView sprint) {
