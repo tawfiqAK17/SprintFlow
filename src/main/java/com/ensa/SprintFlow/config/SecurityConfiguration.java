@@ -2,7 +2,7 @@ package com.ensa.SprintFlow.config;
 
 import com.ensa.SprintFlow.filter.FilerExceptionHandler;
 import com.ensa.SprintFlow.security.filter.JwtAuthenticationFilter;
-import com.ensa.SprintFlow.security.filter.ProjectAccessAuthorizationFilter;
+import com.ensa.SprintFlow.security.filter.ResourceHierarchyValidationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration {
 
   JwtAuthenticationFilter jwtAuthenticationFilter;
-  ProjectAccessAuthorizationFilter projectAccessAuthorizationFilter;
+  ResourceHierarchyValidationFilter resourceHierarchyValidationFilter;
   FilerExceptionHandler filterExceptionHandler;
 
   @Bean
@@ -41,8 +41,8 @@ public class SecurityConfiguration {
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-        .addFilterAfter(projectAccessAuthorizationFilter, JwtAuthenticationFilter.class)
-        .addFilterBefore(filterExceptionHandler, JwtAuthenticationFilter.class);
+        .addFilterBefore(filterExceptionHandler, JwtAuthenticationFilter.class)
+        .addFilterAfter(resourceHierarchyValidationFilter, JwtAuthenticationFilter.class);
     return http.build();
   }
 

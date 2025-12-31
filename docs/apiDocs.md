@@ -436,17 +436,19 @@ Create new epic
   ```
 - **Response (201):**
   ```json
-  {
-    "id": "number",
-    "title": "string",
-    "description": "string",
-    "user_stories_count": "number"
-  }
+  [
+    {
+      "id": "number",
+      "title": "string",
+      "description": "string",
+      "user_stories_count": "number"
+    }
+  ]
   ```
 
 ### GET `/projects/{project_id}/epics/{epic_id}`
 
-Get epic details with user stories
+Get epic details
 
 - **Auth:** Required (must be project member)
 - **Response (200):**

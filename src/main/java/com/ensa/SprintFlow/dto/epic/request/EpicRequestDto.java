@@ -1,4 +1,4 @@
-package com.ensa.SprintFlow.dto.request;
+package com.ensa.SprintFlow.dto.epic.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class EpicCreationRequestDto {
+public class EpicRequestDto {
   @NotBlank(message = "title is required")
   private String title;
 

@@ -1,15 +1,15 @@
-package com.ensa.SprintFlow.dto.request;
+package com.ensa.SprintFlow.dto.epic.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Builder
-@AllArgsConstructor
 @Getter
 @Setter
-public class EpicUpdateRequestDto {
+public class EpicResponseDto {
+  private Long id;
   private String title;
   private String description;
+  private Long userStoriesCount;
 }
