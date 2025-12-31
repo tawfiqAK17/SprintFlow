@@ -30,7 +30,8 @@ public class ProjectService {
   private EpicService epicService;
 
   @Transactional
-  public Project save(Project project, String scrumMasterUserName) {
+  public Project save(ProjectRequestDto dto) {
+    Project project = mapper.mapToProject(dto);
     project.setCreationDate(LocalDateTime.now());
     // save the project to the database
     project = projectRepository.save(project);
@@ -40,7 +41,7 @@ public class ProjectService {
     // save the user as the product owner of the project
     projectMemberService.save(project, userContext.getUsername(), Role.PRODUCT_OWNER);
     // save the scrum master relation
-    projectMemberService.save(project, scrumMasterUserName, Role.SCRUM_MASTER);
+    projectMemberService.save(project, dto.getScrumMasterUsername(), Role.SCRUM_MASTER);
 
     // create the default project epic
     Epic defaultEpic =
