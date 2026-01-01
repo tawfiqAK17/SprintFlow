@@ -5,8 +5,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.ensa.SprintFlow.dto.request.ProjectRequestDto;
-import com.ensa.SprintFlow.dto.request.ProjectUpdateRequestDto;
+import com.ensa.SprintFlow.dto.project.request.ProjectRequestDto;
+import com.ensa.SprintFlow.dto.project.request.ProjectUpdateRequestDto;
 import jakarta.transaction.Transactional;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.MethodOrderer;

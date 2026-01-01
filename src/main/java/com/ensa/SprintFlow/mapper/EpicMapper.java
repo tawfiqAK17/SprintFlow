@@ -13,8 +13,6 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class EpicMapper {
 
-  UserStoryMapper userStoryMapper;
-
   public Epic mapToEpic(Project project, EpicRequestDto dto) {
 
     return Epic.builder()

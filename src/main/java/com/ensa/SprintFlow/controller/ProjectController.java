@@ -1,10 +1,10 @@
 package com.ensa.SprintFlow.controller;
 
 import com.ensa.SprintFlow.builder.ResponseBuilder;
-import com.ensa.SprintFlow.dto.request.ProjectRequestDto;
-import com.ensa.SprintFlow.dto.request.ProjectUpdateRequestDto;
-import com.ensa.SprintFlow.dto.response.ProjectMetaDataResponseDto;
-import com.ensa.SprintFlow.dto.response.ProjectResponseDto;
+import com.ensa.SprintFlow.dto.project.request.ProjectRequestDto;
+import com.ensa.SprintFlow.dto.project.request.ProjectUpdateRequestDto;
+import com.ensa.SprintFlow.dto.project.response.ProjectMetaDataResponseDto;
+import com.ensa.SprintFlow.dto.project.response.ProjectResponseDto;
 import com.ensa.SprintFlow.mapper.ProjectMapper;
 import com.ensa.SprintFlow.model.Project;
 import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeMember;

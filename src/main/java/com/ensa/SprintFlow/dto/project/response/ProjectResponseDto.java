@@ -1,5 +1,6 @@
-package com.ensa.SprintFlow.dto.response;
+package com.ensa.SprintFlow.dto.project.response;
 
+import com.ensa.SprintFlow.dto.response.UserMetaDataResponseDto;
 import com.ensa.SprintFlow.enums.Role;
 import java.time.LocalDateTime;
 import java.util.List;
