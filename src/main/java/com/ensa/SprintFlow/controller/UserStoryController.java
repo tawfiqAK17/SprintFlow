@@ -1,6 +1,6 @@
 package com.ensa.SprintFlow.controller;
 
-import com.ensa.SprintFlow.builder.ResponseBuilder;
+import com.ensa.SprintFlow.builder.CustomResponseBuilder;
 import com.ensa.SprintFlow.dto.userStory.request.UserStoryRequestDto;
 import com.ensa.SprintFlow.dto.userStory.response.UserStoryMetaDataResponseDto;
 import com.ensa.SprintFlow.dto.userStory.response.UserStoryResponseDto;
@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserStoryController {
     private UserStoryService userStoryService;
-    private ResponseBuilder responseBuilder;
+    private CustomResponseBuilder responseBuilder;
     
     @GetMapping("/projects/{project_id}/user_stories")
     public ResponseEntity<?> getUserStories(@PathVariable("project_id") Long projectId) {

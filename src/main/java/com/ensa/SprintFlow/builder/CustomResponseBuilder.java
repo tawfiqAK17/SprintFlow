@@ -7,17 +7,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ResponseBuilder {
+public class CustomResponseBuilder {
 
   private Map<String, Object> body = new HashMap<>();
   private HttpStatus status;
 
-  public ResponseBuilder property(String key, Object value) {
+  public CustomResponseBuilder property(String key, Object value) {
     body.put(key, value);
     return this;
   }
 
-  public ResponseBuilder status(HttpStatus status) {
+  public CustomResponseBuilder status(HttpStatus status) {
     this.status = status;
     return this;
   }
