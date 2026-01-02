@@ -677,26 +677,7 @@ Get sprint details with backlog
     "start_date": "date",
     "end_date": "date",
     "is_active": "boolean",
-    "product_backlog": [
-      {
-        "id": "number",
-        "title": "string",
-        "priority": "number",
-        "user_story": { ... }
-      }
-    ],
-    "sprint_backlog": [
-      {
-        "id": "number",
-        "title": "string",
-        "user_story_id": "number"
-      }
-    ],
-    "statistics": {
-      "total_tasks": "number",
-      "completed_tasks": "number",
-      "in_progress_tasks": "number"
-    }
+    "user_stories_count": "number"
   }
   ```
 

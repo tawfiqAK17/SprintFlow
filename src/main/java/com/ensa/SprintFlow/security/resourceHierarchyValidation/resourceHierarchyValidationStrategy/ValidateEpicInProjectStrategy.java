@@ -2,8 +2,6 @@ package com.ensa.SprintFlow.security.resourceHierarchyValidation.resourceHierarc
 
 import com.ensa.SprintFlow.exception.generalException.NotFoundException;
 import com.ensa.SprintFlow.service.ProjectService;
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 
@@ -20,11 +18,6 @@ public class ValidateEpicInProjectStrategy extends ResourceHierarchyValidationSt
   @Override
   protected String getUrlPattern() {
     return "/projects/{projectId}/epics/{epicId}";
-  }
-
-  @Override
-  protected List<String> getQueryParams() {
-    return new ArrayList<>();
   }
 
   @Override
