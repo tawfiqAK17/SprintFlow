@@ -23,7 +23,6 @@ public class UserStoryDescriptionMapper {
         if (dto == null){
             return null;
         }
-
         return UserStoryDescription.builder()
                 .asWho( dto.getAsWho())
                 .what( dto.getWhat())

@@ -24,7 +24,6 @@ import java.util.List;
 @AllArgsConstructor
 public class UserStoryService {
     private UserStoryRepository userStoryRepository;
-    //private UserStoryDescriptionRepository userStoryDescriptionRepository;
     private UserStoryMapper userStoryMapper;
 
     public List<UserStoryMetaDataResponseDto> getUserStories(){
@@ -39,12 +38,15 @@ public class UserStoryService {
 
     public UserStoryResponseDto getUserStory(Long userStoryId){
         UserStory userStory = userStoryRepository.findUserStory( userStoryId);
-        var userStoryResponseDto = userStoryMapper.mapToUserStoryResponseDto( userStory );
+        System.out.println( userStory.getTitle());
+        UserStoryResponseDto userStoryResponseDto = userStoryMapper.mapToUserStoryResponseDto( userStory );
         return userStoryResponseDto;
     }
 
     public void createUserStory(UserStoryRequestDto userStoryDto){
+
         UserStory userStory = userStoryMapper.mapToUserStory( userStoryDto);
+        System.out.println(userStory);
         userStoryRepository.saveAndFlush( userStory);
     }
 

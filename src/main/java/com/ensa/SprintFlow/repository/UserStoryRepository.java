@@ -26,6 +26,12 @@ public interface UserStoryRepository extends JpaRepository<UserStory, Long> {
     """)
     List<UserStoryView> findAllUserStories();
 
-    @Query("SELECT u FROM UserStory u JOIN FETCH u.epic JOIN FETCH u.sprint WHERE u.id = :id")
+    @Query("""
+            SELECT u FROM UserStory u 
+            LEFT JOIN FETCH u.epic 
+            LEFT JOIN FETCH u.sprint 
+            LEFT JOIN FETCH u.userStoryDescription 
+            WHERE u.id = :id
+           """)
     UserStory findUserStory(@Param("id") Long UserStoryId);
 }

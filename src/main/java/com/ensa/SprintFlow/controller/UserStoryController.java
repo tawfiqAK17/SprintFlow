@@ -20,32 +20,37 @@ public class UserStoryController {
     private ResponseBuilder responseBuilder;
     
     @GetMapping("/projects/{project_id}/user_stories")
-    public ResponseEntity<?> getUserStories() {
+    public ResponseEntity<?> getUserStories(@PathVariable("project_id") Long projectId) {
         List<UserStoryMetaDataResponseDto> userStories = userStoryService.getUserStories();
         return responseBuilder.status(HttpStatus.OK).property("user_stories", userStories).build();
     }
     
     @GetMapping("/projects/{project_id}/user_stories/{id}")
-    public ResponseEntity<?> getUserStory(@PathVariable Long id){
-        UserStoryResponseDto userStory = userStoryService.getUserStory( id);
+    public ResponseEntity<?> getUserStory(@PathVariable("project_id") Long projectId,
+                                          @PathVariable("id") Long userStoryId){
+        UserStoryResponseDto userStory = userStoryService.getUserStory( userStoryId);
         return ResponseEntity.status(HttpStatus.OK).body( userStory);
     }
 
     @PostMapping("/projects/{project_id}/user_stories")
-    public ResponseEntity<?> createUserStory(@Validated @RequestBody UserStoryRequestDto userStoryRequestDto){
+    public ResponseEntity<?> createUserStory(@PathVariable("project_id") Long projectId,
+                                             @Validated @RequestBody UserStoryRequestDto userStoryRequestDto){
         userStoryService.createUserStory( userStoryRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PatchMapping("/projects/{project_id}/user_stories/{id}")
-    public ResponseEntity<?> updateUserStory(@PathVariable Long id ,@RequestBody UserStoryRequestDto userStoryRequestDto){
-        userStoryService.updateUserStory( id, userStoryRequestDto);
+    public ResponseEntity<?> updateUserStory(@PathVariable("project_id") Long projectId,
+                                             @PathVariable("id") Long userStoryId,
+                                             @RequestBody UserStoryRequestDto userStoryRequestDto){
+        userStoryService.updateUserStory( userStoryId, userStoryRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/projects/{project_id}/user_stories/{id}")
-    public ResponseEntity<?> deleteUserStory(@PathVariable Long id){
-        userStoryService.deleteUserStory( id);
+    public ResponseEntity<?> deleteUserStory(@PathVariable("project_id") Long projectId,
+                                             @PathVariable("id") Long userStoryId){
+        userStoryService.deleteUserStory( userStoryId);
         return ResponseEntity.status( HttpStatus.OK).build();
     }
 }
