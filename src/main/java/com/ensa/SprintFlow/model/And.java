@@ -28,7 +28,7 @@ public class And {
   private Long id;
 
   @Column(nullable = false)
-  private String and;
+  private String _and;
 
   @ManyToOne
   @JoinColumn(name = "acceptance_criteria_id")

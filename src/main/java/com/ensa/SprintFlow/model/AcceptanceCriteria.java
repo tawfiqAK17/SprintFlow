@@ -31,13 +31,13 @@ public class AcceptanceCriteria {
   private Long id;
 
   @Column(nullable = false)
-  private String given;
+  private String _given;
 
   @Column(nullable = false)
-  private String when;
+  private String _when;
 
   @Column(nullable = false)
-  private String then;
+  private String _then;
 
   @ManyToOne
   @JoinColumn(name = "user_story_id")
