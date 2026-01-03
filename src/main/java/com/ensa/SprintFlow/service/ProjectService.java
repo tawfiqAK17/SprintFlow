@@ -7,8 +7,8 @@ import java.util.Optional;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.ensa.SprintFlow.dto.request.ProjectRequestDto;
-import com.ensa.SprintFlow.dto.request.ProjectUpdateRequestDto;
+import com.ensa.SprintFlow.dto.project.request.ProjectRequestDto;
+import com.ensa.SprintFlow.dto.project.request.ProjectUpdateRequestDto;
 import com.ensa.SprintFlow.enums.Role;
 import com.ensa.SprintFlow.exception.generalException.NotFoundException;
 import com.ensa.SprintFlow.mapper.ProjectMapper;

@@ -1,4 +1,4 @@
-package com.ensa.SprintFlow.dto.request;
+package com.ensa.SprintFlow.dto.project.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

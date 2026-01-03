@@ -1,7 +1,7 @@
 package com.ensa.SprintFlow.service;
 
-import com.ensa.SprintFlow.dto.request.EpicRequestDto;
-import com.ensa.SprintFlow.dto.response.EpicResponseDto;
+import com.ensa.SprintFlow.dto.epic.request.EpicRequestDto;
+import com.ensa.SprintFlow.dto.epic.response.EpicResponseDto;
 import com.ensa.SprintFlow.exception.generalException.NotFoundException;
 import com.ensa.SprintFlow.mapper.EpicMapper;
 import com.ensa.SprintFlow.model.Epic;

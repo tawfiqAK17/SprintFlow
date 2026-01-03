@@ -1,6 +1,6 @@
 package com.ensa.SprintFlow.controller;
 
-import com.ensa.SprintFlow.dto.request.EpicRequestDto;
+import com.ensa.SprintFlow.dto.epic.request.EpicRequestDto;
 import com.ensa.SprintFlow.mapper.EpicMapper;
 import com.ensa.SprintFlow.model.Project;
 import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeMember;

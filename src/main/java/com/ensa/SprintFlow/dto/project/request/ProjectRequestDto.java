@@ -1,4 +1,4 @@
-package com.ensa.SprintFlow.dto.request;
+package com.ensa.SprintFlow.dto.project.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

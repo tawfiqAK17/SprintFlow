@@ -36,6 +36,11 @@ public class SecurityConfiguration {
                     .permitAll()
                     .requestMatchers("/refresh-token")
                     .permitAll()
+                    .requestMatchers(
+                            "/v3/api-docs/**",
+                            "/swagger-ui/**",
+                            "/swagger-ui.html"
+                    ).permitAll()
                     .anyRequest()
                     .authenticated())
         .sessionManagement(
