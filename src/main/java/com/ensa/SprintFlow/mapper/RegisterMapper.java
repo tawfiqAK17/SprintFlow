@@ -1,6 +1,6 @@
 package com.ensa.SprintFlow.mapper;
 
-import com.ensa.SprintFlow.dto.request.RegisterRequestDto;
+import com.ensa.SprintFlow.security.dto.request.RegisterRequestDto;
 import com.ensa.SprintFlow.model.User;
 import org.springframework.stereotype.Component;
 

@@ -1,8 +1,6 @@
 package com.ensa.SprintFlow.controller;
 
-import com.ensa.SprintFlow.builder.CustomResponseBuilder;
 import com.ensa.SprintFlow.dto.userStory.request.UserStoryRequestDto;
-import com.ensa.SprintFlow.dto.userStory.response.UserStoryMetaDataResponseDto;
 import com.ensa.SprintFlow.dto.userStory.response.UserStoryResponseDto;
 import com.ensa.SprintFlow.service.UserStoryService;
 import lombok.AllArgsConstructor;
@@ -11,18 +9,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController()
 @AllArgsConstructor
 public class UserStoryController {
     private UserStoryService userStoryService;
-    private CustomResponseBuilder responseBuilder;
     
     @GetMapping("/projects/{project_id}/user_stories")
     public ResponseEntity<?> getUserStories(@PathVariable("project_id") Long projectId) {
-        List<UserStoryMetaDataResponseDto> userStories = userStoryService.getUserStories();
-        return responseBuilder.status(HttpStatus.OK).property("user_stories", userStories).build();
+        return ResponseEntity.status( HttpStatus.OK).body( userStoryService.getUserStories());
     }
     
     @GetMapping("/projects/{project_id}/user_stories/{id}")

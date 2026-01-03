@@ -2,12 +2,10 @@ package com.ensa.SprintFlow.mapper;
 
 
 import com.ensa.SprintFlow.dto.userStory.request.UserStoryRequestDto;
-import com.ensa.SprintFlow.dto.userStory.response.UserStoryMetaDataResponseDto;
 import com.ensa.SprintFlow.dto.userStory.response.UserStoryResponseDto;
 import org.springframework.stereotype.Component;
 
 import com.ensa.SprintFlow.model.UserStory;
-import com.ensa.SprintFlow.repository.projection.UserStoryView;
 import lombok.AllArgsConstructor;
 
 
@@ -30,19 +28,6 @@ public class UserStoryMapper {
             .sprint(sprintMapper.mapToSprintMetaDadaResponseDto( userStory.getSprint()))
             .description( userStoryDescriptionMapper.mapToUserStoryDescriptionDto( userStory.getUserStoryDescription()))
             // it still to add acceptance criteria
-            .build();
-  }
-
-  public UserStoryMetaDataResponseDto mapToUserStoryMetaDataResponseDto(UserStoryView userStory){
-    if (userStory == null){
-      return null;
-    }
-    return UserStoryMetaDataResponseDto.builder()
-            .id( userStory.id())
-            .title( userStory.title())
-            .priority( userStory.priority())
-            .epic( epicMapper.mapToEpicMetaDataResponseDto( userStory.epicView()))
-            .sprint( sprintMapper.mapToSprintMetaDadaResponseDto( userStory.sprintView()))
             .build();
   }
 
