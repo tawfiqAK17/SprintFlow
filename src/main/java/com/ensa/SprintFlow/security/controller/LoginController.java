@@ -1,26 +1,22 @@
 package com.ensa.SprintFlow.security.controller;
 
+import com.ensa.SprintFlow.builder.CustomResponseBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import com.ensa.SprintFlow.builder.ResponseBuilder;
 import com.ensa.SprintFlow.dto.request.LoginRequestDto;
 import com.ensa.SprintFlow.dto.response.LoginResponseDto;
 import com.ensa.SprintFlow.security.service.LoginService;
 
 import lombok.AllArgsConstructor;
 
-@Controller
+@RestController
 @AllArgsConstructor
 public class LoginController {
   LoginService loginService;
-  ResponseBuilder responseBuilder;
+  CustomResponseBuilder responseBuilder;
 
   @PostMapping("/login")
   public ResponseEntity<?> login(@Validated @RequestBody LoginRequestDto dto) {

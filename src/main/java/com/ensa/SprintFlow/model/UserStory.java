@@ -16,6 +16,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Table(name = "user_stories")
@@ -24,6 +25,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@DynamicUpdate
 public class UserStory {
 
   @Id
@@ -45,7 +47,8 @@ public class UserStory {
   @JoinColumn(name = "epic_id")
   private Epic epic;
 
-  @OneToOne(mappedBy = "userStory", cascade = CascadeType.ALL)
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "userStoryDescriptionId")
   private UserStoryDescription userStoryDescription;
 
   @OneToMany(mappedBy = "userStory", cascade = CascadeType.ALL)

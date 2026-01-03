@@ -11,14 +11,15 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 
 @Entity
 @Table(name = "user_story_descriptions")
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @Builder
 public class UserStoryDescription {
 
@@ -34,10 +35,6 @@ public class UserStoryDescription {
 
   @Column(nullable = false)
   private String forDesc;
-
-  @OneToOne
-  @JoinColumn(name = "userStoryId")
-  private UserStory userStory;
 
   @OneToMany(mappedBy = "userStoryDescription", cascade = CascadeType.ALL)
   private List<AcceptanceCriteria> acceptanceCriteria;

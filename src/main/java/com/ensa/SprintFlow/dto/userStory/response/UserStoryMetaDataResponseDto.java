@@ -1,0 +1,18 @@
+package com.ensa.SprintFlow.dto.userStory.response;
+
+import com.ensa.SprintFlow.dto.epic.response.EpicMetaDataResponseDto;
+import com.ensa.SprintFlow.dto.sprint.response.SprintMetaDataResponseDto;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
+@Builder
+@Setter
+@Getter
+public class UserStoryMetaDataResponseDto {
+    private Long id;
+    private String title;
+    private Integer priority;
+    private EpicMetaDataResponseDto epic;
+    private SprintMetaDataResponseDto sprint;
+}
