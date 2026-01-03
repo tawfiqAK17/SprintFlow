@@ -2,8 +2,8 @@ package com.ensa.SprintFlow.security.service;
 
 import org.springframework.stereotype.Service;
 
-import com.ensa.SprintFlow.dto.request.LoginRequestDto;
-import com.ensa.SprintFlow.dto.response.LoginResponseDto;
+import com.ensa.SprintFlow.security.dto.request.LoginRequestDto;
+import com.ensa.SprintFlow.security.dto.response.LoginResponseDto;
 import com.ensa.SprintFlow.exception.generalException.NotFoundException;
 import com.ensa.SprintFlow.exception.generalException.UnauthorizedException;
 import com.ensa.SprintFlow.model.User;
