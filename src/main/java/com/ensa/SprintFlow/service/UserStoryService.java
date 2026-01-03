@@ -73,4 +73,8 @@ public class UserStoryService {
     public void deleteUserStory( Long userStoryId){
         userStoryRepository.deleteById( userStoryId);
     }
+
+    public List<UserStory> findAllByIds(List<Long> ids) {
+      return userStoryRepository.findAllByIds(ids);
+    }
 }

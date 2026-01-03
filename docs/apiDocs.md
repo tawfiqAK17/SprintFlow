@@ -634,6 +634,8 @@ Get all sprints
 - **Auth:** Required (must be project member)
 - **Query Params:**
   - `active` (boolean): Filter active sprints
+  - `startDate` (date): Filter by the start date
+  - `endDate` (date): Filter by the end date
 - **Response (200):**
   ```json
   [
@@ -661,7 +663,17 @@ Create sprint
     "end_date": "date (required)"
   }
   ```
-- **Response (201):** Created sprint
+- **Response (201):**
+  ```json
+  {
+    "id": "number"
+    "title": "string (required)",
+    "start_date": "date (required)",
+    "end_date": "date (required)"
+    "is_active": "boolean",
+    "user_stories_count": "number"
+  }
+  ```
 - **Validation:** end_date > start_date, no overlapping sprints
 
 ### GET `/projects/{project_id}/sprints/{sprint_id}`
