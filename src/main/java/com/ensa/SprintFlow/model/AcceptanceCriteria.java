@@ -40,8 +40,8 @@ public class AcceptanceCriteria {
   private String then;
 
   @ManyToOne
-  @JoinColumn(name = "user_story_description_id")
-  private UserStoryDescription userStoryDescription;
+  @JoinColumn(name = "user_story_id")
+  private UserStory userStory;
 
   @OneToMany(mappedBy = "acceptanceCriteria", cascade = CascadeType.ALL)
   private List<And> ands;
