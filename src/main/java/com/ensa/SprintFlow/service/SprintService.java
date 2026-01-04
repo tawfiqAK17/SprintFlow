@@ -97,4 +97,8 @@ public class SprintService {
     List<UserStory> sprintUserStories = sprint.getUserStories();
     sprintUserStories.stream().filter(u -> u.getId() != userStoryId);
   }
+
+  public void delete(Long sprintId) {
+    sprintRepository.deleteById(sprintId);
+  }
 }
