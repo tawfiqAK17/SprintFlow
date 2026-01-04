@@ -101,4 +101,12 @@ public class SprintService {
   public void delete(Long sprintId) {
     sprintRepository.deleteById(sprintId);
   }
+
+  public Sprint findById(Long sprintId) {
+    Optional<Sprint> optionalSprint = sprintRepository.findById(sprintId);
+    if (optionalSprint.isEmpty()) {
+      throw new NotFoundException("there is no sprint with the given id");
+    }
+    return optionalSprint.get();
+  }
 }
