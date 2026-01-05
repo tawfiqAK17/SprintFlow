@@ -35,7 +35,8 @@ public class Project {
   @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
   private List<ProjectMember> projectMembers;
 
-  @OneToOne(mappedBy = "project", cascade = CascadeType.ALL)
+  @OneToOne
+  @JoinColumn(name = "default_epic_id")
   private Epic defaultEpic;
 
   @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
