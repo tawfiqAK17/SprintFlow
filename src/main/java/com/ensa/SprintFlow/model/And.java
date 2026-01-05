@@ -28,9 +28,13 @@ public class And {
   private Long id;
 
   @Column(nullable = false)
-  private String _and;
+  private String andWhat;
 
   @ManyToOne
   @JoinColumn(name = "acceptance_criteria_id")
   private AcceptanceCriteria acceptanceCriteria;
 }
+// The original schema of ands table: (we changed it as this word is reserved)
+/*
+  String and
+*/

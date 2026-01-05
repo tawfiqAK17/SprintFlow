@@ -34,16 +34,16 @@ public class AcceptanceCriteriaService {
     public void updateAcceptanceCriteria(Long criteriaId, AcceptanceCriteriaDto acceptanceCriteriaDto){
         AcceptanceCriteria newAcceptanceCriteria = mapper.mapToAcceptanceCriteria( acceptanceCriteriaDto);
         AcceptanceCriteria acceptanceCriteria = acceptanceCriteriaRepository.findById(criteriaId).orElseThrow();
-        if( newAcceptanceCriteria.get_given() != null){
-            acceptanceCriteria.set_given(newAcceptanceCriteria.get_given());
+        if( newAcceptanceCriteria.getGivenWhat() != null){
+            acceptanceCriteria.setGivenWhat( newAcceptanceCriteria.getGivenWhat());
         }
 
-        if ( newAcceptanceCriteria.get_when() != null){
-            acceptanceCriteria.set_when( newAcceptanceCriteria.get_when());
+        if ( newAcceptanceCriteria.getWhenWhat() != null){
+            acceptanceCriteria.setWhenWhat( newAcceptanceCriteria.getWhenWhat());
         }
 
-        if (newAcceptanceCriteria.get_then() != null){
-            acceptanceCriteria.set_then(newAcceptanceCriteria.get_then());
+        if (newAcceptanceCriteria.getThenWhat() != null){
+            acceptanceCriteria.setThenWhat(newAcceptanceCriteria.getThenWhat());
         }
 
         if ( newAcceptanceCriteria.getAnds() != null){

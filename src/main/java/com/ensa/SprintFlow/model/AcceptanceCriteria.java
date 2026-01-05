@@ -24,13 +24,13 @@ public class AcceptanceCriteria {
   private Long id;
 
   @Column(nullable = false)
-  private String _given;
+  private String givenWhat;
 
   @Column(nullable = false)
-  private String _when;
+  private String whenWhat;
 
   @Column(nullable = false)
-  private String _then;
+  private String thenWhat;
 
   @ManyToOne
   @JoinColumn(name = "user_story_id")
@@ -39,3 +39,12 @@ public class AcceptanceCriteria {
   @OneToMany(mappedBy = "acceptanceCriteria", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private List<And> ands;
 }
+// The original schema of acceptance_criteria table: (we changed it as these words are reserved)
+/*
+  String when
+  String when
+  String then
+*/
+
+
+

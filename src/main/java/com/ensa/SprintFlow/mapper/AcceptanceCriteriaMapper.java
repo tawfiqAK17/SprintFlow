@@ -14,28 +14,28 @@ public class AcceptanceCriteriaMapper {
     public AcceptanceCriteria mapToAcceptanceCriteria(AcceptanceCriteriaDto dto){
         List<And> ands = new ArrayList<>();
         for( String and_expression : dto.getAnds()){
-            ands.add( And.builder()._and( and_expression ).build());
+            ands.add( And.builder().andWhat( and_expression ).build());
         }
         
         return AcceptanceCriteria.builder()
-                ._given( dto.getGiven())
-                ._when( dto.getWhen())
+                .givenWhat( dto.getGiven())
+                .whenWhat( dto.getWhen())
                 .ands( ands)
-                ._then(dto.getThen())
+                .thenWhat(dto.getThen())
                 .build();
     }
     
     public AcceptanceCriteriaDto mapToAcceptanceCriteriaDto( AcceptanceCriteria acceptanceCriteria){
         List<String> ands = new ArrayList<>();
         for( And and_expression : acceptanceCriteria.getAnds()){
-            ands.add( and_expression.get_and());
+            ands.add( and_expression.getAndWhat());
         }
         
         return  AcceptanceCriteriaDto.builder()
-                .given( acceptanceCriteria.get_given())
-                .when( acceptanceCriteria.get_when())
+                .given( acceptanceCriteria.getGivenWhat())
+                .when( acceptanceCriteria.getWhenWhat())
                 .ands( ands)
-                .then( acceptanceCriteria.get_then())
+                .then( acceptanceCriteria.getThenWhat())
                 .build();
     }
 }
