@@ -38,4 +38,12 @@ public class AcceptanceCriteriaMapper {
                 .then( acceptanceCriteria.getThenWhat())
                 .build();
     }
+
+    public List<AcceptanceCriteriaDto> mapToAcceptanceCriteriaDto( List<AcceptanceCriteria> criteriaList){
+        List<AcceptanceCriteriaDto> criteriaDtoList = new ArrayList<>();
+        for(AcceptanceCriteria criteria : criteriaList){
+            criteriaDtoList.add( mapToAcceptanceCriteriaDto( criteria));
+        }
+        return criteriaDtoList;
+    }
 }

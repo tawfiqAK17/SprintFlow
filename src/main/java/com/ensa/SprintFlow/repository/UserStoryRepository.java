@@ -32,6 +32,7 @@ public interface UserStoryRepository extends JpaRepository<UserStory, Long> {
             LEFT JOIN FETCH u.epic 
             LEFT JOIN FETCH u.sprint 
             LEFT JOIN FETCH u.userStoryDescription 
+            LEFT JOIN FETCH u.acceptanceCriteria
             WHERE u.id = :id
            """)
     UserStory findUserStory(@Param("id") Long UserStoryId);

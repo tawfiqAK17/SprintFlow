@@ -1,12 +1,17 @@
 package com.ensa.SprintFlow.mapper;
 
 
+import com.ensa.SprintFlow.dto.acceptanceCriteria.AcceptanceCriteriaDto;
 import com.ensa.SprintFlow.dto.userStory.request.UserStoryRequestDto;
 import com.ensa.SprintFlow.dto.userStory.response.UserStoryResponseDto;
+import com.ensa.SprintFlow.model.AcceptanceCriteria;
 import org.springframework.stereotype.Component;
 
 import com.ensa.SprintFlow.model.UserStory;
 import lombok.AllArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Component
@@ -15,6 +20,7 @@ public class UserStoryMapper {
   EpicMapper epicMapper;
   SprintMapper sprintMapper;
   UserStoryDescriptionMapper userStoryDescriptionMapper;
+  AcceptanceCriteriaMapper acceptanceCriteriaMapper;
 
   public UserStoryResponseDto mapToUserStoryResponseDto(UserStory userStory) {
     if (userStory == null){
@@ -27,7 +33,7 @@ public class UserStoryMapper {
             .epic( epicMapper.mapToEpicMetaDataResponseDto( userStory.getEpic()))
             .sprint(sprintMapper.mapToSprintMetaDadaResponseDto( userStory.getSprint()))
             .description( userStoryDescriptionMapper.mapToUserStoryDescriptionDto( userStory.getUserStoryDescription()))
-            // it still to add acceptance criteria
+            .acceptanceCriteria( acceptanceCriteriaMapper.mapToAcceptanceCriteriaDto( userStory.getAcceptanceCriteria()))
             .build();
   }
 
