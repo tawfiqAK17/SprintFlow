@@ -27,11 +27,9 @@ public class SprintController {
   @AuthorizeMember
   @GetMapping("/projects/{projectId}/sprints")
   public ResponseEntity<?> getAllSprints(
-      @RequestParam LocalDateTime startDate,
-      @RequestParam LocalDateTime endDate,
-      @RequestParam Boolean active) {
+      @RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate) {
     return ResponseEntity.status(HttpStatus.OK)
-        .body(sprintService.getAllSprints(startDate, endDate, active));
+        .body(sprintService.getAllSprints(startDate, endDate));
   }
 
   @AuthorizeMember

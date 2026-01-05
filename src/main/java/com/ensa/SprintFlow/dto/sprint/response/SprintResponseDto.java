@@ -13,6 +13,5 @@ public class SprintResponseDto {
   private String title;
   private LocalDateTime startDate;
   private LocalDateTime endDate;
-  // private boolean isActive;
   private Integer userStoriesCount;
 }

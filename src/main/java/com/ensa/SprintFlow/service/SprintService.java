@@ -28,15 +28,11 @@ public class SprintService {
     return sprintMapper.maptoSprintResponseDto(sprintRepository.save(sprint));
   }
 
-  public List<SprintResponseDto> getAllSprints(
-      LocalDateTime startDate, LocalDateTime endDate, Boolean active) {
+  public List<SprintResponseDto> getAllSprints(LocalDateTime startDate, LocalDateTime endDate) {
     List<Sprint> sprints = Utils.getUserContext().getProject().getSprints();
-    if (active != null) {
-      // TODO : the isActive property should be added to the sprint model
-    }
 
     if (startDate != null) {
-      sprints = sprints.stream().filter(s -> s.getStartDate().isBefore(startDate)).toList();
+      sprints = sprints.stream().filter(s -> s.getStartDate().isAfter(startDate)).toList();
     }
     if (endDate != null) {
       sprints = sprints.stream().filter(s -> s.getStartDate().isBefore(endDate)).toList();
