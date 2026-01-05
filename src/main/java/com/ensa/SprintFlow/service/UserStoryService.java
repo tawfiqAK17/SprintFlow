@@ -24,8 +24,8 @@ public class UserStoryService {
     private UserStoryRepository userStoryRepository;
     private UserStoryMapper userStoryMapper;
 
-    public List<UserStoryView> getUserStories() {
-        return userStoryRepository.findAllUserStories();
+    public List<UserStoryView> getUserStories( Long epicId, Long sprintId) {
+        return userStoryRepository.findAllUserStories( epicId, sprintId);
     }
 
     public UserStoryResponseDto getUserStory(Long userStoryId) {
