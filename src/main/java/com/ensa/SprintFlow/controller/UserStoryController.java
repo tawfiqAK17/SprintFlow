@@ -18,8 +18,9 @@ public class UserStoryController {
     @GetMapping("/projects/{project_id}/user_stories")
     public ResponseEntity<?> getUserStories(@PathVariable("project_id") Long projectId,
                                             @RequestParam(value = "epic_id", required = false) Long epicId,
-                                            @RequestParam(value = "sprint_id",required = false) Long sprintId) {
-        return ResponseEntity.status( HttpStatus.OK).body( userStoryService.getUserStories( epicId, sprintId));
+                                            @RequestParam(value = "sprint_id",required = false) Long sprintId,
+                                            @RequestParam(value = "unassigned", defaultValue = "false", required = false) Boolean unassigned) {
+        return ResponseEntity.status( HttpStatus.OK).body( userStoryService.getUserStories( epicId, sprintId, unassigned));
     }
     
     @GetMapping("/projects/{project_id}/user_stories/{id}")

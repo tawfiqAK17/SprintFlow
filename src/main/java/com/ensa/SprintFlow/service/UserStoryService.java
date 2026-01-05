@@ -26,8 +26,8 @@ public class UserStoryService {
     private ProjectService projectService;
     private UserStoryMapper userStoryMapper;
 
-    public List<UserStoryView> getUserStories( Long epicId, Long sprintId) {
-        return userStoryRepository.findAllUserStories( epicId, sprintId);
+    public List<UserStoryView> getUserStories( Long epicId, Long sprintId, Boolean unassigned) {
+        return userStoryRepository.findAllUserStories( epicId, sprintId, unassigned);
     }
 
     public UserStoryResponseDto getUserStory(Long userStoryId) {
