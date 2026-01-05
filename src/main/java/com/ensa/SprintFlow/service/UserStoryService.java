@@ -6,6 +6,7 @@ import com.ensa.SprintFlow.dto.userStory.response.UserStoryResponseDto;
 
 import com.ensa.SprintFlow.mapper.UserStoryMapper;
 
+import com.ensa.SprintFlow.model.Epic;
 import com.ensa.SprintFlow.model.UserStory;
 import com.ensa.SprintFlow.model.UserStoryDescription;
 
@@ -22,6 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserStoryService {
     private UserStoryRepository userStoryRepository;
+    private ProjectService projectService;
     private UserStoryMapper userStoryMapper;
 
     public List<UserStoryView> getUserStories( Long epicId, Long sprintId) {
@@ -34,8 +36,10 @@ public class UserStoryService {
         return userStoryResponseDto;
     }
 
-    public void createUserStory(UserStoryRequestDto userStoryDto) {
+    public void createUserStory(Long projectId,UserStoryRequestDto userStoryDto) {
         UserStory userStory = userStoryMapper.mapToUserStory(userStoryDto);
+        Epic defaultEpic = projectService.getProject( projectId).getDefaultEpic();
+        userStory.setEpic( defaultEpic);
         userStoryRepository.saveAndFlush(userStory);
     }
 

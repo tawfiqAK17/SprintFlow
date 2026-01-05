@@ -32,7 +32,7 @@ public class UserStoryController {
     @PostMapping("/projects/{project_id}/user_stories")
     public ResponseEntity<?> createUserStory(@PathVariable("project_id") Long projectId,
                                              @Validated @RequestBody UserStoryRequestDto userStoryRequestDto){
-        userStoryService.createUserStory( userStoryRequestDto);
+        userStoryService.createUserStory( projectId, userStoryRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
