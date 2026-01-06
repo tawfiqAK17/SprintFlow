@@ -5,10 +5,13 @@ import com.ensa.SprintFlow.dto.project.request.ProjectRequestDto;
 import com.ensa.SprintFlow.dto.project.request.ProjectUpdateRequestDto;
 import com.ensa.SprintFlow.dto.project.response.ProjectMetaDataResponseDto;
 import com.ensa.SprintFlow.dto.project.response.ProjectResponseDto;
+import com.ensa.SprintFlow.dto.projectMember.request.ProjectMemberRequestDto;
+import com.ensa.SprintFlow.enums.Role;
 import com.ensa.SprintFlow.mapper.ProjectMapper;
 import com.ensa.SprintFlow.model.Project;
 import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeMember;
 import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeProductOwner;
+import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeScrumMaster;
 import com.ensa.SprintFlow.service.ProjectService;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,5 +74,37 @@ public class ProjectController {
   public ResponseEntity<?> deleteProject(@PathVariable Long id) {
     projectService.deleteProject(id);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
+
+  @AuthorizeScrumMaster
+  @PostMapping("/projects/{projectId}/members")
+  public ResponseEntity<?> addUser(
+      @PathVariable Long projectId, @RequestBody ProjectMemberRequestDto dto) {
+    projectService.saveMember(projectId, dto);
+    return ResponseEntity.status(HttpStatus.CREATED).build();
+  }
+
+  @AuthorizeScrumMaster
+  @PutMapping("/projects/{projectId}/members/{username}/roles")
+  public ResponseEntity<?> addRoleToMember(
+      @PathVariable Long projectId, @PathVariable String username, @RequestBody Role role) {
+    projectService.addRoleToMember(projectId, username, role);
+    return ResponseEntity.status(HttpStatus.CREATED).build();
+  }
+
+  @AuthorizeScrumMaster
+  @DeleteMapping("/projects/{projectId}/members/{username}/roles")
+  public ResponseEntity<?> removeRoleFromMember(
+      @PathVariable Long projectId, @PathVariable String username, @RequestBody Role role) {
+    projectService.removeRoleFromMember(projectId, username, role);
+    return ResponseEntity.status(HttpStatus.CREATED).build();
+  }
+
+  @AuthorizeScrumMaster
+  @DeleteMapping("/projects/{projectId}/members/{username}")
+  public ResponseEntity<?> removeMember(
+      @PathVariable Long projectId, @PathVariable String username) {
+    projectService.removeMember(projectId, username);
+    return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 }

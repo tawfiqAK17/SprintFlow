@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 public class UserAuthorizationService {
   ProjectMemberService projectMemberService;
 
-  public List<Role> getRoles(Long projectId, Long userId) {
+  public List<Role> getRoles(Long projectId, String username) {
     List<ProjectMember> relations =
-        projectMemberService.findAllByUserIdAndProjectId(userId, projectId);
+        projectMemberService.findAllByProjectIdAndUsername(projectId, username);
     List<Role> rols = new ArrayList<>();
     for (ProjectMember relation : relations) {
       rols.add(relation.getUserRole());

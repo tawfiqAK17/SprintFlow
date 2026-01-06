@@ -369,20 +369,20 @@ Get all project members
 
 Add member to project
 
-- **Auth:** Required (Scrum Master or Product Owner)
+- **Auth:** Required (Scrum Master)
 - **Request Body:**
   ```json
   {
-    "user_id": "number (required)",
-    "role": "SCRUM_MASTER|DEVELOPER|TESTER (required)"
+    "username": "string (required)",
+    "role": "DEVELOPER|TESTER (required)"
   }
   ```
 - **Response (201):** Member object
 - **Note:** Cannot add duplicate members. Only one Scrum Master per project.
 
-### PUT `/projects/{project_id}/members/{user_id}`
+### PUT `/projects/{project_id}/members/{username}/roles`
 
-Update member's role
+Add a role to a member
 
 - **Auth:** Required (Scrum Master or Product Owner)
 - **Request Body:**
@@ -393,7 +393,19 @@ Update member's role
   ```
 - **Response (200):** Updated member
 
-### DELETE `/projects/{project_id}/members/{user_id}`
+### DELETE `/projects/{project_id}/members/{username}/roles`
+
+Remove a role from a member
+
+- **Auth:** Required (Scrum Master or Product Owner)
+- **Request Body:**
+  ```json
+  {
+    "role": "Role enum (required)"
+  }
+  ```
+- **Response (204):**
+### DELETE `/projects/{project_id}/members/{username}`
 
 Remove member from project
 

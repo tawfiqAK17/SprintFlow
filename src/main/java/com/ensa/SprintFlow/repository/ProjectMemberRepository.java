@@ -13,9 +13,9 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Lo
 
   List<ProjectMember> findAllByProjectIdAndUserRole(Long projectId, Role role);
 
-  List<ProjectMember> findAllByUserIdAndProjectId(Long userId, Long projectId);
-
   void deleteByProjectIdAndUserRole(Long projectId, Role scrumMaster);
 
   List<ProjectMember> findAllByProjectId(Long projectId);
+
+  List<ProjectMember> findAllByProjectIdAndUserUsername(Long projectId, String username);
 }
