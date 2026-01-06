@@ -11,6 +11,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Iterator;
+
 @Service
 @AllArgsConstructor
 public class AcceptanceCriteriaService {
@@ -32,25 +34,38 @@ public class AcceptanceCriteriaService {
 
     @Transactional
     public void updateAcceptanceCriteria(Long criteriaId, AcceptanceCriteriaDto acceptanceCriteriaDto){
-        AcceptanceCriteria newAcceptanceCriteria = mapper.mapToAcceptanceCriteria( acceptanceCriteriaDto);
+        AcceptanceCriteria criteriaFromDto = mapper.mapToAcceptanceCriteria( acceptanceCriteriaDto);
         AcceptanceCriteria acceptanceCriteria = acceptanceCriteriaRepository.findById(criteriaId).orElseThrow();
-        if( newAcceptanceCriteria.getGivenWhat() != null){
-            acceptanceCriteria.setGivenWhat( newAcceptanceCriteria.getGivenWhat());
+        if( criteriaFromDto.getGivenWhat() != null){
+            acceptanceCriteria.setGivenWhat( criteriaFromDto.getGivenWhat());
         }
 
-        if ( newAcceptanceCriteria.getWhenWhat() != null){
-            acceptanceCriteria.setWhenWhat( newAcceptanceCriteria.getWhenWhat());
+        if ( criteriaFromDto.getWhenWhat() != null){
+            acceptanceCriteria.setWhenWhat( criteriaFromDto.getWhenWhat());
         }
 
-        if (newAcceptanceCriteria.getThenWhat() != null){
-            acceptanceCriteria.setThenWhat(newAcceptanceCriteria.getThenWhat());
+        if (criteriaFromDto.getThenWhat() != null){
+            acceptanceCriteria.setThenWhat(criteriaFromDto.getThenWhat());
         }
 
-        if ( newAcceptanceCriteria.getAnds() != null){
-            for(And and : newAcceptanceCriteria.getAnds()){
-                and.setAcceptanceCriteria( acceptanceCriteria);
+        if ( criteriaFromDto.getAnds() != null){
+            // we remove all old 'and', those aren't anymore in the coming request dto, from 'ands' table
+            // this time, we remove from dto all 'and' that we have already in 'ands' table and they didn't change
+            Iterator<And> iterator = acceptanceCriteria.getAnds().iterator();
+            while ( iterator.hasNext()){
+                And and = iterator.next();
+                if ( !criteriaFromDto.getAnds().contains( and) ){
+                    iterator.remove();
+                }
+                else{
+                    criteriaFromDto.getAnds().remove( and);
+                }
             }
-            acceptanceCriteria.setAnds( newAcceptanceCriteria.getAnds());
+            // we add all remaining 'ands' to 'ands' table ( both new ones and updated ones)
+            for( And and : criteriaFromDto.getAnds()){
+                and.setAcceptanceCriteria( acceptanceCriteria);
+                acceptanceCriteria.getAnds().add( and);
+            }
         }
     }
 

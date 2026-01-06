@@ -2,13 +2,13 @@ package com.ensa.SprintFlow.model;
 
 import jakarta.persistence.*;
 
-import java.util.List;
+import java.util.Set;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.repository.cdi.Eager;
 
 @Entity
 @Table(name = "acceptance_criteria")
@@ -36,8 +36,8 @@ public class AcceptanceCriteria {
   @JoinColumn(name = "user_story_id")
   private UserStory userStory;
 
-  @OneToMany(mappedBy = "acceptanceCriteria", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-  private List<And> ands;
+  @OneToMany(mappedBy = "acceptanceCriteria", cascade = CascadeType.ALL, orphanRemoval = true , fetch = FetchType.EAGER)
+  private Set<And> ands;
 }
 // The original schema of acceptance_criteria table: (we changed it as these words are reserved)
 /*

@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -17,7 +17,7 @@ public class AcceptanceCriteriaDto {
     private String given;
     @NotBlank
     private String when;
-    private List<String> ands;
+    private Set<String> ands;
     @NotBlank
     private String then;
 }

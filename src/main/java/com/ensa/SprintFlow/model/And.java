@@ -14,6 +14,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "ands")
 @Getter
@@ -33,6 +35,19 @@ public class And {
   @ManyToOne
   @JoinColumn(name = "acceptance_criteria_id")
   private AcceptanceCriteria acceptanceCriteria;
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(andWhat);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    And and = (And) o;
+    return Objects.equals(andWhat, and.andWhat);
+  }
 }
 // The original schema of ands table: (we changed it as this word is reserved)
 /*

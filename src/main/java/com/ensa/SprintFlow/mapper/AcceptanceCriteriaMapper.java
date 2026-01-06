@@ -6,13 +6,15 @@ import com.ensa.SprintFlow.model.And;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class AcceptanceCriteriaMapper {
     
     public AcceptanceCriteria mapToAcceptanceCriteria(AcceptanceCriteriaDto dto){
-        List<And> ands = new ArrayList<>();
+        Set<And> ands = new HashSet<>();
         for( String and_expression : dto.getAnds()){
             ands.add( And.builder().andWhat( and_expression ).build());
         }
@@ -26,11 +28,11 @@ public class AcceptanceCriteriaMapper {
     }
     
     public AcceptanceCriteriaDto mapToAcceptanceCriteriaDto( AcceptanceCriteria acceptanceCriteria){
-        List<String> ands = new ArrayList<>();
+        Set<String> ands = new HashSet<>();
         for( And and_expression : acceptanceCriteria.getAnds()){
             ands.add( and_expression.getAndWhat());
         }
-        
+
         return  AcceptanceCriteriaDto.builder()
                 .given( acceptanceCriteria.getGivenWhat())
                 .when( acceptanceCriteria.getWhenWhat())
