@@ -742,15 +742,15 @@ Remove user story from sprint
 
 ### GET `/projects/{project_id}/tasks`
 
-Get all tasks (filtered by role)
+Get all tasks
 
-- **Auth:** Required (must be project member)
+- **Auth:** Required (must be a Scrum Master)
 - **Query Params:**
-  - `sprint_id` (number): Filter by sprint
-  - `user_story_id` (number): Filter by user story
+  - `sprintId` (number): Filter by sprint
+  - `userStoryId` (number): Filter by user story
   - `status` (Status enum): Filter by status
-  - `assigned_to` (number): Filter by assignee
-  - `my_tasks` (boolean): Show only user's tasks
+  - `developer` (string): Filter by developer
+  - `tester` (string): Filter by tester
 - **Response (200):**
   ```json
   [
@@ -763,16 +763,44 @@ Get all tasks (filtered by role)
         "id": "number",
         "title": "string"
       },
-      "assigned_to": {
-        "id": "number",
+      "developer": {
+        "username": "string",
+        "first_name": "string",
+        "last_name": "string"
+      },
+      "tester": {
+        "username": "string",
         "first_name": "string",
         "last_name": "string"
       }
     }
   ]
   ```
+### GET `/projects/{project_id}/tasks/me`
 
-### POST `/projects/{project_id}/tasks`
+Get all tasks assigned to current user.
+
+- **Auth:** Required (must be Developer or Tester)
+- **Query Params:**
+  - `sprintId` (number): Filter by sprint
+  - `userStoryId` (number): Filter by user story
+  - `status` (Status enum): Filter by status
+- **Response (200):**
+  ```json
+  [
+    {
+      "id": "number",
+      "title": "string",
+      "description": "string",
+      "status": "Status enum",
+      "user_story": {
+        "id": "number",
+        "title": "string"
+      }
+    }
+  ]
+  ```
+### POST `/projects/{project_id}/user_stories/{user_story_id}/tasks`
 
 Create task
 
@@ -782,18 +810,18 @@ Create task
   {
     "title": "string (required)",
     "description": "string (required)",
-    "user_story_id": "number (required)",
-    "assigned_to_id": "number (optional)"
+    "developer": "string (optional)",
+    "tester": "string (optional)"
   }
   ```
 - **Response (201):** Created task
-- **Validation:** User story must be in an active sprint
+- **Validation:** User story must be in a sprint
 
-### GET `/projects/{project_id}/tasks/{task_id}`
+### GET `/projects/{project_id}/user_stories/{user_story_id}/tasks/{task_id}`
 
 Get task details
 
-- **Auth:** Required (must be project member)
+- **Auth:** Required ( Must be a Scrum Master )
 - **Response (200):**
   ```json
   {
@@ -801,46 +829,119 @@ Get task details
     "title": "string",
     "description": "string",
     "status": "Status enum",
-    "user_story": { ... },
-    "assigned_to": { ... },
+    "user_story": {
+        "id": "number",
+        "title": "string"
+      },
+    "developer": {
+      "username": "string",
+      "first_name": "string",
+      "last_name": "string"
+    },
+    "tester": {
+      "username": "string",
+      "first_name": "string",
+      "last_name": "string"
+    },
     "reports": [
       {
         "id": "number",
         "description": "string",
-        "status": "Status enum (TESTED | DONE)",
         "created_by": {
-          "id": "number",
+          "username": "string",
           "first_name": "string",
-          "last_name": "string",
-          "role": "TESTER | DEVELOPER"
+          "last_name": "string"
         },
-        "created_at": "datetime"
+        "creation_date": "datetime"
       }
     ]
   }
   ```
 
-### PUT `/projects/{project_id}/tasks/{task_id}`
+### GET `/projects/{project_id}/user_stories/{user_story_id}/tasks/me/{task_id}`
+
+Get user task details
+
+- **Auth:** Required ( Must be Developer or Tester)
+- **Response (200):**
+  ```json
+  {
+    "id": "number",
+    "title": "string",
+    "description": "string",
+    "status": "Status enum",
+    "user_story": {
+        "id": "number",
+        "title": "string"
+      },
+    "reports": [
+      {
+        "id": "number",
+        "description": "string",
+        "created_by": {
+          "username": "string",
+          "first_name": "string",
+          "last_name": "string"
+        },
+        "creation_date": "datetime"
+      }
+    ]
+  }
+  ```
+  
+### PUT `/projects/{project_id}/user_stories/{user_story_id}/tasks/{task_id}`
 
 Update task
 
 - **Auth:** Required (role-based)
   - **Scrum Master:** Can update all fields
-  - **Developer:** Can update status (TODO → IN_PROGRESS → TO_BE_TESTED)
-  - **Tester:** Can update status (TO_BE_TESTED → TESTED or IN_PROGRESS with report)
 - **Request Body:**
   ```json
   {
-    "title": "string (SM only)",
-    "description": "string (SM only)",
-    "status": "Status enum (required)",
-    "assigned_to_id": "number (SM only)"
+    "title": "string ",
+    "description": "string ",
+    "status": "Status enum",
+    "developer": "string",
+    "tester": "string"
   }
   ```
 - **Response (200):** Updated task
 - **Validation:** Status transitions follow workflow rules
 
-### DELETE `/projects/{project_id}/tasks/{task_id}`
+### PUT `/projects/{project_id}/user_stories/{user_story_id}/tasks/{task_id}/developer`
+
+Update task status (for developer)
+
+- **Auth:** Required 
+  - **Developer:** Can update status (TODO → IN_PROGRESS → TO_BE_TESTED)
+- **Request Body:**
+  ```json
+  {
+    "status": "Status enum"
+  }
+  ```
+- **Response (200):** Updated task
+- **Validation:** Status transitions follow workflow rules
+
+### PUT `/projects/{project_id}/user_stories/{user_story_id}/tasks/{task_id}/tester`
+
+Update task status (for tester)
+
+- **Auth:** Required
+  - **Tester:** Can update status (TO_BE_TESTED → TESTED or IN_PROGRESS with report)
+- **Request Body:**
+ ```json
+  {
+    "status": "Status enum",
+    "report": {
+      "description": "string", 
+    }(optional)
+  }
+  ```
+- **Response (200):** Updated task
+- **Validation:** Status transitions follow workflow rules
+
+### DELETE `/projects/{project_id}/user_stories/{user_story_id}/tasks/{task_id}`
 
 Delete task
 

@@ -52,5 +52,8 @@ public class UserStory {
   private UserStoryDescription userStoryDescription;
 
   @OneToMany(mappedBy = "userStory", cascade = CascadeType.ALL)
+  private List<AcceptanceCriteria> acceptanceCriteria;
+
+  @OneToMany(mappedBy = "userStory", cascade = CascadeType.ALL)
   private List<Task> tasks;
 }

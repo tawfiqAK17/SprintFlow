@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.ensa.SprintFlow.dto.request.LoginRequestDto;
-import com.ensa.SprintFlow.dto.response.LoginResponseDto;
+import com.ensa.SprintFlow.security.dto.request.LoginRequestDto;
+import com.ensa.SprintFlow.security.dto.response.LoginResponseDto;
 import com.ensa.SprintFlow.security.service.LoginService;
 
 import lombok.AllArgsConstructor;
