@@ -79,4 +79,12 @@ public class ProjectMemberService {
   public void deleteRelation(Long id) {
     projectMemberRepository.deleteById(id);
   }
+
+  public List<ProjectMember> findAllByProjectIdAndUserRole(Long projectId, Role role) {
+    return projectMemberRepository.findAllByProjectIdAndUserRole(projectId, role);
+  }
+
+  public List<ProjectMember> findAllByProjectId(Long projectId) {
+    return projectMemberRepository.findAllByProjectId(projectId);
+  }
 }

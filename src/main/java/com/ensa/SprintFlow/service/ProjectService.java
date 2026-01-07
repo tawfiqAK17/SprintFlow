@@ -3,9 +3,11 @@ package com.ensa.SprintFlow.service;
 import com.ensa.SprintFlow.dto.project.request.ProjectRequestDto;
 import com.ensa.SprintFlow.dto.project.request.ProjectUpdateRequestDto;
 import com.ensa.SprintFlow.dto.projectMember.request.ProjectMemberRequestDto;
+import com.ensa.SprintFlow.dto.projectMember.response.ProjectMemberResponseDto;
 import com.ensa.SprintFlow.enums.Role;
 import com.ensa.SprintFlow.exception.generalException.NotFoundException;
 import com.ensa.SprintFlow.mapper.ProjectMapper;
+import com.ensa.SprintFlow.mapper.ProjectMemberMapper;
 import com.ensa.SprintFlow.model.Epic;
 import com.ensa.SprintFlow.model.Project;
 import com.ensa.SprintFlow.model.ProjectMember;
@@ -28,6 +30,7 @@ public class ProjectService {
   private ProjectRepository projectRepository;
   ProjectMemberService projectMemberService;
   private EpicService epicService;
+  private ProjectMemberMapper projectMemberMapper;
 
   @Transactional
   public Project save(ProjectRequestDto dto) {
@@ -131,5 +134,16 @@ public class ProjectService {
     List<ProjectMember> memberRelations =
         projectMemberService.findAllByProjectIdAndUsername(projectId, username);
     memberRelations.stream().forEach(m -> projectMemberService.deleteRelation(m.getId()));
+  }
+
+  public List<ProjectMemberResponseDto> getProjectMembers(Long projectId, Role role) {
+    if (role != null) {
+      return projectMemberService.findAllByProjectIdAndUserRole(projectId, role).stream()
+          .map(p -> projectMemberMapper.mapToProjectMemberResponseDto(p))
+          .toList();
+    }
+    return projectMemberService.findAllByProjectId(projectId).stream()
+        .map(p -> projectMemberMapper.mapToProjectMemberResponseDto(p))
+        .toList();
   }
 }

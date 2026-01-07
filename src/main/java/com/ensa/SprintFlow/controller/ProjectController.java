@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
@@ -74,6 +75,13 @@ public class ProjectController {
   public ResponseEntity<?> deleteProject(@PathVariable Long id) {
     projectService.deleteProject(id);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
+
+  @AuthorizeMember
+  @GetMapping("/projects/{projectId}/members")
+  public ResponseEntity<?> getAllMembers(@RequestParam Role role, @PathVariable Long projectId) {
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(projectService.getProjectMembers(projectId, role));
   }
 
   @AuthorizeScrumMaster

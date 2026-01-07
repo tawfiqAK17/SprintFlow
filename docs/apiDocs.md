@@ -363,7 +363,18 @@ Get all project members
 - **Auth:** Required (must be project member)
 - **Query Params:**
   - `role` (Role enum): Filter by role
-- **Response (200):** Array of members with user info and role
+- **Response (200):**
+  ```json
+  [
+    {
+      "username": "string",
+      "first_name": "string",
+      "last_name": "string",
+      "email": "string",
+      "role": "Role enum"
+    }
+  ]
+  ```
 
 ### POST `/projects/{project_id}/members`
 
@@ -405,6 +416,7 @@ Remove a role from a member
   }
   ```
 - **Response (204):**
+
 ### DELETE `/projects/{project_id}/members/{username}`
 
 Remove member from project
