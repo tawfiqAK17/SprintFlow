@@ -90,7 +90,8 @@ public class ProjectAuthorizationAspect {
         (UserContext) (SecurityContextHolder.getContext().getAuthentication().getPrincipal());
     // get the user roles in the project
     List<Role> userRoles =
-        userAuthorizationService.getRoles(userContext.getProject().getId(), userContext.getId());
+        userAuthorizationService.getRoles(
+            userContext.getProject().getId(), userContext.getUsername());
     for (Role role : roles) {
       if (userRoles.contains(role)) {
         return true;

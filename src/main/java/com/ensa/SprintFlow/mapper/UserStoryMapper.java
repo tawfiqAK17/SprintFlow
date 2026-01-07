@@ -1,18 +1,11 @@
 package com.ensa.SprintFlow.mapper;
 
-
 import com.ensa.SprintFlow.dto.acceptanceCriteria.AcceptanceCriteriaDto;
 import com.ensa.SprintFlow.dto.userStory.request.UserStoryRequestDto;
 import com.ensa.SprintFlow.dto.userStory.response.UserStoryResponseDto;
-import com.ensa.SprintFlow.model.AcceptanceCriteria;
-import org.springframework.stereotype.Component;
-
 import com.ensa.SprintFlow.model.UserStory;
 import lombok.AllArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
@@ -23,26 +16,41 @@ public class UserStoryMapper {
   AcceptanceCriteriaMapper acceptanceCriteriaMapper;
 
   public UserStoryResponseDto mapToUserStoryResponseDto(UserStory userStory) {
-    if (userStory == null){
+    if (userStory == null) {
       return null;
     }
     return UserStoryResponseDto.builder()
-            .id(userStory.getId())
-            .title(userStory.getTitle())
-            .priority(userStory.getPriority())
-            .epic( epicMapper.mapToEpicMetaDataResponseDto( userStory.getEpic()))
-            .sprint(sprintMapper.mapToSprintMetaDadaResponseDto( userStory.getSprint()))
-            .description( userStoryDescriptionMapper.mapToUserStoryDescriptionDto( userStory.getUserStoryDescription()))
-            .acceptanceCriteria( acceptanceCriteriaMapper.mapToAcceptanceCriteriaDto( userStory.getAcceptanceCriteria()))
-            .build();
+        .id(userStory.getId())
+        .title(userStory.getTitle())
+        .priority(userStory.getPriority())
+        .epic(epicMapper.mapToEpicMetaDataResponseDto(userStory.getEpic()))
+        .sprint(sprintMapper.mapToSprintMetaDadaResponseDto(userStory.getSprint()))
+        .description(
+            userStoryDescriptionMapper.mapToUserStoryDescriptionDto(
+                userStory.getUserStoryDescription()))
+        // it still to add acceptance criteria
+        .build();
   }
 
-  public UserStory mapToUserStory(UserStoryRequestDto dto){
+  public UserStoryMetaDataResponseDto mapToUserStoryMetaDataResponseDto(UserStoryView userStory) {
+    if (userStory == null) {
+      return null;
+    }
+    return UserStoryMetaDataResponseDto.builder()
+        .id(userStory.id())
+        .title(userStory.title())
+        .priority(userStory.priority())
+        .epic(epicMapper.mapToEpicMetaDataResponseDto(userStory.epicView()))
+        .sprint(sprintMapper.mapToSprintMetaDadaResponseDto(userStory.sprintView()))
+        .build();
+  }
+
+  public UserStory mapToUserStory(UserStoryRequestDto dto) {
     return UserStory.builder()
-            .title( dto.getTitle())
-            .priority( dto.getPriority())
-            .userStoryDescription( userStoryDescriptionMapper.mapToUserStoryDescription(dto.getDescription()))
-            .build();
+        .title(dto.getTitle())
+        .priority(dto.getPriority())
+        .userStoryDescription(
+            userStoryDescriptionMapper.mapToUserStoryDescription(dto.getDescription()))
+        .build();
   }
-
 }

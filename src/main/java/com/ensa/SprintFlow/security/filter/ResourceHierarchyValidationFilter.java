@@ -5,9 +5,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
-
 import java.io.IOException;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -23,7 +22,7 @@ public class ResourceHierarchyValidationFilter extends OncePerRequestFilter {
     String url = request.getRequestURI();
     String queryParams = request.getQueryString();
     if (queryParams != null) {
-      url += queryParams;
+      url += "?" + queryParams;
     }
     validator.validate(url);
 
