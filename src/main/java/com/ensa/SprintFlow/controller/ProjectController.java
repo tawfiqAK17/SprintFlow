@@ -78,7 +78,7 @@ public class ProjectController {
 
   @AuthorizeScrumMaster
   @PostMapping("/projects/{projectId}/members")
-  public ResponseEntity<?> addUser(
+  public ResponseEntity<?> addMember(
       @PathVariable Long projectId, @RequestBody ProjectMemberRequestDto dto) {
     projectService.saveMember(projectId, dto);
     return ResponseEntity.status(HttpStatus.CREATED).build();

@@ -118,12 +118,12 @@ public class ProjectService {
         projectMemberService.findAllByProjectIdAndUsername(projectId, username);
     ProjectMember projectMember =
         projectMembers.stream()
-            .filter(p -> p.getUser().getUsername().equals(username))
+            .filter(p -> p.getUser().getUsername().equals(username) && p.getUserRole().equals(role))
             .findFirst()
             .orElseThrow(
                 () ->
                     new NotFoundException(
-                        "the project does not have any member with the given username"));
+                        "the project does not have any member with the given username and role"));
     projectMemberService.deleteRelation(projectMember.getId());
   }
 

@@ -2,6 +2,7 @@ package com.ensa.SprintFlow.service;
 
 import com.ensa.SprintFlow.dto.projectMember.request.ProjectMemberRequestDto;
 import com.ensa.SprintFlow.enums.Role;
+import com.ensa.SprintFlow.exception.generalException.DataIntegrityViolationException;
 import com.ensa.SprintFlow.exception.generalException.UnauthorizedException;
 import com.ensa.SprintFlow.model.Project;
 import com.ensa.SprintFlow.model.ProjectMember;
@@ -20,6 +21,11 @@ public class ProjectMemberService {
   public ProjectMember saveAny(Project project, String username, Role role) {
     ProjectMember projectMember = new ProjectMember();
     User user = userService.findByUsername(username);
+    if (!projectMemberRepository
+        .findByProjectIdAndUserUsernameAndUserRole(project.getId(), username, role)
+        .isEmpty()) {
+      throw new DataIntegrityViolationException("the user is already a member in the project");
+    }
     projectMember.setUser(user);
     projectMember.setProject(project);
     projectMember.setUserRole(role);

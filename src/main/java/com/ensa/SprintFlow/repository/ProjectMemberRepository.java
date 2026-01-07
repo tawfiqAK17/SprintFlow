@@ -3,6 +3,7 @@ package com.ensa.SprintFlow.repository;
 import com.ensa.SprintFlow.enums.Role;
 import com.ensa.SprintFlow.model.ProjectMember;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,4 +19,7 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Lo
   List<ProjectMember> findAllByProjectId(Long projectId);
 
   List<ProjectMember> findAllByProjectIdAndUserUsername(Long projectId, String username);
+
+  Optional<ProjectMember> findByProjectIdAndUserUsernameAndUserRole(
+      Long id, String username, Role role);
 }
