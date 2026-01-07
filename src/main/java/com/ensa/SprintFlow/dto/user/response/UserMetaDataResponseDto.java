@@ -1,4 +1,4 @@
-package com.ensa.SprintFlow.dto.response;
+package com.ensa.SprintFlow.dto.user.response;
 
 import lombok.Builder;
 import lombok.Getter;

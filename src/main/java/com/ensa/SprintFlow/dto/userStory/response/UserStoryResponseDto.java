@@ -1,12 +1,15 @@
 package com.ensa.SprintFlow.dto.userStory.response;
 
 
+import com.ensa.SprintFlow.dto.acceptanceCriteria.AcceptanceCriteriaDto;
 import com.ensa.SprintFlow.dto.epic.response.EpicMetaDataResponseDto;
 import com.ensa.SprintFlow.dto.sprint.response.SprintMetaDataResponseDto;
 import com.ensa.SprintFlow.dto.userStoryDescription.UserStoryDescriptionDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Builder
 @Getter
@@ -18,5 +21,5 @@ public class UserStoryResponseDto {
     private EpicMetaDataResponseDto epic;
     private SprintMetaDataResponseDto sprint;
     private UserStoryDescriptionDto description;
-    // it still to add List<AcceptanceCriteriaDto>
+    private List<AcceptanceCriteriaDto> acceptanceCriteria;
 }

@@ -1,10 +1,9 @@
 package com.ensa.SprintFlow.mapper;
 
+import com.ensa.SprintFlow.dto.acceptanceCriteria.AcceptanceCriteriaDto;
 import com.ensa.SprintFlow.dto.userStory.request.UserStoryRequestDto;
-import com.ensa.SprintFlow.dto.userStory.response.UserStoryMetaDataResponseDto;
 import com.ensa.SprintFlow.dto.userStory.response.UserStoryResponseDto;
 import com.ensa.SprintFlow.model.UserStory;
-import com.ensa.SprintFlow.repository.projection.UserStoryView;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +13,7 @@ public class UserStoryMapper {
   EpicMapper epicMapper;
   SprintMapper sprintMapper;
   UserStoryDescriptionMapper userStoryDescriptionMapper;
+  AcceptanceCriteriaMapper acceptanceCriteriaMapper;
 
   public UserStoryResponseDto mapToUserStoryResponseDto(UserStory userStory) {
     if (userStory == null) {

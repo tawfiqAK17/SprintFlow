@@ -33,6 +33,4 @@ public class UserStoryDescription {
   @Column(nullable = false)
   private String forDesc;
 
-  @OneToMany(mappedBy = "userStoryDescription", cascade = CascadeType.ALL)
-  private List<AcceptanceCriteria> acceptanceCriteria;
 }

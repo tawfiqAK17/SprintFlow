@@ -52,6 +52,7 @@ public class ProjectService {
             Epic.builder()
                 .title("Global Epic")
                 .description("the default epic for the project")
+                .project( project)
                 .build());
     project.setDefaultEpic(defaultEpic);
     return project;

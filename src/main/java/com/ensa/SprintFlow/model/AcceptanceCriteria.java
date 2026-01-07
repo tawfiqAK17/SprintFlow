@@ -1,16 +1,9 @@
 package com.ensa.SprintFlow.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import java.util.List;
+import jakarta.persistence.*;
+
+import java.util.Set;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,18 +24,27 @@ public class AcceptanceCriteria {
   private Long id;
 
   @Column(nullable = false)
-  private String given;
+  private String givenWhat;
 
   @Column(nullable = false)
-  private String when;
+  private String whenWhat;
 
   @Column(nullable = false)
-  private String then;
+  private String thenWhat;
 
   @ManyToOne
-  @JoinColumn(name = "user_story_description_id")
-  private UserStoryDescription userStoryDescription;
+  @JoinColumn(name = "user_story_id")
+  private UserStory userStory;
 
-  @OneToMany(mappedBy = "acceptanceCriteria", cascade = CascadeType.ALL)
-  private List<And> ands;
+  @OneToMany(mappedBy = "acceptanceCriteria", cascade = CascadeType.ALL, orphanRemoval = true , fetch = FetchType.EAGER)
+  private Set<And> ands;
 }
+// The original schema of acceptance_criteria table: (we changed it as these words are reserved)
+/*
+  String when
+  String when
+  String then
+*/
+
+
+
