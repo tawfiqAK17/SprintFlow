@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ensa.SprintFlow.dto.request.RegisterRequestDto;
+import com.ensa.SprintFlow.security.dto.request.RegisterRequestDto;
 import com.ensa.SprintFlow.mapper.RegisterMapper;
 import com.ensa.SprintFlow.model.User;
 import com.ensa.SprintFlow.security.service.RegisterService;

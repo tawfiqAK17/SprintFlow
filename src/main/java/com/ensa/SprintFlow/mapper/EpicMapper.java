@@ -22,32 +22,23 @@ public class EpicMapper {
         .build();
   }
 
-  // Abdessalam implementation
-  public EpicMetaDataResponseDto mapToEpicMetaDataResponseDto(Epic epic) {
-    if (epic == null){
-      return null;
-    }
-    return EpicMetaDataResponseDto.builder()
-            .title(epic.getTitle())
-            .id(epic.getId()).build();
-  }
-
-  public EpicMetaDataResponseDto mapToEpicMetaDataResponseDto(EpicView epic) {
-    if (epic == null){
-      return null;
-    }
-    return EpicMetaDataResponseDto.builder()
-          .title(epic.title())
-          .id(epic.id()).build();
+    public EpicMetaDataResponseDto mapToEpicMetaDataResponseDto(Epic epic) {
+        if (epic == null){
+            return null;
+        }
+        return EpicMetaDataResponseDto.builder()
+                .title(epic.getTitle())
+                .id(epic.getId()).build();
     }
 
-  public EpicResponseDto mapToEpicResponseDto(Epic epic) {
+
+    public EpicResponseDto mapToEpicResponseDto(Epic epic) {
     return EpicResponseDto.builder()
         .description(epic.getDescription())
         .title(epic.getTitle())
         .id(epic.getId())
         .userStoriesCount(0L) // TODO should be counted
         .build();
-  }
+    }
 
 }
