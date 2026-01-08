@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 
 @Component
-public class ValidateEpicInProjectStrategy extends ResourceHierarchyValidationStrategy {
+public class ValidateEpicInProjectStrategy extends ResourceHierarchyValidationStrategy<Long, Long> {
 
   ProjectService projectService;
 

@@ -4,7 +4,7 @@ import com.ensa.SprintFlow.exception.generalException.NotFoundException;
 import com.ensa.SprintFlow.service.SprintService;
 import org.springframework.util.AntPathMatcher;
 
-public class ValidateUserStroryInSprintStrategy extends ResourceHierarchyValidationStrategy {
+public class ValidateUserStroryInSprintStrategy extends ResourceHierarchyValidationStrategy<Long, Long> {
 
   SprintService sprintService;
   ValidateSprintInProjectStrategy validateSprintInProjectStrategy;
