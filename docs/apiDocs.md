@@ -506,6 +506,28 @@ Delete epic (removes epic association from user stories)
 - **Auth:** Required (Product Owner only)
 - **Response (204):** No content
 
+
+### POST `/projects/{projectId}/epics/{epicId}/user_stories`
+
+add user stories to epic 
+
+- **Auth:** Required (Product Owner only)
+- **Request Body:**
+  ```json
+  {
+    "user_story_ids": ["number array (required)"]
+  }
+  ```
+- **Response (200):** Updated sprint
+- **Validation:** User stories must exist and not already in another sprint
+
+### DELETE `/projects/{projectId}/epics/{epicId}/user_stories/{user_story_id}`
+
+Remove user story from epic 
+
+- **Auth:** Required (Scrum Master only)
+- **Response (204):** No content
+
 ---
 
 ## 6. USER STORIES

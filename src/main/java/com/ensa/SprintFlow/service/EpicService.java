@@ -6,7 +6,9 @@ import com.ensa.SprintFlow.exception.generalException.NotFoundException;
 import com.ensa.SprintFlow.mapper.EpicMapper;
 import com.ensa.SprintFlow.model.Epic;
 import com.ensa.SprintFlow.model.Project;
+import com.ensa.SprintFlow.model.UserStory;
 import com.ensa.SprintFlow.repository.EpicRepository;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
@@ -18,6 +20,7 @@ public class EpicService {
 
   private EpicRepository epicRepository;
   private EpicMapper mapper;
+  private UserStoryService userStoryService;
 
   public Epic save(Epic epic) {
     return epicRepository.save(epic);
@@ -58,5 +61,30 @@ public class EpicService {
 
   public void delete(Long epicId) {
     epicRepository.deleteById(epicId);
+  }
+
+  @Transactional
+  public void addUserStories(Long epicId, List<Long> userStoriesIds) {
+    Optional<Epic> optionalEpic = epicRepository.findById(epicId);
+    if (optionalEpic.isEmpty()) {
+      throw new NotFoundException("there is no epic with the given id");
+    }
+    Epic epic = optionalEpic.get();
+    List<UserStory> epicUserStories = epic.getUserStories();
+    List<UserStory> userStories = userStoryService.findAllByIds(userStoriesIds);
+    for (UserStory userStory : userStories) {
+      epicUserStories.add(userStory);
+    }
+  }
+
+  @Transactional
+  public void removeUserStory(Long epicId, Long userStoryId) {
+    Optional<Epic> optionalEpic = epicRepository.findById(epicId);
+    if (optionalEpic.isEmpty()) {
+      throw new NotFoundException("there is no sprint with the given id");
+    }
+    Epic epic = optionalEpic.get();
+    List<UserStory> sprintUserStories = epic.getUserStories();
+    sprintUserStories.stream().filter(u -> u.getId() != userStoryId);
   }
 }
