@@ -36,10 +36,6 @@ public class UserStory {
   private Integer priority;
 
   @ManyToOne
-  @JoinColumn(name = "project_id")
-  private Project project;
-
-  @ManyToOne
   @JoinColumn(name = "sprint_id")
   private Sprint sprint;
 

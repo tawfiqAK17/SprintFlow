@@ -11,7 +11,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 @AllArgsConstructor
-public abstract class ResourceHierarchyValidationStrategy<T, U> {
+public abstract class ResourceHierarchyValidationStrategy {
   protected AntPathMatcher pathMatcher;
 
   protected abstract String getUrlPattern();
@@ -44,8 +44,6 @@ public abstract class ResourceHierarchyValidationStrategy<T, U> {
   }
 
   public abstract void validate(String url);
-
-  public abstract void validate(T parent, U child);
 
   protected String getPathVariable(String url, String variable) {
     Map<String, String> pathVariables =

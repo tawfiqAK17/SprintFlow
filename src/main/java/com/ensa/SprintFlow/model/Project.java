@@ -44,7 +44,4 @@ public class Project {
 
   @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
   private List<Sprint> sprints;
-
-  @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-  private List<UserStory> userStories;
 }

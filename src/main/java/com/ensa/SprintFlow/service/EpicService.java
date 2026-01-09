@@ -87,4 +87,12 @@ public class EpicService {
     List<UserStory> sprintUserStories = epic.getUserStories();
     sprintUserStories.stream().filter(u -> u.getId() != userStoryId);
   }
+
+  public Epic findById(Long epicId) {
+    Optional<Epic> optionalEpic = epicRepository.findById(epicId);
+    if (optionalEpic.isEmpty()) {
+      throw new NotFoundException("there is no epic with the given name");
+    }
+    return optionalEpic.get();
+  }
 }
