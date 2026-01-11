@@ -1,18 +1,13 @@
 package com.ensa.SprintFlow.mapper;
 
 
-import com.ensa.SprintFlow.dto.acceptanceCriteria.AcceptanceCriteriaDto;
 import com.ensa.SprintFlow.dto.userStory.request.UserStoryRequestDto;
+import com.ensa.SprintFlow.dto.userStory.response.UserStoryMetaDataResponseDto;
 import com.ensa.SprintFlow.dto.userStory.response.UserStoryResponseDto;
-import com.ensa.SprintFlow.model.AcceptanceCriteria;
 import org.springframework.stereotype.Component;
 
 import com.ensa.SprintFlow.model.UserStory;
 import lombok.AllArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 @Component
 @AllArgsConstructor
@@ -34,6 +29,13 @@ public class UserStoryMapper {
             .sprint(sprintMapper.mapToSprintMetaDadaResponseDto( userStory.getSprint()))
             .description( userStoryDescriptionMapper.mapToUserStoryDescriptionDto( userStory.getUserStoryDescription()))
             .acceptanceCriteria( acceptanceCriteriaMapper.mapToAcceptanceCriteriaDto( userStory.getAcceptanceCriteria()))
+            .build();
+  }
+
+  public UserStoryMetaDataResponseDto mapToUserStoryMetaDataResponseDto( UserStory userStory){
+    return UserStoryMetaDataResponseDto.builder()
+            .id(userStory.getId())
+            .title( userStory.getTitle())
             .build();
   }
 
