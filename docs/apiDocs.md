@@ -762,16 +762,6 @@ Get all tasks
       "user_story": {
         "id": "number",
         "title": "string"
-      },
-      "developer": {
-        "username": "string",
-        "first_name": "string",
-        "last_name": "string"
-      },
-      "tester": {
-        "username": "string",
-        "first_name": "string",
-        "last_name": "string"
       }
     }
   ]
@@ -821,7 +811,7 @@ Create task
 
 Get task details
 
-- **Auth:** Required ( Must be a Scrum Master )
+- **Auth:** Required ( Must be a Scrum Master , Developer or Tester assigned to this task)
 - **Response (200):**
   ```json
   {
@@ -857,38 +847,7 @@ Get task details
     ]
   }
   ```
-
-### GET `/projects/{project_id}/user_stories/{user_story_id}/tasks/me/{task_id}`
-
-Get user task details
-
-- **Auth:** Required ( Must be Developer or Tester)
-- **Response (200):**
-  ```json
-  {
-    "id": "number",
-    "title": "string",
-    "description": "string",
-    "status": "Status enum",
-    "user_story": {
-        "id": "number",
-        "title": "string"
-      },
-    "reports": [
-      {
-        "id": "number",
-        "description": "string",
-        "created_by": {
-          "username": "string",
-          "first_name": "string",
-          "last_name": "string"
-        },
-        "creation_date": "datetime"
-      }
-    ]
-  }
-  ```
-  
+ 
 ### PUT `/projects/{project_id}/user_stories/{user_story_id}/tasks/{task_id}`
 
 Update task
@@ -908,27 +867,15 @@ Update task
 - **Response (200):** Updated task
 - **Validation:** Status transitions follow workflow rules
 
-### PUT `/projects/{project_id}/user_stories/{user_story_id}/tasks/{task_id}/developer`
 
-Update task status (for developer)
-
-- **Auth:** Required 
-  - **Developer:** Can update status (TODO → IN_PROGRESS → TO_BE_TESTED)
-- **Request Body:**
-  ```json
-  {
-    "status": "Status enum"
-  }
-  ```
-- **Response (200):** Updated task
-- **Validation:** Status transitions follow workflow rules
-
-### PUT `/projects/{project_id}/user_stories/{user_story_id}/tasks/{task_id}/tester`
+### PUT `/projects/{project_id}/user_stories/{user_story_id}/tasks/{task_id}/status`
 
 Update task status (for tester)
 
 - **Auth:** Required
-  - **Tester:** Can update status (TO_BE_TESTED → TESTED or IN_PROGRESS with report)
+  - **Tester:** Can update status (TO_BE_TESTED → TESTED or TEST_FAILED with report)
+  - **Developer:** Can update status (TODO → IN_PROGRESS or TEST_FAILED → IN_PROGRESS)
+  - **Scrum Master:** Can update status (TODO → IN_PROGRESS → TO_BE_TESTED → TESTED or TEST_FAILED → DONE)
 - **Request Body:**
  ```json
   {

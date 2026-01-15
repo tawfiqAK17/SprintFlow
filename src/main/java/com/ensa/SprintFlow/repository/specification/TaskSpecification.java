@@ -38,8 +38,7 @@ public class TaskSpecification {
 
     public static Specification<Task>  assignedToDeveloper(String developerUserName){
         return (root, query, criteriaBuilder) -> {
-
-            Join<Task,User> developer = root.join("developer", JoinType.LEFT);
+            Join<Task,User> developer = root.join("developer");
             return criteriaBuilder.equal( developer.get("username"), developerUserName);
         };
     }

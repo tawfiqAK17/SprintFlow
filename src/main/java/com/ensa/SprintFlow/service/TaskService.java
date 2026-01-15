@@ -41,10 +41,12 @@ public class TaskService {
         System.out.println( dto.getStatus());
         User developer = null;
         if( dto.getDeveloper() != null){
+            // verify if the user is developer in project or not using projectMemberService
             developer = userService.findByUsername( dto.getDeveloper());
         }
         User tester = null;
         if( dto.getTester() != null){
+            // verify if the user is developer in project or not using projectMemberService
             tester = userService.findByUsername( dto.getTester());
         }
         UserStory userStory = userStoryService.findUserStory( userStoryId);
@@ -183,5 +185,9 @@ public class TaskService {
             report.setDescription(dto.getReportDescription());
             task.getReports().add( report);
         }
+    }
+
+    public void deleteTask(Long taskId){
+        taskRepository.deleteById( taskId);
     }
 }
