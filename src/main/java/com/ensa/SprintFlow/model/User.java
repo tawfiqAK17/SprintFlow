@@ -52,7 +52,4 @@ public class User {
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<ProjectMember> projectMembers;
-
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-  private List<Report> reports;
 }

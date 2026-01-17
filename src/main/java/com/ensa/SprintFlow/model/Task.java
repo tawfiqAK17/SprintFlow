@@ -2,20 +2,9 @@ package com.ensa.SprintFlow.model;
 
 import java.util.List;
 
-import com.ensa.SprintFlow.enums.Status;
+import com.ensa.SprintFlow.enums.TaskStatus;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,9 +31,17 @@ public class Task {
   private String description;
 
   @Enumerated(EnumType.STRING)
-  private Status status;
+  private TaskStatus status;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name ="tester_id")
+  private User tester;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name ="developer_id")
+  private User developer;
+
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_story_id")
   private UserStory userStory;
 

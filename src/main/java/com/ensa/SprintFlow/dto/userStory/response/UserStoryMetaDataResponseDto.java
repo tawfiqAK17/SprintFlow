@@ -1,4 +1,4 @@
-package com.ensa.SprintFlow.dto.sprint.response;
+package com.ensa.SprintFlow.dto.userStory.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @AllArgsConstructor
-public class SprintMetaDataResponseDto {
-  private Long id;
-  private String title;
+public class UserStoryMetaDataResponseDto {
+    private Long id;
+    private String title;
 }

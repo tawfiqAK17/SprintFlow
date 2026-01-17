@@ -1,7 +1,7 @@
 package com.ensa.SprintFlow.mapper;
 
-import com.ensa.SprintFlow.dto.acceptanceCriteria.AcceptanceCriteriaDto;
 import com.ensa.SprintFlow.dto.userStory.request.UserStoryRequestDto;
+import com.ensa.SprintFlow.dto.userStory.response.UserStoryMetaDataResponseDto;
 import com.ensa.SprintFlow.dto.userStory.response.UserStoryResponseDto;
 import com.ensa.SprintFlow.model.UserStory;
 import lombok.AllArgsConstructor;
@@ -32,16 +32,24 @@ public class UserStoryMapper {
         .build();
   }
 
-  public UserStoryMetaDataResponseDto mapToUserStoryMetaDataResponseDto(UserStoryView userStory) {
-    if (userStory == null) {
-      return null;
-    }
+  // public UserStoryMetaDataResponseDto mapToUserStoryMetaDataResponseDto(UserStoryView userStory)
+  // {
+  //   if (userStory == null) {
+  //     return null;
+  //   }
+  //   return UserStoryMetaDataResponseDto.builder()
+  //       .id(userStory.id())
+  //       .title(userStory.title())
+  //       .priority(userStory.priority())
+  //       .epic(epicMapper.mapToEpicMetaDataResponseDto(userStory.epicView()))
+  //       .sprint(sprintMapper.mapToSprintMetaDadaResponseDto(userStory.sprintView()))
+  //       .build();
+  // }
+
+  public UserStoryMetaDataResponseDto mapToUserStoryMetaDataResponseDto(UserStory userStory) {
     return UserStoryMetaDataResponseDto.builder()
-        .id(userStory.id())
-        .title(userStory.title())
-        .priority(userStory.priority())
-        .epic(epicMapper.mapToEpicMetaDataResponseDto(userStory.epicView()))
-        .sprint(sprintMapper.mapToSprintMetaDadaResponseDto(userStory.sprintView()))
+        .id(userStory.getId())
+        .title(userStory.getTitle())
         .build();
   }
 
