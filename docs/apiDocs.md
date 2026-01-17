@@ -897,33 +897,16 @@ Delete task
 
 ---
 
-## 9. TASK REPORTS
+## 9. REPORTS
 
-### GET `/projects/{project_id}/tasks/{task_id}/reports`
+### DELETE `/projects/{project_id}/tasks/{task_id}/reports/{reportId}`
 
-Get all reports for a task
+ Delete Report
 
-- **Auth:** Required (Developers can view reports on their tasks)
-- **Response (200):** Array of reports (see task details)
-
-### POST `/projects/{project_id}/tasks/{task_id}/reports`
-
-Create test report
-
-- **Auth:** Required (Tester only)
-- **Request Body:**
-  ```json
-  {
-    "description": "string (required)",
-    "status": "TESTED | IN_PROGRESS (required)"
-  }
-  ```
-- **Response (201):** Created report
-- **Side Effect:** Updates task status based on report status
-- **Validation:** Task must be in TO_BE_TESTED status
+- **Auth:** Required (Scrum Master or Tester (who made it) )
+- **Response (204):** No content
 
 ---
-
 ## BUSINESS RULES & VALIDATIONS
 
 ### Status Transitions
