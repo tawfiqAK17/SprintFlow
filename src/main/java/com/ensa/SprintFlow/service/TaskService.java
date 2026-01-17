@@ -180,9 +180,10 @@ public class TaskService {
 
         // If the task's status is uptated to 'TEST_FAILED', the tester should provide a report
         if( dto.getStatus() == TaskStatus.TEST_FAILED && dto.getReportDescription() != null){
-            Report report = new Report();
-            report.setTask( task);
-            report.setDescription(dto.getReportDescription());
+            Report report = Report.builder()
+                            .task( task)
+                            .description( dto.getReportDescription())
+                            .build();
             task.getReports().add( report);
         }
     }
