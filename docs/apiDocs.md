@@ -363,26 +363,37 @@ Get all project members
 - **Auth:** Required (must be project member)
 - **Query Params:**
   - `role` (Role enum): Filter by role
-- **Response (200):** Array of members with user info and role
+- **Response (200):**
+  ```json
+  [
+    {
+      "username": "string",
+      "first_name": "string",
+      "last_name": "string",
+      "email": "string",
+      "role": "Role enum"
+    }
+  ]
+  ```
 
 ### POST `/projects/{project_id}/members`
 
 Add member to project
 
-- **Auth:** Required (Scrum Master or Product Owner)
+- **Auth:** Required (Scrum Master)
 - **Request Body:**
   ```json
   {
-    "user_id": "number (required)",
-    "role": "SCRUM_MASTER|DEVELOPER|TESTER (required)"
+    "username": "string (required)",
+    "role": "DEVELOPER|TESTER (required)"
   }
   ```
 - **Response (201):** Member object
 - **Note:** Cannot add duplicate members. Only one Scrum Master per project.
 
-### PUT `/projects/{project_id}/members/{user_id}`
+### PUT `/projects/{project_id}/members/{username}/roles`
 
-Update member's role
+Add a role to a member
 
 - **Auth:** Required (Scrum Master or Product Owner)
 - **Request Body:**
@@ -393,7 +404,20 @@ Update member's role
   ```
 - **Response (200):** Updated member
 
-### DELETE `/projects/{project_id}/members/{user_id}`
+### DELETE `/projects/{project_id}/members/{username}/roles`
+
+Remove a role from a member
+
+- **Auth:** Required (Scrum Master or Product Owner)
+- **Request Body:**
+  ```json
+  {
+    "role": "Role enum (required)"
+  }
+  ```
+- **Response (204):**
+
+### DELETE `/projects/{project_id}/members/{username}`
 
 Remove member from project
 
@@ -480,6 +504,28 @@ Update epic
 Delete epic (removes epic association from user stories)
 
 - **Auth:** Required (Product Owner only)
+- **Response (204):** No content
+
+
+### POST `/projects/{projectId}/epics/{epicId}/user_stories`
+
+add user stories to epic 
+
+- **Auth:** Required (Product Owner only)
+- **Request Body:**
+  ```json
+  {
+    "user_story_ids": ["number array (required)"]
+  }
+  ```
+- **Response (200):** Updated sprint
+- **Validation:** User stories must exist and not already in another sprint
+
+### DELETE `/projects/{projectId}/epics/{epicId}/user_stories/{user_story_id}`
+
+Remove user story from epic 
+
+- **Auth:** Required (Scrum Master only)
 - **Response (204):** No content
 
 ---
@@ -634,6 +680,8 @@ Get all sprints
 - **Auth:** Required (must be project member)
 - **Query Params:**
   - `active` (boolean): Filter active sprints
+  - `startDate` (date): Filter by the start date
+  - `endDate` (date): Filter by the end date
 - **Response (200):**
   ```json
   [
@@ -661,7 +709,17 @@ Create sprint
     "end_date": "date (required)"
   }
   ```
-- **Response (201):** Created sprint
+- **Response (201):**
+  ```json
+  {
+    "id": "number"
+    "title": "string (required)",
+    "start_date": "date (required)",
+    "end_date": "date (required)"
+    "is_active": "boolean",
+    "user_stories_count": "number"
+  }
+  ```
 - **Validation:** end_date > start_date, no overlapping sprints
 
 ### GET `/projects/{project_id}/sprints/{sprint_id}`
@@ -677,26 +735,7 @@ Get sprint details with backlog
     "start_date": "date",
     "end_date": "date",
     "is_active": "boolean",
-    "product_backlog": [
-      {
-        "id": "number",
-        "title": "string",
-        "priority": "number",
-        "user_story": { ... }
-      }
-    ],
-    "sprint_backlog": [
-      {
-        "id": "number",
-        "title": "string",
-        "user_story_id": "number"
-      }
-    ],
-    "statistics": {
-      "total_tasks": "number",
-      "completed_tasks": "number",
-      "in_progress_tasks": "number"
-    }
+    "user_stories_count": "number"
   }
   ```
 
