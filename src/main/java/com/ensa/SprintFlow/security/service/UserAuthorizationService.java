@@ -30,7 +30,7 @@ public class UserAuthorizationService {
     return (UserContext) (SecurityContextHolder.getContext().getAuthentication().getPrincipal());
   }
 
-  public List<Role> getAuthendicatedUserRoles() {
+  public List<Role> getAuthenticatedUserRoles() {
     Long projectId = getAuthenticatedUser().getProject().getId();
     String username = getAuthenticatedUser().getUsername();
     return getRoles(projectId, username);
@@ -38,5 +38,9 @@ public class UserAuthorizationService {
 
   public Project getContextProject(){
     return getAuthenticatedUser().getProject();
+  }
+
+  public Boolean hasRoleInProject(Long projectId, String username, Role role){
+      return getRoles( projectId, username).contains( role);
   }
 }

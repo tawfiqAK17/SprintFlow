@@ -2,6 +2,7 @@ package com.ensa.SprintFlow.service;
 
 import com.ensa.SprintFlow.dto.userStory.request.UserStoryRequestDto;
 import com.ensa.SprintFlow.dto.userStory.response.UserStoryResponseDto;
+import com.ensa.SprintFlow.exception.generalException.NotFoundException;
 import com.ensa.SprintFlow.mapper.UserStoryMapper;
 import com.ensa.SprintFlow.model.Epic;
 import com.ensa.SprintFlow.model.UserStory;
@@ -27,7 +28,7 @@ public class UserStoryService {
   }
 
   public UserStoryResponseDto getUserStory(Long userStoryId) {
-    UserStory userStory = userStoryRepository.findUserStory(userStoryId);
+    UserStory userStory = findUserStory( userStoryId);
     UserStoryResponseDto userStoryResponseDto =
         userStoryMapper.mapToUserStoryResponseDto(userStory);
     return userStoryResponseDto;
@@ -42,7 +43,7 @@ public class UserStoryService {
 
   @Transactional
   public void updateUserStory(Long userStoryId, UserStoryRequestDto userStoryDto) {
-    UserStory userStory = userStoryRepository.findById(userStoryId).orElseThrow();
+    UserStory userStory = findUserStory( userStoryId);
 
     if (userStoryDto.getTitle() != null) {
       userStory.setTitle(userStoryDto.getTitle());
@@ -61,7 +62,8 @@ public class UserStoryService {
   }
 
   public void deleteUserStory(Long userStoryId) {
-    userStoryRepository.deleteById(userStoryId);
+    UserStory userStory = findUserStory( userStoryId);
+    userStoryRepository.delete( userStory);
   }
 
   public List<UserStory> findAllByIds(List<Long> ids) {
@@ -69,7 +71,9 @@ public class UserStoryService {
   }
 
   public UserStory findUserStory(Long userStoryId) {
-    UserStory userStory = userStoryRepository.findById(userStoryId).orElseThrow();
+    UserStory userStory = userStoryRepository.findById(userStoryId).orElseThrow(
+            () -> new NotFoundException("Nu user story with the given Id")
+    );
     return userStory;
   }
 }
