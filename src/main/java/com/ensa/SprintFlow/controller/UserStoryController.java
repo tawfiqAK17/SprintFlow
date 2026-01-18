@@ -2,12 +2,15 @@ package com.ensa.SprintFlow.controller;
 
 import com.ensa.SprintFlow.dto.userStory.request.UserStoryRequestDto;
 import com.ensa.SprintFlow.dto.userStory.response.UserStoryResponseDto;
+import com.ensa.SprintFlow.dto.userStory.response.UserStoryViewDto;
 import com.ensa.SprintFlow.service.UserStoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController()
@@ -19,8 +22,9 @@ public class UserStoryController {
     public ResponseEntity<?> getUserStories(@PathVariable("project_id") Long projectId,
                                             @RequestParam(value = "epic_id", required = false) Long epicId,
                                             @RequestParam(value = "sprint_id",required = false) Long sprintId,
-                                            @RequestParam(value = "unassigned", defaultValue = "false", required = false) Boolean unassigned) {
-        return ResponseEntity.status( HttpStatus.OK).body( userStoryService.getUserStories( epicId, sprintId, unassigned));
+                                            @RequestParam(value = "unassigned", defaultValue = "false", required = false) Boolean unassignedOnly) {
+        List<UserStoryViewDto> userStoryViewDtoList = userStoryService.getUserStories( projectId, epicId, sprintId, unassignedOnly);
+        return ResponseEntity.status( HttpStatus.OK).body( userStoryViewDtoList);
     }
     
     @GetMapping("/projects/{project_id}/user_stories/{id}")

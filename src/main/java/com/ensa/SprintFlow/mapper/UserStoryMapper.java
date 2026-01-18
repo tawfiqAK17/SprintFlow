@@ -3,9 +3,13 @@ package com.ensa.SprintFlow.mapper;
 import com.ensa.SprintFlow.dto.userStory.request.UserStoryRequestDto;
 import com.ensa.SprintFlow.dto.userStory.response.UserStoryMetaDataResponseDto;
 import com.ensa.SprintFlow.dto.userStory.response.UserStoryResponseDto;
+import com.ensa.SprintFlow.dto.userStory.response.UserStoryViewDto;
 import com.ensa.SprintFlow.model.UserStory;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @AllArgsConstructor
@@ -26,31 +30,35 @@ public class UserStoryMapper {
         .epic(epicMapper.mapToEpicMetaDataResponseDto(userStory.getEpic()))
         .sprint(sprintMapper.mapToSprintMetaDadaResponseDto(userStory.getSprint()))
         .description(
-            userStoryDescriptionMapper.mapToUserStoryDescriptionDto(
-                userStory.getUserStoryDescription()))
-        // it still to add acceptance criteria
+                userStoryDescriptionMapper.mapToUserStoryDescriptionDto( userStory.getUserStoryDescription()))
+        .acceptanceCriteria(
+                acceptanceCriteriaMapper.mapToAcceptanceCriteriaDto( userStory.getAcceptanceCriteria()))
         .build();
   }
-
-  // public UserStoryMetaDataResponseDto mapToUserStoryMetaDataResponseDto(UserStoryView userStory)
-  // {
-  //   if (userStory == null) {
-  //     return null;
-  //   }
-  //   return UserStoryMetaDataResponseDto.builder()
-  //       .id(userStory.id())
-  //       .title(userStory.title())
-  //       .priority(userStory.priority())
-  //       .epic(epicMapper.mapToEpicMetaDataResponseDto(userStory.epicView()))
-  //       .sprint(sprintMapper.mapToSprintMetaDadaResponseDto(userStory.sprintView()))
-  //       .build();
-  // }
 
   public UserStoryMetaDataResponseDto mapToUserStoryMetaDataResponseDto(UserStory userStory) {
     return UserStoryMetaDataResponseDto.builder()
         .id(userStory.getId())
         .title(userStory.getTitle())
         .build();
+  }
+
+  public UserStoryViewDto mapToUserStoryViewDto(UserStory userStory){
+    return UserStoryViewDto.builder()
+            .id( userStory.getId())
+            .title( userStory.getTitle())
+            .priority( userStory.getPriority())
+            .epic( epicMapper.mapToEpicMetaDataResponseDto( userStory.getEpic()))
+            .sprint( sprintMapper.mapToSprintMetaDadaResponseDto( userStory.getSprint()))
+            .build();
+  }
+
+  public List<UserStoryViewDto> mapToUserStoryViewDto( List<UserStory> userStories){
+    List<UserStoryViewDto> userStoryViewDtoList = new ArrayList<>();
+    for( UserStory userStory : userStories){
+      userStoryViewDtoList.add( mapToUserStoryViewDto(userStory));
+    }
+    return userStoryViewDtoList;
   }
 
   public UserStory mapToUserStory(UserStoryRequestDto dto) {
