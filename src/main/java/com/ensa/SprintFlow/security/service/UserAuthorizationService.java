@@ -29,7 +29,7 @@ public class UserAuthorizationService {
     return (UserContext) (SecurityContextHolder.getContext().getAuthentication().getPrincipal());
   }
 
-  public List<Role> getAuthendicatedUserRoles() {
+  public List<Role> getAuthenticatedUserRoles() {
     Long projectId = getAuthenticatedUser().getProject().getId();
     String username = getAuthenticatedUser().getUsername();
     return getRoles(projectId, username);
