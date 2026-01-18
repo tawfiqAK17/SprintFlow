@@ -21,7 +21,6 @@ public class EpicService {
 
   private EpicRepository epicRepository;
   private EpicMapper mapper;
-  private UserStoryService userStoryService;
   private UserAuthorizationService userAuthorizationService;
 
   public Epic save(Epic epic) {
