@@ -72,7 +72,7 @@ public class TaskService {
           Long projectId, Long sprintId, Long userStoryId,
           List<TaskStatus> statusList, String developer, String tester) {
 
-    Specification<Task> spec = TaskSpecification.emptyWhere();
+    Specification<Task> spec = TaskSpecification.whereProject( projectId);
 
     if (sprintId != null) {
       spec = spec.and(TaskSpecification.belongsToSprint(sprintId));
@@ -102,7 +102,7 @@ public class TaskService {
     // Get the current user name
     String username = userAuthorizationService.getAuthenticatedUser().getUsername();
 
-    Specification<Task> spec = TaskSpecification.emptyWhere();
+    Specification<Task> spec = TaskSpecification.whereProject( projectId);
     // Assigned to the current user either as a Tester or as a Developer
     spec =
         spec.and(
@@ -180,7 +180,6 @@ public class TaskService {
     Task task = findTask( taskId);
 
     // Get the current user name and roles
-
     String username = userAuthorizationService.getAuthenticatedUser().getUsername();
     List<Role> roles = userAuthorizationService.getAuthenticatedUserRoles();
 
