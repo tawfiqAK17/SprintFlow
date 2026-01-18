@@ -13,7 +13,7 @@ import com.ensa.SprintFlow.model.Project;
 import com.ensa.SprintFlow.model.ProjectMember;
 import com.ensa.SprintFlow.repository.ProjectRepository;
 import com.ensa.SprintFlow.security.model.UserContext;
-import com.ensa.SprintFlow.util.Utils;
+import com.ensa.SprintFlow.security.service.UserAuthorizationService;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,6 +31,7 @@ public class ProjectService {
   ProjectMemberService projectMemberService;
   private EpicService epicService;
   private ProjectMemberMapper projectMemberMapper;
+  private UserAuthorizationService userAuthorizationService;
 
   @Transactional
   public Project save(ProjectRequestDto dto) {
@@ -52,7 +53,7 @@ public class ProjectService {
             Epic.builder()
                 .title("Global Epic")
                 .description("the default epic for the project")
-                .project( project)
+                .project(project)
                 .build());
     project.setDefaultEpic(defaultEpic);
     return project;
@@ -113,7 +114,7 @@ public class ProjectService {
       throw new NotFoundException("the project does not have any member with the given username");
     }
     projectMemberService.save(
-        Utils.getUserContext().getProject(),
+        userAuthorizationService.getAuthenticatedUser().getProject(),
         ProjectMemberRequestDto.builder().username(username).role(role).build());
   }
 

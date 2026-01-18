@@ -11,5 +11,5 @@ public class EpicResponseDto {
   private Long id;
   private String title;
   private String description;
-  private Long userStoriesCount;
+  private int userStoriesCount;
 }

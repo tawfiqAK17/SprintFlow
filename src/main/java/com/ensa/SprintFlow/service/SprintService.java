@@ -7,7 +7,7 @@ import com.ensa.SprintFlow.mapper.SprintMapper;
 import com.ensa.SprintFlow.model.Sprint;
 import com.ensa.SprintFlow.model.UserStory;
 import com.ensa.SprintFlow.repository.SprintRepository;
-import com.ensa.SprintFlow.util.Utils;
+import com.ensa.SprintFlow.security.service.UserAuthorizationService;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,15 +21,17 @@ public class SprintService {
   SprintRepository sprintRepository;
   SprintMapper sprintMapper;
   UserStoryService userStoryService;
+  UserAuthorizationService userAuthorizationService;
 
   public SprintResponseDto save(SprintRequestDto dto) {
     Sprint sprint = sprintMapper.mapToSprint(dto);
-    sprint.setProject(Utils.getUserContext().getProject());
+    sprint.setProject(userAuthorizationService.getAuthenticatedUser().getProject());
     return sprintMapper.maptoSprintResponseDto(sprintRepository.save(sprint));
   }
 
   public List<SprintResponseDto> getAllSprints(LocalDateTime startDate, LocalDateTime endDate) {
-    List<Sprint> sprints = Utils.getUserContext().getProject().getSprints();
+    List<Sprint> sprints =
+        userAuthorizationService.getAuthenticatedUser().getProject().getSprints();
 
     if (startDate != null) {
       sprints = sprints.stream().filter(s -> s.getStartDate().isAfter(startDate)).toList();

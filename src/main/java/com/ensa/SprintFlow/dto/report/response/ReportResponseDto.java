@@ -1,17 +1,15 @@
 package com.ensa.SprintFlow.dto.report.response;
 
-import lombok.AllArgsConstructor;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Builder
 @Getter
 @Setter
 public class ReportResponseDto {
-    private Long id;
-    private String description;
-    private LocalDateTime creationDate;
+  private Long id;
+  private String description;
+  private LocalDateTime creationDate;
 }

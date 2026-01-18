@@ -21,23 +21,19 @@ public class EpicMapper {
         .build();
   }
 
-    public EpicMetaDataResponseDto mapToEpicMetaDataResponseDto(Epic epic) {
-        if (epic == null){
-            return null;
-        }
-        return EpicMetaDataResponseDto.builder()
-                .title(epic.getTitle())
-                .id(epic.getId()).build();
+  public EpicMetaDataResponseDto mapToEpicMetaDataResponseDto(Epic epic) {
+    if (epic == null) {
+      return null;
     }
+    return EpicMetaDataResponseDto.builder().title(epic.getTitle()).id(epic.getId()).build();
+  }
 
-
-    public EpicResponseDto mapToEpicResponseDto(Epic epic) {
+  public EpicResponseDto mapToEpicResponseDto(Epic epic) {
     return EpicResponseDto.builder()
         .description(epic.getDescription())
         .title(epic.getTitle())
         .id(epic.getId())
-        .userStoriesCount(0L) // TODO should be counted
+        .userStoriesCount(epic.getUserStories().size())
         .build();
-    }
-
+  }
 }
