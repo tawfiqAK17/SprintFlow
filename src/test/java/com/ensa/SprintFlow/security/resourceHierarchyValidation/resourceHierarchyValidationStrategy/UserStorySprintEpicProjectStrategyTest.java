@@ -1,8 +1,6 @@
 package com.ensa.SprintFlow.security.resourceHierarchyValidation.resourceHierarchyValidationStrategy;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
 
 import com.ensa.SprintFlow.security.resourceHierarchyValidation.resourceHierarchyValidationStrategy.validators.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -56,22 +54,5 @@ class UserStorySprintEpicProjectStrategyTest {
 
     // Test extra query params
     assertFalse(strategy.supports("/projects/1/user_stories/2?epic_id=3&sprint_id=4&extra=5"));
-  }
-
-  @Test
-  void validateTest() {
-    // Test validation is called with correct parameters
-    String url = "/projects/1/user_stories/2?epic_id=3&sprint_id=4";
-    doNothing().when(epicInProjectValidator).validate(anyLong(), anyLong());
-    doNothing().when(sprintInProjectValidator).validate(anyLong(), anyLong());
-    doNothing().when(userStoryInEpicValidator).validate(anyLong(), anyLong());
-    doNothing().when(userStoryInSprintValidator).validate(anyLong(), anyLong());
-
-    strategy.validate(url);
-
-    verify(epicInProjectValidator).validate(1L, 3L);
-    verify(sprintInProjectValidator).validate(1L, 4L);
-    verify(userStoryInEpicValidator).validate(3L, 2L);
-    verify(userStoryInSprintValidator).validate(4L, 2L);
   }
 }

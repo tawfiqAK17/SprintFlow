@@ -33,7 +33,7 @@ public class EpicMapper {
         .description(epic.getDescription())
         .title(epic.getTitle())
         .id(epic.getId())
-        .userStoriesCount(epic.getUserStories().size())
+        .userStoriesCount(epic.getUserStories() != null ? epic.getUserStories().size() : 0)
         .build();
   }
 }
