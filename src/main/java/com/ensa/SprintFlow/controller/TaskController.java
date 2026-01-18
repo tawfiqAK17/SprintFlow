@@ -75,4 +75,12 @@ public class TaskController {
         taskService.updateTaskStatus( taskId, taskUpdateRequestDto);
         return ResponseEntity.status( HttpStatus.OK).build();
     }
+
+    @DeleteMapping("/projects/{project_id}/user_stories/{user_story_id}/tasks/{task_id}")
+    public ResponseEntity<?> deleteTask(@PathVariable("project_id") Long projectId,
+                                        @PathVariable("user_story_id") Long userStoryId,
+                                        @PathVariable("task_id") Long taskId){
+        taskService.deleteTask( taskId);
+        return ResponseEntity.status( HttpStatus.NO_CONTENT).build();
+    }
 }

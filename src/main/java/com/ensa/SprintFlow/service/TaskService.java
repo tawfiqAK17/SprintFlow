@@ -168,7 +168,7 @@ public class TaskService {
 
     // Get the current user name and roles
     UserContext userContext =
-        (UserContext) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            (UserContext) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     String username = userContext.getUsername();
     // List<Role> roles = userContext.getRoles();
     List<Role> roles = List.of(Role.TESTER);
@@ -176,8 +176,8 @@ public class TaskService {
     // The user must be assigned to the task (as a TESTER and/or DEVELOPER)
     // or have the SCRUM_MASTER role.
     if (!task.getDeveloper().getUsername().equals(username)
-        && !task.getTester().getUsername().equals(username)
-        && !roles.contains(Role.SCRUM_MASTER)) {
+            && !task.getTester().getUsername().equals(username)
+            && !roles.contains(Role.SCRUM_MASTER)) {
       throw new UnauthorizedException("You can't access this task");
     }
 
@@ -197,4 +197,9 @@ public class TaskService {
       task.getReports().add(report);
     }
   }
+
+  public void deleteTask(Long taskId){
+      taskRepository.deleteById( taskId);
+  }
+  
 }

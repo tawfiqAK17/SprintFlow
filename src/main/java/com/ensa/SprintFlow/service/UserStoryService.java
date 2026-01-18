@@ -9,6 +9,8 @@ import com.ensa.SprintFlow.model.UserStoryDescription;
 import com.ensa.SprintFlow.repository.UserStoryRepository;
 import com.ensa.SprintFlow.repository.projection.UserStoryView;
 import java.util.List;
+
+import com.ensa.SprintFlow.security.service.UserAuthorizationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class UserStoryService {
   private UserStoryRepository userStoryRepository;
-  private ProjectService projectService;
+  private UserAuthorizationService userAuthorizationService;
   private UserStoryMapper userStoryMapper;
 
   public List<UserStoryView> getUserStories(Long epicId, Long sprintId, Boolean unassigned) {
@@ -33,7 +35,7 @@ public class UserStoryService {
 
   public void createUserStory(Long projectId, UserStoryRequestDto userStoryDto) {
     UserStory userStory = userStoryMapper.mapToUserStory(userStoryDto);
-    Epic defaultEpic = projectService.getProject(projectId).getDefaultEpic();
+    Epic defaultEpic = userAuthorizationService.getContextProject().getDefaultEpic();
     userStory.setEpic(defaultEpic);
     userStoryRepository.saveAndFlush(userStory);
   }
