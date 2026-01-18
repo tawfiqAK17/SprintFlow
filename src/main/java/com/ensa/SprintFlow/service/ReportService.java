@@ -6,14 +6,13 @@ import com.ensa.SprintFlow.repository.ReportRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.function.Supplier;
-
 @Service
 @AllArgsConstructor
 public class ReportService {
     private ReportRepository reportRepository;
 
     public void deleteReport(Long id){
+        // check if user could delete the report
         Report report = findReport( id);
         reportRepository.delete( report);
     }
