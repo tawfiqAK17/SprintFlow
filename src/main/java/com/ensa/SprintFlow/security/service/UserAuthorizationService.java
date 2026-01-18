@@ -1,6 +1,7 @@
 package com.ensa.SprintFlow.security.service;
 
 import com.ensa.SprintFlow.enums.Role;
+import com.ensa.SprintFlow.model.Project;
 import com.ensa.SprintFlow.model.ProjectMember;
 import com.ensa.SprintFlow.security.model.UserContext;
 import com.ensa.SprintFlow.service.ProjectMemberService;
@@ -33,5 +34,9 @@ public class UserAuthorizationService {
     Long projectId = getAuthenticatedUser().getProject().getId();
     String username = getAuthenticatedUser().getUsername();
     return getRoles(projectId, username);
+  }
+
+  public Project getContextProject(){
+    return getAuthenticatedUser().getProject();
   }
 }
