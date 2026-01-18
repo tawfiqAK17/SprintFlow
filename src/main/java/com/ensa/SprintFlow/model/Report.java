@@ -1,10 +1,7 @@
 package com.ensa.SprintFlow.model;
 
-import com.ensa.SprintFlow.enums.ReportStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,6 +13,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "reports")
@@ -33,13 +33,10 @@ public class Report {
   @Column(nullable = false)
   private String description;
 
-  @Enumerated(EnumType.STRING)
-  private ReportStatus status;
-
-  @ManyToOne
-  @JoinColumn(name = "user_id")
-  private User user;
-
+  @CreationTimestamp
+  @Column(name = "created_date", nullable = false, updatable = false)
+  private LocalDateTime creationDate;
+  
   @ManyToOne
   @JoinColumn(name = "task_id")
   private Task task;

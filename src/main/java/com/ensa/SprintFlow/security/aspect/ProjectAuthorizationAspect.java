@@ -3,7 +3,6 @@ package com.ensa.SprintFlow.security.aspect;
 import com.ensa.SprintFlow.enums.Role;
 import com.ensa.SprintFlow.exception.generalException.UnauthorizedException;
 import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeRoles;
-import com.ensa.SprintFlow.security.model.UserContext;
 import com.ensa.SprintFlow.security.service.UserAuthorizationService;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -14,7 +13,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Aspect
@@ -85,13 +83,7 @@ public class ProjectAuthorizationAspect {
   }
 
   private boolean isUserHasRoles(Role... roles) {
-    // get the user context
-    UserContext userContext =
-        (UserContext) (SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-    // get the user roles in the project
-    List<Role> userRoles =
-        userAuthorizationService.getRoles(
-            userContext.getProject().getId(), userContext.getUsername());
+    List<Role> userRoles = userAuthorizationService.getAuthendicatedUserRoles();
     for (Role role : roles) {
       if (userRoles.contains(role)) {
         return true;

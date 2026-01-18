@@ -5,7 +5,6 @@ import com.ensa.SprintFlow.dto.epic.response.EpicMetaDataResponseDto;
 import com.ensa.SprintFlow.dto.epic.response.EpicResponseDto;
 import com.ensa.SprintFlow.model.Epic;
 import com.ensa.SprintFlow.model.Project;
-import com.ensa.SprintFlow.repository.projection.EpicView;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -22,23 +21,19 @@ public class EpicMapper {
         .build();
   }
 
-    public EpicMetaDataResponseDto mapToEpicMetaDataResponseDto(Epic epic) {
-        if (epic == null){
-            return null;
-        }
-        return EpicMetaDataResponseDto.builder()
-                .title(epic.getTitle())
-                .id(epic.getId()).build();
+  public EpicMetaDataResponseDto mapToEpicMetaDataResponseDto(Epic epic) {
+    if (epic == null) {
+      return null;
     }
+    return EpicMetaDataResponseDto.builder().title(epic.getTitle()).id(epic.getId()).build();
+  }
 
-
-    public EpicResponseDto mapToEpicResponseDto(Epic epic) {
+  public EpicResponseDto mapToEpicResponseDto(Epic epic) {
     return EpicResponseDto.builder()
         .description(epic.getDescription())
         .title(epic.getTitle())
         .id(epic.getId())
-        .userStoriesCount(0L) // TODO should be counted
+        .userStoriesCount(epic.getUserStories().size())
         .build();
-    }
-
+  }
 }

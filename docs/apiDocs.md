@@ -506,6 +506,28 @@ Delete epic (removes epic association from user stories)
 - **Auth:** Required (Product Owner only)
 - **Response (204):** No content
 
+
+### POST `/projects/{projectId}/epics/{epicId}/user_stories`
+
+add user stories to epic 
+
+- **Auth:** Required (Product Owner only)
+- **Request Body:**
+  ```json
+  {
+    "user_story_ids": ["number array (required)"]
+  }
+  ```
+- **Response (200):** Updated sprint
+- **Validation:** User stories must exist and not already in another sprint
+
+### DELETE `/projects/{projectId}/epics/{epicId}/user_stories/{user_story_id}`
+
+Remove user story from epic 
+
+- **Auth:** Required (Scrum Master only)
+- **Response (204):** No content
+
 ---
 
 ## 6. USER STORIES
@@ -779,16 +801,6 @@ Get all tasks
       "user_story": {
         "id": "number",
         "title": "string"
-      },
-      "developer": {
-        "username": "string",
-        "first_name": "string",
-        "last_name": "string"
-      },
-      "tester": {
-        "username": "string",
-        "first_name": "string",
-        "last_name": "string"
       }
     }
   ]
@@ -838,7 +850,7 @@ Create task
 
 Get task details
 
-- **Auth:** Required ( Must be a Scrum Master )
+- **Auth:** Required ( Must be a Scrum Master , Developer or Tester assigned to this task)
 - **Response (200):**
   ```json
   {
@@ -874,38 +886,7 @@ Get task details
     ]
   }
   ```
-
-### GET `/projects/{project_id}/user_stories/{user_story_id}/tasks/me/{task_id}`
-
-Get user task details
-
-- **Auth:** Required ( Must be Developer or Tester)
-- **Response (200):**
-  ```json
-  {
-    "id": "number",
-    "title": "string",
-    "description": "string",
-    "status": "Status enum",
-    "user_story": {
-        "id": "number",
-        "title": "string"
-      },
-    "reports": [
-      {
-        "id": "number",
-        "description": "string",
-        "created_by": {
-          "username": "string",
-          "first_name": "string",
-          "last_name": "string"
-        },
-        "creation_date": "datetime"
-      }
-    ]
-  }
-  ```
-  
+ 
 ### PUT `/projects/{project_id}/user_stories/{user_story_id}/tasks/{task_id}`
 
 Update task
@@ -925,27 +906,15 @@ Update task
 - **Response (200):** Updated task
 - **Validation:** Status transitions follow workflow rules
 
-### PUT `/projects/{project_id}/user_stories/{user_story_id}/tasks/{task_id}/developer`
 
-Update task status (for developer)
-
-- **Auth:** Required 
-  - **Developer:** Can update status (TODO → IN_PROGRESS → TO_BE_TESTED)
-- **Request Body:**
-  ```json
-  {
-    "status": "Status enum"
-  }
-  ```
-- **Response (200):** Updated task
-- **Validation:** Status transitions follow workflow rules
-
-### PUT `/projects/{project_id}/user_stories/{user_story_id}/tasks/{task_id}/tester`
+### PUT `/projects/{project_id}/user_stories/{user_story_id}/tasks/{task_id}/status`
 
 Update task status (for tester)
 
 - **Auth:** Required
-  - **Tester:** Can update status (TO_BE_TESTED → TESTED or IN_PROGRESS with report)
+  - **Tester:** Can update status (TO_BE_TESTED → TESTED or TEST_FAILED with report)
+  - **Developer:** Can update status (TODO → IN_PROGRESS or TEST_FAILED → IN_PROGRESS)
+  - **Scrum Master:** Can update status (TODO → IN_PROGRESS → TO_BE_TESTED → TESTED or TEST_FAILED → DONE)
 - **Request Body:**
  ```json
   {
@@ -967,33 +936,16 @@ Delete task
 
 ---
 
-## 9. TASK REPORTS
+## 9. REPORTS
 
-### GET `/projects/{project_id}/tasks/{task_id}/reports`
+### DELETE `/projects/{project_id}/tasks/{task_id}/reports/{reportId}`
 
-Get all reports for a task
+ Delete Report
 
-- **Auth:** Required (Developers can view reports on their tasks)
-- **Response (200):** Array of reports (see task details)
-
-### POST `/projects/{project_id}/tasks/{task_id}/reports`
-
-Create test report
-
-- **Auth:** Required (Tester only)
-- **Request Body:**
-  ```json
-  {
-    "description": "string (required)",
-    "status": "TESTED | IN_PROGRESS (required)"
-  }
-  ```
-- **Response (201):** Created report
-- **Side Effect:** Updates task status based on report status
-- **Validation:** Task must be in TO_BE_TESTED status
+- **Auth:** Required (Scrum Master or Tester (who made it) )
+- **Response (204):** No content
 
 ---
-
 ## BUSINESS RULES & VALIDATIONS
 
 ### Status Transitions

@@ -45,8 +45,6 @@ public abstract class ResourceHierarchyValidationStrategy {
 
   public abstract void validate(String url);
 
-  public abstract void validate(Long parent, Long child);
-
   protected String getPathVariable(String url, String variable) {
     Map<String, String> pathVariables =
         pathMatcher.extractUriTemplateVariables(getUrlPattern(), url);
