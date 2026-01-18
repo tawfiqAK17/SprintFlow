@@ -8,6 +8,7 @@ import com.ensa.SprintFlow.model.Epic;
 import com.ensa.SprintFlow.model.Project;
 import com.ensa.SprintFlow.model.UserStory;
 import com.ensa.SprintFlow.repository.EpicRepository;
+import com.ensa.SprintFlow.security.service.UserAuthorizationService;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +22,7 @@ public class EpicService {
   private EpicRepository epicRepository;
   private EpicMapper mapper;
   private UserStoryService userStoryService;
+  private UserAuthorizationService userAuthorizationService;
 
   public Epic save(Epic epic) {
     return epicRepository.save(epic);
@@ -70,9 +72,12 @@ public class EpicService {
       throw new NotFoundException("there is no epic with the given id");
     }
     Epic epic = optionalEpic.get();
+    Epic defaultEpic = userAuthorizationService.getContextProject().getDefaultEpic();
     List<UserStory> epicUserStories = epic.getUserStories();
-    List<UserStory> userStories = userStoryService.findAllByIds(userStoriesIds);
+    List<UserStory> userStories =
+        epicRepository.findAllUserStoriesByIds(defaultEpic.getId(), userStoriesIds);
     for (UserStory userStory : userStories) {
+      defaultEpic.getUserStories().remove(userStory);
       epicUserStories.add(userStory);
     }
   }

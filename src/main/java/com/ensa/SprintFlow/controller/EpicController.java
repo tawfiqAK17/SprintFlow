@@ -11,7 +11,6 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +18,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @AllArgsConstructor
 public class EpicController {
   private ProjectService projectService;
@@ -68,13 +68,15 @@ public class EpicController {
   @AuthorizeProductOwner
   @PostMapping("/projects/{projectId}/epics/{epicId}/user_stories")
   public ResponseEntity<?> addUserStories(
-      @PathVariable Long epicId, @RequestBody List<Long> userStoriesIds) {
+      @PathVariable Long projectId,
+      @PathVariable Long epicId,
+      @RequestBody List<Long> userStoriesIds) {
     epicService.addUserStories(epicId, userStoriesIds);
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
   @AuthorizeProductOwner
-  @PostMapping("/projects/{projectId}/epics/{epicId}/user_stories/{userStoryId}")
+  @DeleteMapping("/projects/{projectId}/epics/{epicId}/user_stories/{userStoryId}")
   public ResponseEntity<?> removeUserStory(
       @PathVariable Long epicId, @PathVariable Long userStoryId) {
     epicService.removeUserStory(epicId, userStoryId);
