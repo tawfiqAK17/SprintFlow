@@ -10,6 +10,7 @@ import com.ensa.SprintFlow.model.UserStory;
 import com.ensa.SprintFlow.repository.EpicRepository;
 import com.ensa.SprintFlow.security.service.UserAuthorizationService;
 import jakarta.transaction.Transactional;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
@@ -60,8 +61,25 @@ public class EpicService {
     return mapper.mapToEpicResponseDto(epic);
   }
 
+  @Transactional
   public void delete(Long epicId) {
-    epicRepository.deleteById(epicId);
+    Optional<Epic> optionalEpic = epicRepository.findById(epicId);
+    if (optionalEpic.isEmpty()) {
+      throw new NotFoundException("there is no epic with the given id");
+    }
+    Epic epic = optionalEpic.get();
+
+    Epic defaultEpic = userAuthorizationService.getContextProject().getDefaultEpic();
+
+    Iterator<UserStory> iterator = epic.getUserStories().iterator();
+    while (iterator.hasNext()) {
+      UserStory userStory = iterator.next();
+      userStory.setEpic(defaultEpic);
+      defaultEpic.getUserStories().add(userStory);
+      iterator.remove();
+    }
+
+    epicRepository.delete(epic);
   }
 
   @Transactional
