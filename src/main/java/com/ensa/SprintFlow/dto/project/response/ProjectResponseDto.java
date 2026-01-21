@@ -4,7 +4,6 @@ import com.ensa.SprintFlow.dto.user.response.UserMetaDataResponseDto;
 import com.ensa.SprintFlow.enums.Role;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,12 +21,12 @@ public class ProjectResponseDto {
   private UserMetaDataResponseDto scrumMaster;
   private UserMetaDataResponseDto productOwner;
   private List<Member> members;
-  private List<Map<String, String>> statistics;
 
   @Setter
   @Getter
   @AllArgsConstructor
   @NoArgsConstructor
+  @Builder
   public static class Member {
     private UserMetaDataResponseDto user;
     private Role role;

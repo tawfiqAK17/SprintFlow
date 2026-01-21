@@ -2,26 +2,14 @@ package com.ensa.SprintFlow.mapper;
 
 import com.ensa.SprintFlow.dto.report.response.ReportResponseDto;
 import com.ensa.SprintFlow.model.Report;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@Component
-public class ReportMapper {
-    public ReportResponseDto mapToReportResponseDto(Report report){
-        return ReportResponseDto.builder()
-                .id( report.getId())
-                .description( report.getDescription())
-                .creationDate( report.getCreationDate())
-                .build();
-    }
+@Mapper(componentModel = "spring")
+public interface ReportMapper {
 
-    public List<ReportResponseDto> mapToReportResponseDto( List<Report> reports){
-        List<ReportResponseDto> reportResponseDtoList = new ArrayList<>();
-        for( Report report : reports){
-            reportResponseDtoList.add( mapToReportResponseDto( report));
-        }
-        return reportResponseDtoList;
-    }
+    ReportResponseDto mapToReportResponseDto(Report report);
+
+    List<ReportResponseDto> mapToReportResponseDto(List<Report> reports);
 }

@@ -4,54 +4,26 @@ import com.ensa.SprintFlow.dto.task.request.TaskRequestDto;
 import com.ensa.SprintFlow.dto.task.response.TaskDetailsResponseDto;
 import com.ensa.SprintFlow.dto.task.response.TaskMetaDataResponseDto;
 import com.ensa.SprintFlow.model.Task;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
 import java.util.List;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-@Component
-@AllArgsConstructor
-public class TaskMapper {
-    private UserStoryMapper userStoryMapper;
-    private UserMapper userMapper;
-    private ReportMapper reportMapper;
+@Mapper(
+    componentModel = "spring",
+    uses = {UserStoryMapper.class, UserMapper.class, ReportMapper.class})
+public interface TaskMapper {
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "userStory", ignore = true)
+  @Mapping(target = "developer", ignore = true)
+  @Mapping(target = "tester", ignore = true)
+  @Mapping(target = "reports", ignore = true)
+  Task mapToTask(TaskRequestDto taskRequestDto);
 
-    public Task mapToTask(TaskRequestDto taskRequestDto){
-        return Task.builder()
-                .title( taskRequestDto.getTitle())
-                .description( taskRequestDto.getDescription())
-                .status( taskRequestDto.getStatus()).build();
-    }
 
-    public TaskMetaDataResponseDto mapToTaskMetaDataResponseDto( Task task){
-        return TaskMetaDataResponseDto.builder()
-                .id( task.getId())
-                .title( task.getTitle())
-                .description( task.getDescription())
-                .status( task.getStatus())
-                .userStory( userStoryMapper.mapToUserStoryMetaDataResponseDto( task.getUserStory()))
-                .build();
-    }
+  TaskMetaDataResponseDto mapToTaskMetaDataResponseDto(Task task);
 
-    public List<TaskMetaDataResponseDto> mapToTaskMetaDataResponseDto(List<Task> taskList){
-        List<TaskMetaDataResponseDto> taskDtos = new ArrayList<>();
-        for( Task task : taskList){
-            taskDtos.add( mapToTaskMetaDataResponseDto( task));
-        }
-        return taskDtos;
-    }
+  List<TaskMetaDataResponseDto> mapToTaskMetaDataResponseDto(List<Task> taskList);
 
-    public TaskDetailsResponseDto mapToTaskDetailsResponseDto( Task task){
-        return TaskDetailsResponseDto.builder()
-                .id( task.getId())
-                .title( task.getTitle())
-                .description( task.getDescription())
-                .status( task.getStatus())
-                .userStory( userStoryMapper.mapToUserStoryMetaDataResponseDto( task.getUserStory()))
-                .tester( userMapper.mapToMetaDataDto( task.getTester()))
-                .developer( userMapper.mapToMetaDataDto( task.getDeveloper()))
-                .reports( reportMapper.mapToReportResponseDto( task.getReports()))
-                .build();
-    }
+  TaskDetailsResponseDto mapToTaskDetailsResponseDto(Task task);
+
 }

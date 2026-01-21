@@ -2,6 +2,8 @@ package com.ensa.SprintFlow.service;
 
 import com.ensa.SprintFlow.dto.project.request.ProjectRequestDto;
 import com.ensa.SprintFlow.dto.project.request.ProjectUpdateRequestDto;
+import com.ensa.SprintFlow.dto.project.response.ProjectMetaDataResponseDto;
+import com.ensa.SprintFlow.dto.project.response.ProjectResponseDto;
 import com.ensa.SprintFlow.dto.projectMember.request.ProjectMemberRequestDto;
 import com.ensa.SprintFlow.dto.projectMember.response.ProjectMemberResponseDto;
 import com.ensa.SprintFlow.enums.Role;
@@ -34,7 +36,7 @@ public class ProjectService {
   private UserAuthorizationService userAuthorizationService;
 
   @Transactional
-  public Project save(ProjectRequestDto dto) {
+  public ProjectMetaDataResponseDto save(ProjectRequestDto dto) {
     Project project = mapper.mapToProject(dto);
     project.setCreationDate(LocalDateTime.now());
     // save the project to the database
@@ -56,10 +58,10 @@ public class ProjectService {
                 .project(project)
                 .build());
     project.setDefaultEpic(defaultEpic);
-    return project;
+    return mapper.mapToMetaDataResponseDto(project);
   }
 
-  public Project update(Long projectId, ProjectUpdateRequestDto dto) {
+  public ProjectMetaDataResponseDto update(Long projectId, ProjectUpdateRequestDto dto) {
     Project project = findById(projectId);
     if (dto.getName() != null) {
       project.setName(dto.getName());
@@ -72,17 +74,17 @@ public class ProjectService {
     }
     // save the project to the database
     project = projectRepository.save(project);
-    return project;
+    return mapper.mapToMetaDataResponseDto(project);
   }
 
-  public List<Project> getProjects() {
+  public List<ProjectMetaDataResponseDto> getProjects() {
     List<Project> projects = projectRepository.findAll();
-    return projects;
+    return projects.stream().map(p -> mapper.mapToMetaDataResponseDto(p)).toList();
   }
 
-  public Project getProject(Long projectId) {
+  public ProjectResponseDto getProject(Long projectId) {
     Project project = findById(projectId);
-    return project;
+    return mapper.mapToResponseDto(project);
   }
 
   public Project findById(Long projectId) {

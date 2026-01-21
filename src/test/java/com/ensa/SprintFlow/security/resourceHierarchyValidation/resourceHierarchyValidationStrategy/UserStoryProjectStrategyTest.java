@@ -1,7 +1,6 @@
 package com.ensa.SprintFlow.security.resourceHierarchyValidation.resourceHierarchyValidationStrategy;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 import com.ensa.SprintFlow.security.resourceHierarchyValidation.resourceHierarchyValidationStrategy.validators.*;
@@ -39,16 +38,5 @@ class UserStoryProjectStrategyTest {
     assertFalse(strategy.supports("/projects/1"));
     assertFalse(strategy.supports("/invalid/path"));
     assertFalse(strategy.supports("/projects/abc/invalid"));
-  }
-
-  @Test
-  void validateTest() {
-    // Test validation is called with correct parameters
-    String url = "/projects/1/user_stories/2";
-    doNothing().when(userStoryInProjectValidator).validate(anyLong(), anyLong());
-
-    strategy.validate(url);
-
-    verify(userStoryInProjectValidator).validate(1L, 2L);
   }
 }

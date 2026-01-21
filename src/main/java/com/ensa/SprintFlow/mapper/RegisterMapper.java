@@ -2,19 +2,12 @@ package com.ensa.SprintFlow.mapper;
 
 import com.ensa.SprintFlow.security.dto.request.RegisterRequestDto;
 import com.ensa.SprintFlow.model.User;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-@Component
-public class RegisterMapper {
+@Mapper(componentModel = "spring")
+public interface RegisterMapper {
 
-  public User mapToUser(RegisterRequestDto dto) {
-    return User.builder()
-        .firstName(dto.getFirstName())
-        .lastName(dto.getLastName())
-        .email(dto.getEmail())
-        .username(dto.getUsername())
-        .password(dto.getPassword())
-        .verified(false)
-        .build();
-  }
+    @Mapping(target = "verified", constant = "false")
+    User mapToUser(RegisterRequestDto dto);
 }

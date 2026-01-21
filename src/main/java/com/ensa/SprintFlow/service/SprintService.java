@@ -93,7 +93,7 @@ public class SprintService {
     }
     Sprint sprint = optionalSprint.get();
     List<UserStory> sprintUserStories = sprint.getUserStories();
-    sprintUserStories.stream().filter(u -> u.getId() != userStoryId);
+    sprintUserStories.removeIf(u -> u.getId() != userStoryId);
   }
 
   public void delete(Long sprintId) {

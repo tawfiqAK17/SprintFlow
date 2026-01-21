@@ -6,71 +6,41 @@ import com.ensa.SprintFlow.dto.userStory.response.UserStoryResponseDto;
 import com.ensa.SprintFlow.dto.userStory.response.UserStoryViewDto;
 import com.ensa.SprintFlow.model.UserStory;
 import com.ensa.SprintFlow.model.UserStoryPriority;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
-@AllArgsConstructor
-public class UserStoryMapper {
-  EpicMapper epicMapper;
-  SprintMapper sprintMapper;
-  UserStoryDescriptionMapper userStoryDescriptionMapper;
-  AcceptanceCriteriaMapper acceptanceCriteriaMapper;
+@Mapper(componentModel = "spring", uses = {EpicMapper.class, SprintMapper.class, UserStoryDescriptionMapper.class, AcceptanceCriteriaMapper.class})
+public interface UserStoryMapper {
 
-  public UserStoryResponseDto mapToUserStoryResponseDto(UserStory userStory, UserStoryPriority priority) {
-    if (userStory == null) {
-      return null;
+    @Mapping(target = "description", source = "userStory.userStoryDescription")
+    @Mapping(target = "priority", source = "priority")
+    UserStoryResponseDto mapToUserStoryResponseDto(UserStory userStory, UserStoryPriority priority);
+
+    UserStoryMetaDataResponseDto mapToUserStoryMetaDataResponseDto(UserStory userStory);
+
+    @Mapping(target = "userStoryDescription", source = "description")
+    UserStory mapToUserStory(UserStoryRequestDto dto);
+
+    @Mapping(target = "priority", source = "priority")
+    UserStoryViewDto mapToUserStoryViewDto(UserStory userStory, UserStoryPriority priority);
+
+    default List<UserStoryViewDto> mapToUserStoryViewDto(List<UserStory> userStories,
+                                                         List<UserStoryPriority> priorities){
+
+      List<UserStoryViewDto> userStoryViewDtoList = new ArrayList<>();
+
+      if (userStories == null || priorities == null) {
+        return userStoryViewDtoList;
+      }
+
+      for( int i = 0; i < userStories.size(); i++){
+        UserStory userStory = userStories.get(i);
+        UserStoryPriority priority = priorities.get(i);
+        userStoryViewDtoList.add( mapToUserStoryViewDto( userStory, priority));
+      }
+      return userStoryViewDtoList;
     }
-    return UserStoryResponseDto.builder()
-        .id(userStory.getId())
-        .title(userStory.getTitle())
-        .priority( priority)
-            // metrics
-        .epic(epicMapper.mapToEpicMetaDataResponseDto(userStory.getEpic()))
-        .sprint(sprintMapper.mapToSprintMetaDadaResponseDto(userStory.getSprint()))
-        .description(
-                userStoryDescriptionMapper.mapToUserStoryDescriptionDto( userStory.getUserStoryDescription()))
-        .acceptanceCriteria(
-                acceptanceCriteriaMapper.mapToAcceptanceCriteriaDto( userStory.getAcceptanceCriteria()))
-        .build();
-  }
-
-  public UserStoryMetaDataResponseDto mapToUserStoryMetaDataResponseDto(UserStory userStory) {
-    return UserStoryMetaDataResponseDto.builder()
-        .id(userStory.getId())
-        .title(userStory.getTitle())
-        .build();
-  }
-
-  public UserStoryViewDto mapToUserStoryViewDto(UserStory userStory, UserStoryPriority priority){
-    return UserStoryViewDto.builder()
-            .id( userStory.getId())
-            .title( userStory.getTitle())
-            .priority( priority)
-            .epic( epicMapper.mapToEpicMetaDataResponseDto( userStory.getEpic()))
-            .sprint( sprintMapper.mapToSprintMetaDadaResponseDto( userStory.getSprint()))
-            .build();
-  }
-
-  public List<UserStoryViewDto> mapToUserStoryViewDto( List<UserStory> userStories, List<UserStoryPriority> priorities){
-    List<UserStoryViewDto> userStoryViewDtoList = new ArrayList<>();
-    int i = 0;
-    for( UserStory userStory : userStories){
-      userStoryViewDtoList.add( mapToUserStoryViewDto(userStory, priorities.get( i)));
-      i++;
-    }
-    return userStoryViewDtoList;
-  }
-
-  public UserStory mapToUserStory(UserStoryRequestDto dto) {
-    return UserStory.builder()
-        .title(dto.getTitle())
-        .metrics( dto.getMetrics())
-        .userStoryDescription(
-            userStoryDescriptionMapper.mapToUserStoryDescription(dto.getDescription()))
-        .build();
-  }
 }
