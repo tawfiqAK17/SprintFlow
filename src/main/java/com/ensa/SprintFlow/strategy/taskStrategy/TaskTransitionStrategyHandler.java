@@ -1,7 +1,7 @@
-package com.ensa.SprintFlow.service.strategy;
+package com.ensa.SprintFlow.strategy.taskStrategy;
 
 import com.ensa.SprintFlow.enums.Role;
-import com.ensa.SprintFlow.service.strategy.impl.CompositeTransitionStrategy;
+import com.ensa.SprintFlow.strategy.taskStrategy.impl.CompositeTransitionStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

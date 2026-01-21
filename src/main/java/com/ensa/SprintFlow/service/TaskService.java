@@ -15,14 +15,12 @@ import com.ensa.SprintFlow.model.User;
 import com.ensa.SprintFlow.model.UserStory;
 import com.ensa.SprintFlow.repository.TaskRepository;
 import com.ensa.SprintFlow.repository.specification.TaskSpecification;
-import com.ensa.SprintFlow.security.model.UserContext;
 import com.ensa.SprintFlow.security.service.UserAuthorizationService;
-import com.ensa.SprintFlow.service.strategy.TaskTransitionStrategy;
-import com.ensa.SprintFlow.service.strategy.TaskTransitionStrategyHandler;
+import com.ensa.SprintFlow.strategy.taskStrategy.TaskTransitionStrategy;
+import com.ensa.SprintFlow.strategy.taskStrategy.TaskTransitionStrategyHandler;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

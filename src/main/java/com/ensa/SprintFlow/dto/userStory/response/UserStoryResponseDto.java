@@ -5,6 +5,8 @@ import com.ensa.SprintFlow.dto.acceptanceCriteria.AcceptanceCriteriaDto;
 import com.ensa.SprintFlow.dto.epic.response.EpicMetaDataResponseDto;
 import com.ensa.SprintFlow.dto.sprint.response.SprintMetaDataResponseDto;
 import com.ensa.SprintFlow.dto.userStoryDescription.UserStoryDescriptionDto;
+import com.ensa.SprintFlow.model.UserStoryMetrics;
+import com.ensa.SprintFlow.model.UserStoryPriority;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +19,8 @@ import java.util.List;
 public class UserStoryResponseDto {
     private Long id;
     private String title;
-    private Integer priority;
+    private UserStoryMetrics metrics;
+    private UserStoryPriority priority;
     private EpicMetaDataResponseDto epic;
     private SprintMetaDataResponseDto sprint;
     private UserStoryDescriptionDto description;

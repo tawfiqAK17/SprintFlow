@@ -1,4 +1,4 @@
-package com.ensa.SprintFlow.service.strategy;
+package com.ensa.SprintFlow.strategy.taskStrategy;
 
 import com.ensa.SprintFlow.enums.Role;
 import com.ensa.SprintFlow.enums.TaskStatus;

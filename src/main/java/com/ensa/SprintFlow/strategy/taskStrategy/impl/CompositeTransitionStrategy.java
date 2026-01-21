@@ -1,8 +1,8 @@
-package com.ensa.SprintFlow.service.strategy.impl;
+package com.ensa.SprintFlow.strategy.taskStrategy.impl;
 
 import com.ensa.SprintFlow.enums.Role;
 import com.ensa.SprintFlow.enums.TaskStatus;
-import com.ensa.SprintFlow.service.strategy.TaskTransitionStrategy;
+import com.ensa.SprintFlow.strategy.taskStrategy.TaskTransitionStrategy;
 
 import java.util.*;
 

@@ -5,6 +5,7 @@ import com.ensa.SprintFlow.dto.userStory.response.UserStoryMetaDataResponseDto;
 import com.ensa.SprintFlow.dto.userStory.response.UserStoryResponseDto;
 import com.ensa.SprintFlow.dto.userStory.response.UserStoryViewDto;
 import com.ensa.SprintFlow.model.UserStory;
+import com.ensa.SprintFlow.model.UserStoryPriority;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,14 +20,15 @@ public class UserStoryMapper {
   UserStoryDescriptionMapper userStoryDescriptionMapper;
   AcceptanceCriteriaMapper acceptanceCriteriaMapper;
 
-  public UserStoryResponseDto mapToUserStoryResponseDto(UserStory userStory) {
+  public UserStoryResponseDto mapToUserStoryResponseDto(UserStory userStory, UserStoryPriority priority) {
     if (userStory == null) {
       return null;
     }
     return UserStoryResponseDto.builder()
         .id(userStory.getId())
         .title(userStory.getTitle())
-        .priority(userStory.getPriority())
+        .priority( priority)
+            // metrics
         .epic(epicMapper.mapToEpicMetaDataResponseDto(userStory.getEpic()))
         .sprint(sprintMapper.mapToSprintMetaDadaResponseDto(userStory.getSprint()))
         .description(
@@ -43,20 +45,22 @@ public class UserStoryMapper {
         .build();
   }
 
-  public UserStoryViewDto mapToUserStoryViewDto(UserStory userStory){
+  public UserStoryViewDto mapToUserStoryViewDto(UserStory userStory, UserStoryPriority priority){
     return UserStoryViewDto.builder()
             .id( userStory.getId())
             .title( userStory.getTitle())
-            .priority( userStory.getPriority())
+            .priority( priority)
             .epic( epicMapper.mapToEpicMetaDataResponseDto( userStory.getEpic()))
             .sprint( sprintMapper.mapToSprintMetaDadaResponseDto( userStory.getSprint()))
             .build();
   }
 
-  public List<UserStoryViewDto> mapToUserStoryViewDto( List<UserStory> userStories){
+  public List<UserStoryViewDto> mapToUserStoryViewDto( List<UserStory> userStories, List<UserStoryPriority> priorities){
     List<UserStoryViewDto> userStoryViewDtoList = new ArrayList<>();
+    int i = 0;
     for( UserStory userStory : userStories){
-      userStoryViewDtoList.add( mapToUserStoryViewDto(userStory));
+      userStoryViewDtoList.add( mapToUserStoryViewDto(userStory, priorities.get( i)));
+      i++;
     }
     return userStoryViewDtoList;
   }
@@ -64,7 +68,7 @@ public class UserStoryMapper {
   public UserStory mapToUserStory(UserStoryRequestDto dto) {
     return UserStory.builder()
         .title(dto.getTitle())
-        .priority(dto.getPriority())
+        .metrics( dto.getMetrics())
         .userStoryDescription(
             userStoryDescriptionMapper.mapToUserStoryDescription(dto.getDescription()))
         .build();
