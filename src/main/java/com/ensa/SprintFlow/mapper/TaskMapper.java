@@ -17,7 +17,7 @@ public class TaskMapper {
     private UserMapper userMapper;
     private ReportMapper reportMapper;
 
-    public Task mapToTaskRequestDto(TaskRequestDto taskRequestDto){
+    public Task mapToTask(TaskRequestDto taskRequestDto){
         return Task.builder()
                 .title( taskRequestDto.getTitle())
                 .description( taskRequestDto.getDescription())

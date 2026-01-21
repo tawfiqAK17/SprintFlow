@@ -35,7 +35,7 @@ public class TaskService {
   private TaskTransitionStrategyHandler taskTransitionStrategyHandler;
 
   public void createTask(Long projectId, Long userStoryId, TaskRequestDto dto) {
-    Task task = mapper.mapToTaskRequestDto(dto);
+    Task task = mapper.mapToTask(dto);
 
     // check if the user assigned as a developer has this role in the project
     User developer = null;
