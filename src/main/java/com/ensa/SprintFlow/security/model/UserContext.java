@@ -1,10 +1,7 @@
 package com.ensa.SprintFlow.security.model;
 
-import com.ensa.SprintFlow.enums.Role;
 import com.ensa.SprintFlow.model.Project;
 import com.ensa.SprintFlow.model.User;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,13 +14,10 @@ public class UserContext {
   private String email;
   // the project the user trying to access
   private Project project;
-  // roles will hold the user roles in a project
-  private List<Role> roles;
 
   public UserContext(User user) {
     this.id = user.getId();
     this.username = user.getUsername();
     this.email = user.getEmail();
-    this.roles = new ArrayList<>();
   }
 }

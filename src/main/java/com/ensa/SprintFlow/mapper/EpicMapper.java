@@ -5,35 +5,19 @@ import com.ensa.SprintFlow.dto.epic.response.EpicMetaDataResponseDto;
 import com.ensa.SprintFlow.dto.epic.response.EpicResponseDto;
 import com.ensa.SprintFlow.model.Epic;
 import com.ensa.SprintFlow.model.Project;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-@Component
-@AllArgsConstructor
-public class EpicMapper {
+@Mapper(componentModel = "spring")
+public interface EpicMapper {
 
-  public Epic mapToEpic(Project project, EpicRequestDto dto) {
+    @Mapping(target = "project", source = "project")
+    @Mapping(target = "title", source = "dto.title")
+    @Mapping(target = "description", source = "dto.description")
+    Epic mapToEpic(Project project, EpicRequestDto dto);
 
-    return Epic.builder()
-        .title(dto.getTitle())
-        .description(dto.getDescription())
-        .project(project)
-        .build();
-  }
+    EpicMetaDataResponseDto mapToEpicMetaDataResponseDto(Epic epic);
 
-  public EpicMetaDataResponseDto mapToEpicMetaDataResponseDto(Epic epic) {
-    if (epic == null) {
-      return null;
-    }
-    return EpicMetaDataResponseDto.builder().title(epic.getTitle()).id(epic.getId()).build();
-  }
-
-  public EpicResponseDto mapToEpicResponseDto(Epic epic) {
-    return EpicResponseDto.builder()
-        .description(epic.getDescription())
-        .title(epic.getTitle())
-        .id(epic.getId())
-        .userStoriesCount(epic.getUserStories() != null ? epic.getUserStories().size() : 0)
-        .build();
-  }
+    @Mapping(target = "userStoriesCount", expression = "java(epic.getUserStories() != null ? epic.getUserStories().size() : 0)")
+    EpicResponseDto mapToEpicResponseDto(Epic epic);
 }
