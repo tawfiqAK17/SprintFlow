@@ -32,7 +32,7 @@ public class ProjectMapper {
             .name(project.getName())
             .id(project.getId())
             .description(project.getDescription())
-            .creationDate( project.getCreationDate())
+            .creationDate(project.getCreationDate())
             .build();
     User scrumMaster = projectMemberService.getProjectScrumMaster(project.getId());
     User productOwner = projectMemberService.getProjectProductOwner(project.getId());

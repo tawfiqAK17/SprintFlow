@@ -2,7 +2,7 @@
 
 ## Base Configuration
 
-**Base URL:** `http://localhost:8080/api`
+**Base URL:** `http://localhost:8080/`
 
 **Authentication:** All endpoints except `/`, `/register`, `/verify`, and `/login` require JWT token in header:
 
@@ -252,8 +252,7 @@ Get all projects where user is a member
         },
         "userRole": "Role enum"
       }
-    ],
-    "pagination": { ... }
+    ]
   }
   ```
 
@@ -320,12 +319,6 @@ Get project details with all members
         "role": "Role enum"
       }
     ],
-    "statistics": {
-      "totalEpics": "number",
-      "totalUserStories": "number",
-      "totalSprints": "number",
-      "activeSprint": "object | null"
-    }
   }
   ```
 
