@@ -12,8 +12,11 @@ import org.mapstruct.Mapping;
     componentModel = "spring",
     uses = {UserStoryMapper.class, UserMapper.class, ReportMapper.class})
 public interface TaskMapper {
-  @Mapping(target = "tester", ignore = true)
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "userStory", ignore = true)
   @Mapping(target = "developer", ignore = true)
+  @Mapping(target = "tester", ignore = true)
+  @Mapping(target = "reports", ignore = true)
   Task mapToTaskRequestDto(TaskRequestDto taskRequestDto);
 
   TaskMetaDataResponseDto mapToTaskMetaDataResponseDto(Task task);
