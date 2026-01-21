@@ -83,7 +83,7 @@ public class ProjectAuthorizationAspect {
   }
 
   private boolean isUserHasRoles(Role... roles) {
-    List<Role> userRoles = userAuthorizationService.getAuthendicatedUserRoles();
+    List<Role> userRoles = userAuthorizationService.getAuthenticatedUserRoles();
     for (Role role : roles) {
       if (userRoles.contains(role)) {
         return true;

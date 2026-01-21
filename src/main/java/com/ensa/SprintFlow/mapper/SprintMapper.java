@@ -33,7 +33,7 @@ public class SprintMapper {
         .title(sprint.getTitle())
         .startDate(sprint.getStartDate())
         .endDate(sprint.getEndDate())
-        .userStoriesCount(sprint.getUserStories().size())
+        .userStoriesCount(sprint.getUserStories() != null ? sprint.getUserStories().size() : 0)
         .build();
   }
 }
