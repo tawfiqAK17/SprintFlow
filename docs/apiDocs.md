@@ -4,7 +4,7 @@
 
 **Base URL:** `http://localhost:8080/api`
 
-**Authentication:** All endpoints except `/`, `/register`,`/verify` and `/login` require JWT token in header:
+**Authentication:** All endpoints except `/`, `/register`, `/verify`, and `/login` require JWT token in header:
 
 ```json
 Authorization: Bearer <jwt-token>
@@ -19,7 +19,7 @@ Authorization: Bearer <jwt-token>
 - `401` Unauthorized - Missing/invalid token
 - `403` Forbidden - Insufficient permissions
 - `404` Not Found - Resource doesn't exist
-- `409` conflict - violation of the data integrity
+- `409` Conflict - Violation of data integrity
 - `500` Internal Server Error
 
 ---
@@ -34,8 +34,8 @@ Register new user account
 - **Request Body:**
   ```json
   {
-    "first_name": "string (required, min 2 chars)",
-    "last_name": "string (required, min 2 chars)",
+    "firstName": "string (required, min 2 chars)",
+    "lastName": "string (required, min 2 chars)",
     "username": "string (required, min 2 chars)",
     "email": "string (required, valid email)",
     "password": "string (required, min 8 chars)"
@@ -45,30 +45,30 @@ Register new user account
 
 ### POST `/verify`
 
-verify the user
+Verify the user
 
 - **Query Params:**
-  - `code` (string): the verification code sent to the user via email
-- **Response(200)**
+  - `code` (string): The verification code sent to the user via email
+- **Response (200)**
 
 ### GET `/verify/resend`
 
-resend the verification code to the user email
+Resend the verification code to the user email
 
 - **Query Params:**
-  - `username` (string): the username to which the code will be sent
-- **Response(200)**
+  - `username` (string): The username to which the code will be sent
+- **Response (200)**
 
 ### GET `/refresh-token`
 
-get a new jwt token
+Get a new JWT token
 
 - **Query Params:**
-  - `refreshToken` (string): the refresh token of the user
-- **Response(200)**:
+  - `refreshToken` (string): The refresh token of the user
+- **Response (200):**
   ```json
   {
-    "jwt": "string"
+    "jwt": "string",
     "refreshToken": "string"
   }
   ```
@@ -88,7 +88,7 @@ Authenticate user
 - **Response (200):**
   ```json
   {
-    "jwt": "string"
+    "jwt": "string",
     "refreshToken": "string"
   }
   ```
@@ -113,11 +113,11 @@ Get current user's profile with projects and tasks
   ```json
   {
     "id": "number",
-    "first_name": "string",
-    "last_name": "string",
+    "firstName": "string",
+    "lastName": "string",
     "username": "string",
     "email": "string",
-    "enroll_date": "date",
+    "enrollDate": "date",
     "projects": [
       {
         "id": "number",
@@ -132,8 +132,8 @@ Get current user's profile with projects and tasks
         "title": "string",
         "description": "string",
         "status": "Status enum",
-        "project_id": "number",
-        "user_story_id": "number"
+        "projectId": "number",
+        "userStoryId": "number"
       }
     ]
   }
@@ -147,8 +147,8 @@ Update current user's profile
 - **Request Body:**
   ```json
   {
-    "first_name": "string (optional)",
-    "last_name": "string (optional)",
+    "firstName": "string (optional)",
+    "lastName": "string (optional)",
     "username": "string",
     "email": "string (optional)",
     "password": "string (optional, min 8 chars)"
@@ -172,8 +172,8 @@ Search users
     "users": [
       {
         "id": "number",
-        "first_name": "string",
-        "last_name": "string",
+        "firstName": "string",
+        "lastName": "string",
         "username": "string",
         "email": "string"
       }
@@ -182,12 +182,12 @@ Search users
       "page": 1,
       "limit": 20,
       "total": 100,
-      "total_pages": 5
+      "totalPages": 5
     }
   }
   ```
 
-### GET `/users/{user_id}`
+### GET `/users/{userId}`
 
 Get specific user details
 
@@ -196,20 +196,20 @@ Get specific user details
   ```json
   {
     "id": "number",
-    "first_name": "string",
-    "last_name": "string",
+    "firstName": "string",
+    "lastName": "string",
     "username": "string",
     "email": "string",
-    "enroll_date": "date",
+    "enrollDate": "date",
     "projects": [
       {
-         "id": "number";
-         "name": "string";
-         "description": "string";
-         "creationDate": "date";
-         "scrumMaster": {...};
-         "productOwner": {...};
-         "userRole": "enum Role";
+        "id": "number",
+        "name": "string",
+        "description": "string",
+        "creationDate": "date",
+        "scrumMaster": {...},
+        "productOwner": {...},
+        "userRole": "enum Role"
       }
     ]
   }
@@ -235,22 +235,22 @@ Get all projects where user is a member
         "id": "number",
         "name": "string",
         "description": "string",
-        "creation_date": "datetime",
-        "scrum_master": {
+        "creationDate": "datetime",
+        "scrumMaster": {
           "id": "number",
-          "first_name": "string",
-          "last_name": "string"
+          "firstName": "string",
+          "lastName": "string",
           "username": "string",
           "email": "string"
         },
-        "product_owner": {
+        "productOwner": {
           "id": "number",
-          "first_name": "string",
-          "last_name": "string"
+          "firstName": "string",
+          "lastName": "string",
           "username": "string",
           "email": "string"
         },
-        "user_role": "Role enum"
+        "userRole": "Role enum"
       }
     ],
     "pagination": { ... }
@@ -267,36 +267,35 @@ Create new project (user becomes Product Owner)
   {
     "name": "string",
     "description": "string",
-    "scrum_master_username": "string"
+    "scrumMasterUsername": "string"
   }
   ```
 - **Response (201):**
+  ```json
+  {
+    "id": "number",
+    "name": "string",
+    "description": "string",
+    "creationDate": "date",
+    "scrumMaster": {
+      "id": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "username": "string",
+      "email": "string"
+    },
+    "productOwner": {
+      "id": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "username": "string",
+      "email": "string"
+    },
+    "userRole": "PRODUCT_OWNER"
+  }
+  ```
 
-```json
-    {
-      "id": "number"
-      "name": "string",
-      "description": "string",
-      "creation_date": "date"
-      "scrum_master": {
-        "id": "string"
-        "first_name": "string",
-        "last_name": "string",
-        "username": "string",
-        "email": "string"
-        },
-      "productOwner": {
-        "id": "string"
-        "first_name": "string",
-        "last_name": "string",
-        "username": "string",
-        "email": "string"
-        },
-      "user_role": PRODUCT_OWNER
-    }
-```
-
-### GET `/projects/{project_id}`
+### GET `/projects/{projectId}`
 
 Get project details with all members
 
@@ -307,30 +306,30 @@ Get project details with all members
     "id": "number",
     "name": "string",
     "description": "string",
-    "creation_date": "datetime",
-    "scrum_master": { ... },
-    "product_owner": { ... },
+    "creationDate": "datetime",
+    "scrumMaster": { ... },
+    "productOwner": { ... },
     "members": [
       {
         "user": {
           "id": "number",
-          "first_name": "string",
-          "last_name": "string",
+          "firstName": "string",
+          "lastName": "string",
           "email": "string"
         },
         "role": "Role enum"
       }
     ],
     "statistics": {
-      "total_epics": "number",
-      "total_user_stories": "number",
-      "total_sprints": "number",
-      "active_sprint": "object | null"
+      "totalEpics": "number",
+      "totalUserStories": "number",
+      "totalSprints": "number",
+      "activeSprint": "object | null"
     }
   }
   ```
 
-### PUT `/projects/{project_id}`
+### PUT `/projects/{projectId}`
 
 Update project details
 
@@ -339,13 +338,13 @@ Update project details
   ```json
   {
     "name": "string (optional)",
-    "description": "string (optional)"
-    "scrum_master_username": "string (optional)"
+    "description": "string (optional)",
+    "scrumMasterUsername": "string (optional)"
   }
   ```
 - **Response (200):** Updated project
 
-### DELETE `/projects/{project_id}`
+### DELETE `/projects/{projectId}`
 
 Delete project permanently
 
@@ -356,7 +355,7 @@ Delete project permanently
 
 ## 4. PROJECT MEMBERS
 
-### GET `/projects/{project_id}/members`
+### GET `/projects/{projectId}/members`
 
 Get all project members
 
@@ -368,15 +367,15 @@ Get all project members
   [
     {
       "username": "string",
-      "first_name": "string",
-      "last_name": "string",
+      "firstName": "string",
+      "lastName": "string",
       "email": "string",
       "role": "Role enum"
     }
   ]
   ```
 
-### POST `/projects/{project_id}/members`
+### POST `/projects/{projectId}/members`
 
 Add member to project
 
@@ -391,7 +390,7 @@ Add member to project
 - **Response (201):** Member object
 - **Note:** Cannot add duplicate members. Only one Scrum Master per project.
 
-### PUT `/projects/{project_id}/members/{username}/roles`
+### PUT `/projects/{projectId}/members/{username}/roles`
 
 Add a role to a member
 
@@ -404,7 +403,7 @@ Add a role to a member
   ```
 - **Response (200):** Updated member
 
-### DELETE `/projects/{project_id}/members/{username}/roles`
+### DELETE `/projects/{projectId}/members/{username}/roles`
 
 Remove a role from a member
 
@@ -415,9 +414,9 @@ Remove a role from a member
     "role": "Role enum (required)"
   }
   ```
-- **Response (204):**
+- **Response (204):** No content
 
-### DELETE `/projects/{project_id}/members/{username}`
+### DELETE `/projects/{projectId}/members/{username}`
 
 Remove member from project
 
@@ -429,7 +428,7 @@ Remove member from project
 
 ## 5. EPICS
 
-### GET `/projects/{project_id}/epics`
+### GET `/projects/{projectId}/epics`
 
 Get all epics
 
@@ -441,12 +440,12 @@ Get all epics
       "id": "number",
       "title": "string",
       "description": "string",
-      "user_stories_count": "number"
+      "userStoriesCount": "number"
     }
   ]
   ```
 
-### POST `/projects/{project_id}/epics`
+### POST `/projects/{projectId}/epics`
 
 Create new epic
 
@@ -460,17 +459,15 @@ Create new epic
   ```
 - **Response (201):**
   ```json
-  [
-    {
-      "id": "number",
-      "title": "string",
-      "description": "string",
-      "user_stories_count": "number"
-    }
-  ]
+  {
+    "id": "number",
+    "title": "string",
+    "description": "string",
+    "userStoriesCount": "number"
+  }
   ```
 
-### GET `/projects/{project_id}/epics/{epic_id}`
+### GET `/projects/{projectId}/epics/{epicId}`
 
 Get epic details
 
@@ -481,11 +478,11 @@ Get epic details
     "id": "number",
     "title": "string",
     "description": "string",
-    "user_stories_count": "number"
+    "userStoriesCount": "number"
   }
   ```
 
-### PUT `/projects/{project_id}/epics/{epic_id}`
+### PUT `/projects/{projectId}/epics/{epicId}`
 
 Update epic
 
@@ -497,49 +494,48 @@ Update epic
     "description": "string (optional)"
   }
   ```
-- **Response (200)**
+- **Response (200):** Updated epic
 
-### DELETE `/projects/{project_id}/epics/{epic_id}`
+### DELETE `/projects/{projectId}/epics/{epicId}`
 
 Delete epic (removes epic association from user stories)
 
 - **Auth:** Required (Product Owner only)
 - **Response (204):** No content
 
+### POST `/projects/{projectId}/epics/{epicId}/user-stories`
 
-### POST `/projects/{projectId}/epics/{epicId}/user_stories`
-
-add user stories to epic 
+Add user stories to epic
 
 - **Auth:** Required (Product Owner only)
 - **Request Body:**
   ```json
   {
-    "user_story_ids": ["number array (required)"]
+    "userStoryIds": ["number array (required)"]
   }
   ```
-- **Response (200):** Updated sprint
-- **Validation:** User stories must exist and not already in another sprint
+- **Response (200):** Updated epic
+- **Validation:** User stories must exist in the project
 
-### DELETE `/projects/{projectId}/epics/{epicId}/user_stories/{user_story_id}`
+### DELETE `/projects/{projectId}/epics/{epicId}/user-stories/{userStoryId}`
 
-Remove user story from epic 
+Remove user story from epic
 
-- **Auth:** Required (Scrum Master only)
+- **Auth:** Required (Product Owner only)
 - **Response (204):** No content
 
 ---
 
 ## 6. USER STORIES
 
-### GET `/projects/{project_id}/user_stories`
+### GET `/projects/{projectId}/user-stories`
 
 Get project user stories
 
 - **Auth:** Required (must be project member)
 - **Query Params:**
   - `epicId` (number): Filter by epic
-  - `sprintId` (number): Filter by epic
+  - `sprintId` (number): Filter by sprint
   - `unassigned` (boolean): Show only stories not in sprint
 - **Response (200):**
   ```json
@@ -560,7 +556,7 @@ Get project user stories
   ]
   ```
 
-### POST `/projects/{project_id}/user_stories`
+### POST `/projects/{projectId}/user-stories`
 
 Create user story
 
@@ -579,7 +575,7 @@ Create user story
   ```
 - **Response (201):** Created user story
 
-### GET `/projects/{project_id}/user_stories/{user_story_id}`
+### GET `/projects/{projectId}/user-stories/{userStoryId}`
 
 Get user story details with tasks and criteria
 
@@ -590,36 +586,36 @@ Get user story details with tasks and criteria
     "id": "number",
     "title": "string",
     "priority": "number",
-      "epic": {
-        "id": "number",
-        "title": "string"
-      },
-      "sprint": {
-        "id": "number",
-        "title": "string"
-      }
+    "epic": {
+      "id": "number",
+      "title": "string"
+    },
+    "sprint": {
+      "id": "number",
+      "title": "string"
+    },
     "description": {
       "as": "string",
       "what": "string",
       "for": "string"
     },
-    "acceptance_criteria": [
+    "acceptanceCriteria": [
       {
         "id": "number",
         "given": "string",
         "when": "string",
         "ands": [
-            {
-                "and": "string"
-            }
-        ](optional)
+          {
+            "and": "string"
+          }
+        ],
         "then": "string"
       }
-    ],
+    ]
   }
   ```
 
-### PUT `/projects/{project_id}/user_stories/{user_story_id}`
+### PUT `/projects/{projectId}/user-stories/{userStoryId}`
 
 Update user story
 
@@ -627,14 +623,14 @@ Update user story
 - **Request Body:** Same as POST (all fields optional)
 - **Response (200):** Updated user story
 
-### DELETE `/projects/{project_id}/user_stories/{user_story_id}`
+### DELETE `/projects/{projectId}/user-stories/{userStoryId}`
 
 Delete user story (cascades to tasks)
 
 - **Auth:** Required (Product Owner only)
 - **Response (204):** No content
 
-### POST `/projects/{project_id}/user_stories/{user_story_id}/criterias`
+### POST `/projects/{projectId}/user-stories/{userStoryId}/criterias`
 
 Add acceptance criteria
 
@@ -645,24 +641,24 @@ Add acceptance criteria
     "given": "string (required, 'Given [context]')",
     "when": "string (required, 'When [action]')",
     "ands": [
-        {
-            "and": "string"
-        }
-      ](optional)
+      {
+        "and": "string"
+      }
+    ],
     "then": "string (required, 'Then [outcome]')"
   }
   ```
 - **Response (201):** Created criteria
 
-### PUT `/projects/{project_id}/user_stories/{user_story_id}/criterias/{criteria_id}`
+### PUT `/projects/{projectId}/user-stories/{userStoryId}/criterias/{criteriaId}`
 
 Update acceptance criteria
 
-- **Auth:** Required (Scrum Master)
+- **Auth:** Required (Scrum Master only)
 - **Request Body:** Same as POST (all optional)
 - **Response (200):** Updated criteria
 
-### DELETE `/projects/{project_id}/user_stories/{user_story_id}/criterias/{criteria_id}`
+### DELETE `/projects/{projectId}/user-stories/{userStoryId}/criterias/{criteriaId}`
 
 Delete acceptance criteria
 
@@ -673,7 +669,7 @@ Delete acceptance criteria
 
 ## 7. SPRINTS
 
-### GET `/projects/{project_id}/sprints`
+### GET `/projects/{projectId}/sprints`
 
 Get all sprints
 
@@ -688,15 +684,15 @@ Get all sprints
     {
       "id": "number",
       "title": "string",
-      "start_date": "date",
-      "end_date": "date",
-      "is_active": "boolean",
-      "user_stories_count": "number"
+      "startDate": "date",
+      "endDate": "date",
+      "isActive": "boolean",
+      "userStoriesCount": "number"
     }
   ]
   ```
 
-### POST `/projects/{project_id}/sprints`
+### POST `/projects/{projectId}/sprints`
 
 Create sprint
 
@@ -705,24 +701,24 @@ Create sprint
   ```json
   {
     "title": "string (required)",
-    "start_date": "date (required)",
-    "end_date": "date (required)"
+    "startDate": "date (required)",
+    "endDate": "date (required)"
   }
   ```
 - **Response (201):**
   ```json
   {
-    "id": "number"
-    "title": "string (required)",
-    "start_date": "date (required)",
-    "end_date": "date (required)"
-    "is_active": "boolean",
-    "user_stories_count": "number"
+    "id": "number",
+    "title": "string",
+    "startDate": "date",
+    "endDate": "date",
+    "isActive": "boolean",
+    "userStoriesCount": "number"
   }
   ```
-- **Validation:** end_date > start_date, no overlapping sprints
+- **Validation:** endDate > startDate, no overlapping sprints
 
-### GET `/projects/{project_id}/sprints/{sprint_id}`
+### GET `/projects/{projectId}/sprints/{sprintId}`
 
 Get sprint details with backlog
 
@@ -732,14 +728,14 @@ Get sprint details with backlog
   {
     "id": "number",
     "title": "string",
-    "start_date": "date",
-    "end_date": "date",
-    "is_active": "boolean",
-    "user_stories_count": "number"
+    "startDate": "date",
+    "endDate": "date",
+    "isActive": "boolean",
+    "userStoriesCount": "number"
   }
   ```
 
-### PUT `/projects/{project_id}/sprints/{sprint_id}`
+### PUT `/projects/{projectId}/sprints/{sprintId}`
 
 Update sprint
 
@@ -747,14 +743,14 @@ Update sprint
 - **Request Body:** Same as POST (all optional)
 - **Response (200):** Updated sprint
 
-### DELETE `/projects/{project_id}/sprints/{sprint_id}`
+### DELETE `/projects/{projectId}/sprints/{sprintId}`
 
 Delete sprint (unassigns user stories)
 
 - **Auth:** Required (Scrum Master only)
 - **Response (204):** No content
 
-### POST `/projects/{project_id}/sprints/{sprint_id}/user_stories`
+### POST `/projects/{projectId}/sprints/{sprintId}/user-stories`
 
 Assign user stories to sprint
 
@@ -762,13 +758,13 @@ Assign user stories to sprint
 - **Request Body:**
   ```json
   {
-    "user_story_ids": ["number array (required)"]
+    "userStoryIds": ["number array (required)"]
   }
   ```
 - **Response (200):** Updated sprint
 - **Validation:** User stories must exist and not already in another sprint
 
-### DELETE `/projects/{project_id}/sprints/{sprint_id}/user_stories/{user_story_id}`
+### DELETE `/projects/{projectId}/sprints/{sprintId}/user-stories/{userStoryId}`
 
 Remove user story from sprint
 
@@ -779,7 +775,7 @@ Remove user story from sprint
 
 ## 8. TASKS
 
-### GET `/projects/{project_id}/tasks`
+### GET `/projects/{projectId}/tasks`
 
 Get all tasks
 
@@ -798,16 +794,17 @@ Get all tasks
       "title": "string",
       "description": "string",
       "status": "Status enum",
-      "user_story": {
+      "userStory": {
         "id": "number",
         "title": "string"
       }
     }
   ]
   ```
-### GET `/projects/{project_id}/tasks/me`
 
-Get all tasks assigned to current user.
+### GET `/projects/{projectId}/tasks/me`
+
+Get all tasks assigned to current user
 
 - **Auth:** Required (must be Developer or Tester)
 - **Query Params:**
@@ -822,14 +819,15 @@ Get all tasks assigned to current user.
       "title": "string",
       "description": "string",
       "status": "Status enum",
-      "user_story": {
+      "userStory": {
         "id": "number",
         "title": "string"
       }
     }
   ]
   ```
-### POST `/projects/{project_id}/user_stories/{user_story_id}/tasks`
+
+### POST `/projects/{projectId}/user-stories/{userStoryId}/tasks`
 
 Create task
 
@@ -846,11 +844,11 @@ Create task
 - **Response (201):** Created task
 - **Validation:** User story must be in a sprint
 
-### GET `/projects/{project_id}/user_stories/{user_story_id}/tasks/{task_id}`
+### GET `/projects/{projectId}/user-stories/{userStoryId}/tasks/{taskId}`
 
 Get task details
 
-- **Auth:** Required ( Must be a Scrum Master , Developer or Tester assigned to this task)
+- **Auth:** Required (Must be a Scrum Master, Developer or Tester assigned to this task)
 - **Response (200):**
   ```json
   {
@@ -858,36 +856,36 @@ Get task details
     "title": "string",
     "description": "string",
     "status": "Status enum",
-    "user_story": {
-        "id": "number",
-        "title": "string"
-      },
+    "userStory": {
+      "id": "number",
+      "title": "string"
+    },
     "developer": {
       "username": "string",
-      "first_name": "string",
-      "last_name": "string"
+      "firstName": "string",
+      "lastName": "string"
     },
     "tester": {
       "username": "string",
-      "first_name": "string",
-      "last_name": "string"
+      "firstName": "string",
+      "lastName": "string"
     },
     "reports": [
       {
         "id": "number",
         "description": "string",
-        "created_by": {
+        "createdBy": {
           "username": "string",
-          "first_name": "string",
-          "last_name": "string"
+          "firstName": "string",
+          "lastName": "string"
         },
-        "creation_date": "datetime"
+        "creationDate": "datetime"
       }
     ]
   }
   ```
- 
-### PUT `/projects/{project_id}/user_stories/{user_story_id}/tasks/{task_id}`
+
+### PUT `/projects/{projectId}/user-stories/{userStoryId}/tasks/{taskId}`
 
 Update task
 
@@ -896,38 +894,37 @@ Update task
 - **Request Body:**
   ```json
   {
-    "title": "string ",
-    "description": "string ",
-    "status": "Status enum",
-    "developer": "string",
-    "tester": "string"
+    "title": "string (optional)",
+    "description": "string (optional)",
+    "status": "Status enum (optional)",
+    "developer": "string (optional)",
+    "tester": "string (optional)"
   }
   ```
 - **Response (200):** Updated task
 - **Validation:** Status transitions follow workflow rules
 
+### PUT `/projects/{projectId}/user-stories/{userStoryId}/tasks/{taskId}/status`
 
-### PUT `/projects/{project_id}/user_stories/{user_story_id}/tasks/{task_id}/status`
-
-Update task status (for tester)
+Update task status
 
 - **Auth:** Required
   - **Tester:** Can update status (TO_BE_TESTED → TESTED or TEST_FAILED with report)
   - **Developer:** Can update status (TODO → IN_PROGRESS or TEST_FAILED → IN_PROGRESS)
   - **Scrum Master:** Can update status (TODO → IN_PROGRESS → TO_BE_TESTED → TESTED or TEST_FAILED → DONE)
 - **Request Body:**
- ```json
+  ```json
   {
     "status": "Status enum",
     "report": {
-      "description": "string", 
-    }(optional)
+      "description": "string"
+    }
   }
   ```
 - **Response (200):** Updated task
 - **Validation:** Status transitions follow workflow rules
 
-### DELETE `/projects/{project_id}/user_stories/{user_story_id}/tasks/{task_id}`
+### DELETE `/projects/{projectId}/user-stories/{userStoryId}/tasks/{taskId}`
 
 Delete task
 
@@ -938,14 +935,15 @@ Delete task
 
 ## 9. REPORTS
 
-### DELETE `/projects/{project_id}/tasks/{task_id}/reports/{reportId}`
+### DELETE `/projects/{projectId}/tasks/{taskId}/reports/{reportId}`
 
- Delete Report
+Delete report
 
-- **Auth:** Required (Scrum Master or Tester (who made it) )
+- **Auth:** Required (Scrum Master or Tester who made it)
 - **Response (204):** No content
 
 ---
+
 ## BUSINESS RULES & VALIDATIONS
 
 ### Status Transitions
@@ -959,7 +957,7 @@ TODO → IN_PROGRESS → TO_BE_TESTED → TESTED → DONE
 ```
 
 - **Developer:** TODO → IN_PROGRESS, IN_PROGRESS → TO_BE_TESTED
-- **Tester:** TO_BE_TESTED → TESTED or IN_PROGRESS (with report)
+- **Tester:** TO_BE_TESTED → TESTED or TO_BE_TESTED → IN_PROGRESS (with report)
 - **Scrum Master:** Can mark TESTED → DONE
 
 ### Role Restrictions
