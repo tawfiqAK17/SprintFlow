@@ -57,6 +57,10 @@ public class TaskService {
     }
 
     UserStory userStory = userStoryService.findUserStory(userStoryId);
+    // Check if the userStory belongs to any sprint or not
+    if( userStory.getSprint() == null){
+      throw new UnauthorizedException("This userStory are not belongs yet to any sprint");
+    }
 
     task.setDeveloper(developer);
     task.setTester(tester);
