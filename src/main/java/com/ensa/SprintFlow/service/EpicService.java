@@ -28,16 +28,18 @@ public class EpicService {
     return epicRepository.save(epic);
   }
 
-  public List<Epic> getAllEpics(Long projectId) {
-    return epicRepository.findAllByProjectId(projectId);
+  public List<EpicResponseDto> getAllEpics(Long projectId) {
+    return epicRepository.findAllByProjectId(projectId).stream()
+        .map(e -> mapper.mapToEpicResponseDto(e))
+        .toList();
   }
 
-  public Epic getEpic(Long epicId) {
+  public EpicResponseDto getEpic(Long epicId) {
     Optional<Epic> optionalEpic = epicRepository.findById(epicId);
     if (optionalEpic.isEmpty()) {
       throw new NotFoundException("no epic found with the given id");
     }
-    return optionalEpic.get();
+    return mapper.mapToEpicResponseDto(optionalEpic.get());
   }
 
   public EpicResponseDto createEpic(Project project, EpicRequestDto dto) {

@@ -1,7 +1,7 @@
 package com.ensa.SprintFlow.controller;
 
 import com.ensa.SprintFlow.dto.epic.request.EpicRequestDto;
-import com.ensa.SprintFlow.mapper.EpicMapper;
+import com.ensa.SprintFlow.dto.epic.response.EpicResponseDto;
 import com.ensa.SprintFlow.model.Project;
 import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeMember;
 import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeProductOwner;
@@ -25,23 +25,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class EpicController {
   private ProjectService projectService;
   private EpicService epicService;
-  private EpicMapper epicMapper;
 
   @AuthorizeMember
   @GetMapping("/projects/{projectId}/epics")
   public ResponseEntity<?> getAllEpics(@PathVariable Long projectId) {
-    return ResponseEntity.status(HttpStatus.OK)
-        .body(
-            epicService.getAllEpics(projectId).stream()
-                .map(e -> epicMapper.mapToEpicResponseDto(e))
-                .toList());
+    List<EpicResponseDto> epics = epicService.getAllEpics(projectId);
+    return ResponseEntity.status(epics.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK)
+        .body(epics);
   }
 
   @AuthorizeMember
   @GetMapping("/projects/{projectId}/epics/{epicId}")
   public ResponseEntity<?> getEpic(@PathVariable Long epicId) {
-    return ResponseEntity.status(HttpStatus.OK)
-        .body(epicMapper.mapToEpicResponseDto(epicService.getEpic(epicId)));
+    return ResponseEntity.status(HttpStatus.OK).body(epicService.getEpic(epicId));
   }
 
   @AuthorizeProductOwner

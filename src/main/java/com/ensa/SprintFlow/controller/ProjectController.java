@@ -4,16 +4,13 @@ import com.ensa.SprintFlow.builder.CustomResponseBuilder;
 import com.ensa.SprintFlow.dto.project.request.ProjectRequestDto;
 import com.ensa.SprintFlow.dto.project.request.ProjectUpdateRequestDto;
 import com.ensa.SprintFlow.dto.project.response.ProjectMetaDataResponseDto;
-import com.ensa.SprintFlow.dto.project.response.ProjectResponseDto;
 import com.ensa.SprintFlow.dto.projectMember.request.ProjectMemberRequestDto;
+import com.ensa.SprintFlow.dto.projectMember.response.ProjectMemberResponseDto;
 import com.ensa.SprintFlow.enums.Role;
-import com.ensa.SprintFlow.mapper.ProjectMapper;
-import com.ensa.SprintFlow.model.Project;
 import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeMember;
 import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeProductOwner;
 import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeScrumMaster;
 import com.ensa.SprintFlow.service.ProjectService;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,43 +28,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController()
 @AllArgsConstructor
 public class ProjectController {
-  private ProjectMapper mapper;
 
   private ProjectService projectService;
   private CustomResponseBuilder responseBuilder;
 
   @PostMapping("/projects")
   public ResponseEntity<?> createProject(@Validated @RequestBody ProjectRequestDto dto) {
-    Project project = projectService.save(dto);
-    ProjectMetaDataResponseDto projectResponse = mapper.mapToMetaDataResponseDto(project);
-    return ResponseEntity.status(HttpStatus.CREATED).body(projectResponse);
+    return ResponseEntity.status(HttpStatus.CREATED).body(projectService.save(dto));
   }
 
   @AuthorizeProductOwner
-  @PutMapping("/projects/{id}")
+  @PutMapping("/projects/{projectId}")
   public ResponseEntity<?> updateProject(
-      @PathVariable Long id, @RequestBody ProjectUpdateRequestDto dto) {
-    Project project = projectService.update(id, dto);
-    ProjectMetaDataResponseDto projectResponse = mapper.mapToMetaDataResponseDto(project);
-    return ResponseEntity.status(HttpStatus.OK).body(projectResponse);
+      @PathVariable Long projectId, @RequestBody ProjectUpdateRequestDto dto) {
+    return ResponseEntity.status(HttpStatus.OK).body(projectService.update(projectId, dto));
   }
 
   @GetMapping("/projects")
   public ResponseEntity<?> getProjects() {
-    List<Project> projects = projectService.getProjects();
-    List<ProjectMetaDataResponseDto> projectsMetaData = new ArrayList<>();
-    for (Project project : projects) {
-      projectsMetaData.add(mapper.mapToMetaDataResponseDto(project));
-    }
-    return responseBuilder.status(HttpStatus.OK).property("projects", projectsMetaData).build();
+    List<ProjectMetaDataResponseDto> projects = projectService.getProjects();
+    return responseBuilder
+        .status(projects.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK)
+        .property("projects", projects)
+        .build();
   }
 
   @AuthorizeMember
   @GetMapping("/projects/{id}")
   public ResponseEntity<?> getProject(@PathVariable Long id) {
-    Project project = projectService.getProject(id);
-    ProjectResponseDto projectResponse = mapper.mapToResponseDto(project);
-    return ResponseEntity.status(HttpStatus.CREATED).body(projectResponse);
+    return ResponseEntity.status(HttpStatus.CREATED).body(projectService.getProject(id));
   }
 
   @AuthorizeProductOwner
@@ -80,8 +69,9 @@ public class ProjectController {
   @AuthorizeMember
   @GetMapping("/projects/{projectId}/members")
   public ResponseEntity<?> getAllMembers(@RequestParam Role role, @PathVariable Long projectId) {
-    return ResponseEntity.status(HttpStatus.OK)
-        .body(projectService.getProjectMembers(projectId, role));
+    List<ProjectMemberResponseDto> members = projectService.getProjectMembers(projectId, role);
+    return ResponseEntity.status(members.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK)
+        .body(members);
   }
 
   @AuthorizeScrumMaster

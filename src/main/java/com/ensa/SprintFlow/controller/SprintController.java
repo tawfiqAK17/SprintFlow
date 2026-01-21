@@ -1,6 +1,7 @@
 package com.ensa.SprintFlow.controller;
 
 import com.ensa.SprintFlow.dto.sprint.request.SprintRequestDto;
+import com.ensa.SprintFlow.dto.sprint.response.SprintResponseDto;
 import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeMember;
 import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeScrumMaster;
 import com.ensa.SprintFlow.service.SprintService;
@@ -28,8 +29,9 @@ public class SprintController {
   @GetMapping("/projects/{projectId}/sprints")
   public ResponseEntity<?> getAllSprints(
       @RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate) {
-    return ResponseEntity.status(HttpStatus.OK)
-        .body(sprintService.getAllSprints(startDate, endDate));
+    List<SprintResponseDto> sprints = sprintService.getAllSprints(startDate, endDate);
+    return ResponseEntity.status(sprints.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK)
+        .body(sprints);
   }
 
   @AuthorizeMember
