@@ -11,13 +11,16 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface EpicMapper {
 
-    @Mapping(target = "project", source = "project")
-    @Mapping(target = "title", source = "dto.title")
-    @Mapping(target = "description", source = "dto.description")
-    Epic mapToEpic(Project project, EpicRequestDto dto);
+  @Mapping(target = "project", source = "project")
+  @Mapping(target = "title", source = "dto.title")
+  @Mapping(target = "description", source = "dto.description")
+  @Mapping(target = "userStories", ignore = true)
+  Epic mapToEpic(Project project, EpicRequestDto dto);
 
-    EpicMetaDataResponseDto mapToEpicMetaDataResponseDto(Epic epic);
+  EpicMetaDataResponseDto mapToEpicMetaDataResponseDto(Epic epic);
 
-    @Mapping(target = "userStoriesCount", expression = "java(epic.getUserStories() != null ? epic.getUserStories().size() : 0)")
-    EpicResponseDto mapToEpicResponseDto(Epic epic);
+  @Mapping(
+      target = "userStoriesCount",
+      expression = "java(epic.getUserStories() != null ? epic.getUserStories().size() : 0)")
+  EpicResponseDto mapToEpicResponseDto(Epic epic);
 }

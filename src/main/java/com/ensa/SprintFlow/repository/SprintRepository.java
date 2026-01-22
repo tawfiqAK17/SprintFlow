@@ -18,4 +18,6 @@ public interface SprintRepository extends JpaRepository<Sprint, Long> {
       WHERE t.userStory.sprint.id = :sprintId
       """)
   List<Task> findAllTasks(@Param("sprintId") Long sprintId);
+
+  List<Sprint> findAllByProjectId(Long projectId);
 }

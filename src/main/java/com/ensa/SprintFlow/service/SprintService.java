@@ -34,9 +34,9 @@ public class SprintService {
     return sprintMapper.maptoSprintResponseDto(sprintRepository.save(sprint));
   }
 
-  public List<SprintResponseDto> getAllSprints(LocalDateTime startDate, LocalDateTime endDate) {
-    List<Sprint> sprints =
-        userAuthorizationService.getAuthenticatedUser().getProject().getSprints();
+  public List<SprintResponseDto> getAllSprints(
+      Long projectId, LocalDateTime startDate, LocalDateTime endDate) {
+    List<Sprint> sprints = sprintRepository.findAllByProjectId(projectId);
 
     if (startDate != null) {
       sprints = sprints.stream().filter(s -> s.getStartDate().isAfter(startDate)).toList();
