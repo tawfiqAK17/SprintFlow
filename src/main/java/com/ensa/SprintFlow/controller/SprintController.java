@@ -61,7 +61,7 @@ public class SprintController {
 
   @AuthorizeScrumMaster
   @PostMapping("/projects/{projectId}/sprints/{sprintId}/user_stories")
-  public ResponseEntity<?> addUserStories(
+  public ResponseEntity<?> addUserStories(@PathVariable Long projectId,
       @PathVariable Long sprintId, @RequestBody List<Long> userStoriesIds) {
     sprintService.addUserStories(sprintId, userStoriesIds);
     return ResponseEntity.status(HttpStatus.OK).build();

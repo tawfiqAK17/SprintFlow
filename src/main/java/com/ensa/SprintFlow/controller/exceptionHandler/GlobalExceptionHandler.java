@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,6 +17,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
   ErrorResponseBuilder errorResponseBuilder;
+
+  @ExceptionHandler(HttpMessageNotReadableException.class)
+  public ResponseEntity<?> handleHttpMessageNotReadableException( HttpMessageNotReadableException e){
+    ErrorResponseBuilder responseBuilder = new ErrorResponseBuilder();
+    responseBuilder.error("INVALID_INPUT");
+    responseBuilder.status(HttpStatus.BAD_REQUEST);
+    responseBuilder.message( "The request body is not valid JSON or it contains invalid fields value.");
+    responseBuilder.detail( e.getMessage());
+    return responseBuilder.build();
+  }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<?> handleMethodArgumentNotValidException(
