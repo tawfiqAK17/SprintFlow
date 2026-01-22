@@ -1,15 +1,25 @@
 package com.ensa.SprintFlow.service;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.ensa.SprintFlow.dto.sprint.request.SprintRequestDto;
+import com.ensa.SprintFlow.dto.sprint.response.SprintBurndownChartDto;
 import com.ensa.SprintFlow.dto.sprint.response.SprintResponseDto;
 import com.ensa.SprintFlow.exception.generalException.NotFoundException;
 import com.ensa.SprintFlow.mapper.SprintMapper;
 import com.ensa.SprintFlow.model.Project;
 import com.ensa.SprintFlow.model.Sprint;
+import com.ensa.SprintFlow.model.Task;
 import com.ensa.SprintFlow.model.UserStory;
 import com.ensa.SprintFlow.repository.SprintRepository;
 import com.ensa.SprintFlow.security.model.UserContext;
@@ -514,5 +524,263 @@ class SprintServiceTest {
         assertThrows(NotFoundException.class, () -> sprintService.findById(999L));
     assertEquals("there is no sprint with the given id", exception.getMessage());
     verify(sprintRepository, times(1)).findById(999L);
+  }
+
+  @Test
+  void getBurndownChart_WithValidSprintId_ShouldReturnBurndownChartDto() {
+    // Arrange
+    Task task1 =
+        Task.builder()
+            .id(1L)
+            .title("Task 1")
+            .doneDate(now.plusDays(2))
+            .userStory(userStory1)
+            .build();
+
+    Task task2 =
+        Task.builder()
+            .id(2L)
+            .title("Task 2")
+            .doneDate(now.plusDays(2))
+            .userStory(userStory1)
+            .build();
+
+    Task task3 =
+        Task.builder()
+            .id(3L)
+            .title("Task 3")
+            .doneDate(now.plusDays(5))
+            .userStory(userStory2)
+            .build();
+
+    List<Task> tasks = Arrays.asList(task1, task2, task3);
+
+    when(sprintRepository.findById(1L)).thenReturn(Optional.of(sprint));
+    when(sprintRepository.findAllTasks(1L)).thenReturn(tasks);
+
+    // Act
+    SprintBurndownChartDto result = sprintService.getBurndownChart(1L);
+
+    // Assert
+    assertNotNull(result);
+    assertEquals(sprint.getStartDate(), result.getSprintStartDate());
+    assertEquals(3, result.getNumberOfTasks());
+    assertEquals(15, result.getNumberOfDays()); // 14 days + 1
+    assertEquals(15, result.getNumberOfTasksDoneForDay().size());
+    assertEquals(2, result.getNumberOfTasksDoneForDay().get(2)); // 2 tasks on day 2
+    assertEquals(1, result.getNumberOfTasksDoneForDay().get(5)); // 1 task on day 5
+    assertEquals(0, result.getNumberOfTasksDoneForDay().get(0)); // 0 tasks on day 0
+    verify(sprintRepository, times(1)).findById(1L);
+    verify(sprintRepository, times(1)).findAllTasks(1L);
+  }
+
+  @Test
+  void getBurndownChart_WithNoTasks_ShouldReturnEmptyBurndownChart() {
+    // Arrange
+    List<Task> tasks = new ArrayList<>();
+
+    when(sprintRepository.findById(1L)).thenReturn(Optional.of(sprint));
+    when(sprintRepository.findAllTasks(1L)).thenReturn(tasks);
+
+    // Act
+    SprintBurndownChartDto result = sprintService.getBurndownChart(1L);
+
+    // Assert
+    assertNotNull(result);
+    assertEquals(0, result.getNumberOfTasks());
+    assertEquals(15, result.getNumberOfDays());
+    assertTrue(result.getNumberOfTasksDoneForDay().stream().allMatch(count -> count == 0));
+    verify(sprintRepository, times(1)).findById(1L);
+    verify(sprintRepository, times(1)).findAllTasks(1L);
+  }
+
+  @Test
+  void getBurndownChart_WithTasksCompletedOutsideSprint_ShouldIgnoreThem() {
+    // Arrange
+    Task task1 =
+        Task.builder()
+            .id(1L)
+            .title("Task 1")
+            .doneDate(now.minusDays(1)) // Before sprint start
+            .userStory(userStory1)
+            .build();
+
+    Task task2 =
+        Task.builder()
+            .id(2L)
+            .title("Task 2")
+            .doneDate(now.plusDays(3))
+            .userStory(userStory1)
+            .build();
+
+    Task task3 =
+        Task.builder()
+            .id(3L)
+            .title("Task 3")
+            .doneDate(now.plusDays(20)) // After sprint end
+            .userStory(userStory2)
+            .build();
+
+    List<Task> tasks = Arrays.asList(task1, task2, task3);
+
+    when(sprintRepository.findById(1L)).thenReturn(Optional.of(sprint));
+    when(sprintRepository.findAllTasks(1L)).thenReturn(tasks);
+
+    // Act
+    SprintBurndownChartDto result = sprintService.getBurndownChart(1L);
+
+    // Assert
+    assertNotNull(result);
+    assertEquals(3, result.getNumberOfTasks());
+    assertEquals(1, result.getNumberOfTasksDoneForDay().get(3)); // Only task2 counted
+    assertEquals(0, result.getNumberOfTasksDoneForDay().get(0)); // task1 not counted
+    assertEquals(0, result.getNumberOfTasksDoneForDay().get(14)); // task3 not counted
+  }
+
+  @Test
+  void getBurndownChart_WithUncompletedTasks_ShouldCountTotalButNotInDoneList() {
+    // Arrange
+    Task task1 =
+        Task.builder()
+            .id(1L)
+            .title("Task 1")
+            .doneDate(now.plusDays(2))
+            .userStory(userStory1)
+            .build();
+
+    Task task2 =
+        Task.builder()
+            .id(2L)
+            .title("Task 2")
+            .doneDate(null) // Not completed
+            .userStory(userStory1)
+            .build();
+
+    Task task3 =
+        Task.builder()
+            .id(3L)
+            .title("Task 3")
+            .doneDate(null) // Not completed
+            .userStory(userStory2)
+            .build();
+
+    List<Task> tasks = Arrays.asList(task1, task2, task3);
+
+    when(sprintRepository.findById(1L)).thenReturn(Optional.of(sprint));
+    when(sprintRepository.findAllTasks(1L)).thenReturn(tasks);
+
+    // Act
+    SprintBurndownChartDto result = sprintService.getBurndownChart(1L);
+
+    // Assert
+    assertNotNull(result);
+    assertEquals(3, result.getNumberOfTasks());
+    assertEquals(1, result.getNumberOfTasksDoneForDay().get(2)); // Only 1 completed
+    long totalCompleted =
+        result.getNumberOfTasksDoneForDay().stream().mapToInt(Integer::intValue).sum();
+    assertEquals(1, totalCompleted); // Only 1 task was completed
+  }
+
+  @Test
+  void getBurndownChart_WithMultipleTasksOnSameDay_ShouldCountAll() {
+    // Arrange
+    Task task1 =
+        Task.builder()
+            .id(1L)
+            .title("Task 1")
+            .doneDate(now.plusDays(3))
+            .userStory(userStory1)
+            .build();
+
+    Task task2 =
+        Task.builder()
+            .id(2L)
+            .title("Task 2")
+            .doneDate(now.plusDays(3))
+            .userStory(userStory1)
+            .build();
+
+    Task task3 =
+        Task.builder()
+            .id(3L)
+            .title("Task 3")
+            .doneDate(now.plusDays(3))
+            .userStory(userStory2)
+            .build();
+
+    List<Task> tasks = Arrays.asList(task1, task2, task3);
+
+    when(sprintRepository.findById(1L)).thenReturn(Optional.of(sprint));
+    when(sprintRepository.findAllTasks(1L)).thenReturn(tasks);
+
+    // Act
+    SprintBurndownChartDto result = sprintService.getBurndownChart(1L);
+
+    // Assert
+    assertNotNull(result);
+    assertEquals(3, result.getNumberOfTasks());
+    assertEquals(3, result.getNumberOfTasksDoneForDay().get(3)); // All 3 on day 3
+    verify(sprintRepository, times(1)).findAllTasks(1L);
+  }
+
+  @Test
+  void getBurndownChart_WithInvalidSprintId_ShouldThrowNotFoundException() {
+    // Arrange
+    when(sprintRepository.findById(999L)).thenReturn(Optional.empty());
+
+    // Act & Assert
+    NotFoundException exception =
+        assertThrows(NotFoundException.class, () -> sprintService.getBurndownChart(999L));
+    assertEquals("there is no sprint with the given id", exception.getMessage());
+    verify(sprintRepository, times(1)).findById(999L);
+    verify(sprintRepository, never()).findAllTasks(any());
+  }
+
+  @Test
+  void getBurndownChart_WithTasksCompletedOnFirstDay_ShouldCountAtIndexZero() {
+    // Arrange
+    Task task1 =
+        Task.builder()
+            .id(1L)
+            .title("Task 1")
+            .doneDate(now) // Same as sprint start date
+            .userStory(userStory1)
+            .build();
+
+    List<Task> tasks = Arrays.asList(task1);
+
+    when(sprintRepository.findById(1L)).thenReturn(Optional.of(sprint));
+    when(sprintRepository.findAllTasks(1L)).thenReturn(tasks);
+
+    // Act
+    SprintBurndownChartDto result = sprintService.getBurndownChart(1L);
+
+    // Assert
+    assertNotNull(result);
+    assertEquals(1, result.getNumberOfTasksDoneForDay().get(0)); // Day 0 (first day)
+  }
+
+  @Test
+  void getBurndownChart_WithTasksCompletedOnLastDay_ShouldCountAtLastIndex() {
+    // Arrange
+    Task task1 =
+        Task.builder()
+            .id(1L)
+            .title("Task 1")
+            .doneDate(now.plusDays(14)) // Same as sprint end date
+            .userStory(userStory1)
+            .build();
+
+    List<Task> tasks = Arrays.asList(task1);
+
+    when(sprintRepository.findById(1L)).thenReturn(Optional.of(sprint));
+    when(sprintRepository.findAllTasks(1L)).thenReturn(tasks);
+
+    // Act
+    SprintBurndownChartDto result = sprintService.getBurndownChart(1L);
+
+    // Assert
+    assertNotNull(result);
+    assertEquals(1, result.getNumberOfTasksDoneForDay().get(14)); // Day 14 (last day)
   }
 }

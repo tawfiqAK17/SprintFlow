@@ -1,15 +1,20 @@
 package com.ensa.SprintFlow.service;
 
 import com.ensa.SprintFlow.dto.sprint.request.SprintRequestDto;
+import com.ensa.SprintFlow.dto.sprint.response.SprintBurndownChartDto;
 import com.ensa.SprintFlow.dto.sprint.response.SprintResponseDto;
 import com.ensa.SprintFlow.exception.generalException.NotFoundException;
 import com.ensa.SprintFlow.mapper.SprintMapper;
 import com.ensa.SprintFlow.model.Sprint;
+import com.ensa.SprintFlow.model.Task;
 import com.ensa.SprintFlow.model.UserStory;
 import com.ensa.SprintFlow.repository.SprintRepository;
 import com.ensa.SprintFlow.security.service.UserAuthorizationService;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
@@ -106,5 +111,58 @@ public class SprintService {
       throw new NotFoundException("there is no sprint with the given id");
     }
     return optionalSprint.get();
+  }
+
+  public SprintBurndownChartDto getBurndownChart(Long sprintId) {
+    // Fetch the sprint by ID
+    Sprint sprint =
+        sprintRepository
+            .findById(sprintId)
+            .orElseThrow(() -> new NotFoundException("there is no sprint with the given id"));
+
+    // Get all tasks for this sprint
+    List<Task> tasks = sprintRepository.findAllTasks(sprintId);
+
+    // Calculate total number of tasks
+    Integer numberOfTasks = tasks.size();
+
+    // Get sprint start and end dates
+    LocalDateTime sprintStartDate = sprint.getStartDate();
+    LocalDateTime sprintEndDate = sprint.getEndDate();
+
+    // Calculate number of days in the sprint
+    Integer numberOfDays =
+        (int) ChronoUnit.DAYS.between(sprintStartDate.toLocalDate(), sprintEndDate.toLocalDate())
+            + 1; // +1 to include both start and end days
+
+    // Initialize list to store tasks done per day
+    List<Integer> numberOfTasksDoneForDay = new ArrayList<>(Collections.nCopies(numberOfDays, 0));
+
+    // Count tasks completed on each day
+    for (Task task : tasks) {
+      if (task.getDoneDate() != null) {
+        LocalDateTime doneDate = task.getDoneDate();
+
+        // Check if task was completed within sprint period
+        if (!doneDate.isBefore(sprintStartDate) && !doneDate.isAfter(sprintEndDate)) {
+          // Calculate which day of the sprint this task was completed
+          int dayIndex =
+              (int) ChronoUnit.DAYS.between(sprintStartDate.toLocalDate(), doneDate.toLocalDate());
+
+          // Increment the count for that day
+          if (dayIndex >= 0 && dayIndex < numberOfDays) {
+            numberOfTasksDoneForDay.set(dayIndex, numberOfTasksDoneForDay.get(dayIndex) + 1);
+          }
+        }
+      }
+    }
+
+    // Build and return the DTO
+    return SprintBurndownChartDto.builder()
+        .sprintStartDate(sprintStartDate)
+        .numberOfTasks(numberOfTasks)
+        .numberOfDays(numberOfDays)
+        .numberOfTasksDoneForDay(numberOfTasksDoneForDay)
+        .build();
   }
 }
