@@ -1,7 +1,7 @@
 package com.ensa.SprintFlow.security.aspect;
 
 import com.ensa.SprintFlow.enums.Role;
-import com.ensa.SprintFlow.exception.generalException.UnauthorizedException;
+import com.ensa.SprintFlow.exception.generalException.ForbiddenExeption;
 import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeRoles;
 import com.ensa.SprintFlow.security.service.UserAuthorizationService;
 import java.lang.reflect.Method;
@@ -27,7 +27,7 @@ public class ProjectAuthorizationAspect {
     if (isUserHasRoles(Role.PRODUCT_OWNER)) {
       return (ResponseEntity<?>) joinPoint.proceed();
     }
-    throw new UnauthorizedException("the user should be a PRODUCT_OWNER");
+    throw new ForbiddenExeption("the user should be a PRODUCT_OWNER");
   }
 
   @Around(
@@ -36,7 +36,7 @@ public class ProjectAuthorizationAspect {
     if (isUserHasRoles(Role.SCRUM_MASTER)) {
       return (ResponseEntity<?>) joinPoint.proceed();
     }
-    throw new UnauthorizedException("the user should be a SCRUM_MASTER");
+    throw new ForbiddenExeption("the user should be a SCRUM_MASTER");
   }
 
   @Around(
@@ -45,7 +45,7 @@ public class ProjectAuthorizationAspect {
     if (isUserHasRoles(Role.DEVELOPER)) {
       return (ResponseEntity<?>) joinPoint.proceed();
     }
-    throw new UnauthorizedException("the user should be a DEVELOPER");
+    throw new ForbiddenExeption("the user should be a DEVELOPER");
   }
 
   @Around(
@@ -54,7 +54,7 @@ public class ProjectAuthorizationAspect {
     if (isUserHasRoles(Role.TESTER)) {
       return (ResponseEntity<?>) joinPoint.proceed();
     }
-    throw new UnauthorizedException("the user should be a TESTER");
+    throw new ForbiddenExeption("the user should be a TESTER");
   }
 
   @Around(
@@ -63,7 +63,7 @@ public class ProjectAuthorizationAspect {
     if (isUserHasRoles(Role.PRODUCT_OWNER, Role.SCRUM_MASTER, Role.DEVELOPER, Role.TESTER)) {
       return (ResponseEntity<?>) joinPoint.proceed();
     }
-    throw new UnauthorizedException("the user should be a MEMBER");
+    throw new ForbiddenExeption("the user should be a MEMBER");
   }
 
   @Around(
@@ -78,7 +78,7 @@ public class ProjectAuthorizationAspect {
     if (isUserHasRoles(annotation.roles())) {
       return (ResponseEntity<?>) joinPoint.proceed();
     }
-    throw new UnauthorizedException(
+    throw new ForbiddenExeption(
         "the user should be a one of: " + Arrays.toString(annotation.roles()));
   }
 
