@@ -39,4 +39,8 @@ public class UserAuthorizationService {
   public Project getContextProject(){
     return getAuthenticatedUser().getProject();
   }
+
+  public Boolean hasRoleInProject(Long projectId, String username, Role role){
+      return getRoles( projectId, username).contains( role);
+  }
 }

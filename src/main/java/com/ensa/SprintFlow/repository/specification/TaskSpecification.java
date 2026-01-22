@@ -12,8 +12,12 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.List;
 
 public class TaskSpecification {
-    public static Specification<Task> emptyWhere(){
-        return (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
+    public static Specification<Task> whereProject( Long projectId){
+        return (root, query, criteriaBuilder) -> {
+            Join<Task, UserStory> userStory = root.join( "userStory");
+            Join<UserStory, Sprint> sprint = userStory.join( "sprint");
+            return criteriaBuilder.equal( sprint.get("project").get("id"), projectId);
+        };
     }
     public static Specification<Task> belongsToSprint( Long sprintId){
         return (root, query, criteriaBuilder) -> {

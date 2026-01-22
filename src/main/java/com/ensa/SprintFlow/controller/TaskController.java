@@ -24,7 +24,7 @@ public class TaskController {
                                         @PathVariable("user_story_id") Long userStoryId,
                                         @Validated @RequestBody TaskRequestDto taskRequestDto){
 
-        taskService.createTask( userStoryId, taskRequestDto);
+        taskService.createTask( projectId ,userStoryId, taskRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -36,7 +36,7 @@ public class TaskController {
                                          @RequestParam(required = false) String developer,
                                          @RequestParam(required = false) String tester){
 
-        List<TaskMetaDataResponseDto> taskList = taskService.getAllTasks( sprintId, userStoryId, status, developer, tester);
+        List<TaskMetaDataResponseDto> taskList = taskService.getAllTasks( projectId, sprintId, userStoryId, status, developer, tester);
         return ResponseEntity.status(HttpStatus.OK).body( taskList);
     }
 
@@ -46,7 +46,7 @@ public class TaskController {
                                                  @RequestParam(required = false) Long userStoryId,
                                                  @RequestParam(required = false) List<TaskStatus> status){
 
-        List<TaskMetaDataResponseDto> taskList = taskService.getCurrentUserTasks( sprintId, userStoryId, status);
+        List<TaskMetaDataResponseDto> taskList = taskService.getCurrentUserTasks(projectId, sprintId, userStoryId, status);
         return ResponseEntity.status(HttpStatus.OK).body( taskList);
     }
 
@@ -63,7 +63,7 @@ public class TaskController {
                                                @PathVariable("user_story_id") Long userStoryId,
                                                @PathVariable("task_id") Long taskId,
                                                @RequestBody TaskRequestDto taskRequestDto){
-        taskService.updateTaskDetails( taskId, taskRequestDto);
+        taskService.updateTaskDetails( projectId ,taskId, taskRequestDto);
         return ResponseEntity.status( HttpStatus.OK).build();
     }
 

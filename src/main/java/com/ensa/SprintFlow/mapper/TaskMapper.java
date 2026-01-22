@@ -17,11 +17,13 @@ public interface TaskMapper {
   @Mapping(target = "developer", ignore = true)
   @Mapping(target = "tester", ignore = true)
   @Mapping(target = "reports", ignore = true)
-  Task mapToTaskRequestDto(TaskRequestDto taskRequestDto);
+  Task mapToTask(TaskRequestDto taskRequestDto);
+
 
   TaskMetaDataResponseDto mapToTaskMetaDataResponseDto(Task task);
 
   List<TaskMetaDataResponseDto> mapToTaskMetaDataResponseDto(List<Task> taskList);
 
   TaskDetailsResponseDto mapToTaskDetailsResponseDto(Task task);
+
 }

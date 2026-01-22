@@ -1,22 +1,23 @@
-package com.ensa.SprintFlow.service.strategy.impl;
+package com.ensa.SprintFlow.strategy.taskStrategy.impl;
 
 import com.ensa.SprintFlow.enums.Role;
 import com.ensa.SprintFlow.enums.TaskStatus;
-import com.ensa.SprintFlow.service.strategy.TaskTransitionStrategy;
+import com.ensa.SprintFlow.strategy.taskStrategy.TaskTransitionStrategy;
 import org.springframework.stereotype.Component;
 
 import java.util.EnumSet;
 import java.util.Set;
 
 @Component
-public class DeveloperTaskTransitionStrategy implements TaskTransitionStrategy {
+public class TesterTaskTransitionStrategy implements TaskTransitionStrategy {
     @Override
     public Role getRole(){
-        return Role.DEVELOPER;
+        return Role.TESTER;
     }
 
     @Override
     public Set<TaskStatus> getAllowedStatus(){
-        return EnumSet.of( TaskStatus.IN_PROGRESS, TaskStatus.TO_BE_TESTED);
+        return EnumSet.of( TaskStatus.TEST_FAILED, TaskStatus.TESTED);
     }
+
 }
