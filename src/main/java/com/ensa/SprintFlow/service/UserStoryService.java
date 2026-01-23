@@ -4,6 +4,7 @@ import com.ensa.SprintFlow.dto.userStory.request.UserStoryRequestDto;
 import com.ensa.SprintFlow.dto.userStory.response.UserStoryResponseDto;
 import com.ensa.SprintFlow.dto.userStory.response.UserStoryViewDto;
 import com.ensa.SprintFlow.enums.PrioritizationType;
+import com.ensa.SprintFlow.exception.generalException.InvalidDataException;
 import com.ensa.SprintFlow.exception.generalException.NotFoundException;
 import com.ensa.SprintFlow.mapper.UserStoryMapper;
 import com.ensa.SprintFlow.model.*;
@@ -19,6 +20,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 @Service
 @AllArgsConstructor
@@ -64,6 +66,7 @@ public class UserStoryService {
 
   public void createUserStory(Long projectId, UserStoryRequestDto userStoryDto) {
     UserStory userStory = userStoryMapper.mapToUserStory(userStoryDto);
+    validateUserStoryMetrics(userStory.getMetrics());
     Epic defaultEpic = userAuthorizationService.getContextProject().getDefaultEpic();
     userStory.setEpic(defaultEpic);
 
@@ -79,6 +82,7 @@ public class UserStoryService {
     }
 
     if (userStoryDto.getMetrics() != null) {
+      validateUserStoryMetrics( userStoryDto.getMetrics());
       UserStoryMetrics metrics = userStoryDto.getMetrics();
       userStory.setMetrics( userStoryDto.getMetrics());
     }
@@ -105,5 +109,17 @@ public class UserStoryService {
             () -> new NotFoundException("Nu user story with the given Id")
     );
     return userStory;
+  }
+
+
+  private void validateUserStoryMetrics(UserStoryMetrics metrics) {
+    if(metrics == null){return;}
+    boolean valid = FibonacciSequenceValidator.isValid(metrics.getBusinessValue(),
+            metrics.getUrgency(),
+            metrics.getRiskReduction(),
+            metrics.getEffort());
+    if( !valid){
+      throw new InvalidDataException( "All metrics must be valid Fibonacci numbers (1, 2, 3, 5, 8, 13, 20)");
+    }
   }
 }
