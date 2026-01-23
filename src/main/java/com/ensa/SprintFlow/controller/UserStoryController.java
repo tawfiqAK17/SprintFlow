@@ -26,6 +26,9 @@ public class UserStoryController {
                                             @RequestParam(value = "unassigned", defaultValue = "false", required = false) Boolean unassignedOnly,
                                             @RequestParam(value = "prioritizationType", defaultValue = "MoSCoW", required = false) PrioritizationType prioritizationType) {
         List<UserStoryViewDto> userStoryViewDtoList = userStoryService.getUserStories( projectId, epicId, sprintId, unassignedOnly, prioritizationType);
+        if(userStoryViewDtoList.isEmpty()){
+            return ResponseEntity.status( HttpStatus.NO_CONTENT).build();
+        }
         return ResponseEntity.status( HttpStatus.OK).body( userStoryViewDtoList);
     }
     

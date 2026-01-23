@@ -14,11 +14,10 @@ public class TaskTransitionStrategyHandler {
 
     @Autowired
     public TaskTransitionStrategyHandler(List<TaskTransitionStrategy> strategies){
-        taskStrategyMap = new HashMap<>();
+        taskStrategyMap = new EnumMap<>( Role.class);
         for( TaskTransitionStrategy strategy : strategies){
             if (taskStrategyMap.containsKey( strategy.getRole())){
-                // we should throw an exception (DI problem as there is two instance
-                // of TaskStrategy with the same Role)
+                throw new RuntimeException("Fatal dependency injection error: multiple strategy instances found for the same role.");
             }
             taskStrategyMap.put( strategy.getRole(), strategy);
         }
@@ -28,7 +27,9 @@ public class TaskTransitionStrategyHandler {
         TaskTransitionStrategy strategy = null;
         if( roles.size() == 1){
             if( !taskStrategyMap.containsKey( roles.getFirst())){
-                // return an exception
+                throw new RuntimeException(
+                        String.format("No user strategy implementation found for the requested role %s.", roles.getFirst())
+                );
             }
             strategy = taskStrategyMap.get( roles.getFirst());
         }
@@ -36,14 +37,16 @@ public class TaskTransitionStrategyHandler {
             List<TaskTransitionStrategy> strategies = new ArrayList<>();
             for( Role role : roles){
                 if( !taskStrategyMap.containsKey( role)){
-                    // return an exception
+                    throw new RuntimeException(
+                            String.format("No user strategy implementation found for the requested role %s.", roles.getFirst())
+                    );
                 }
                 strategies.add( taskStrategyMap.get( role));
             }
             strategy = new CompositeTransitionStrategy( strategies);
         }
         if (strategy == null){
-            // Throw an exception ....
+            throw new RuntimeException("User strategy composition failed.");
         }
         return strategy;
     }

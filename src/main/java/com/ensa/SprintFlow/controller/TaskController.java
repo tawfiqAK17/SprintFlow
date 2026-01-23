@@ -37,6 +37,9 @@ public class TaskController {
                                          @RequestParam(required = false) String tester){
 
         List<TaskMetaDataResponseDto> taskList = taskService.getAllTasks( projectId, sprintId, userStoryId, status, developer, tester);
+        if(taskList.isEmpty()){
+            return ResponseEntity.status( HttpStatus.NO_CONTENT).build();
+        }
         return ResponseEntity.status(HttpStatus.OK).body( taskList);
     }
 
@@ -47,6 +50,9 @@ public class TaskController {
                                                  @RequestParam(required = false) List<TaskStatus> status){
 
         List<TaskMetaDataResponseDto> taskList = taskService.getCurrentUserTasks(projectId, sprintId, userStoryId, status);
+        if(taskList.isEmpty()){
+            return ResponseEntity.status( HttpStatus.NO_CONTENT).build();
+        }
         return ResponseEntity.status(HttpStatus.OK).body( taskList);
     }
 
