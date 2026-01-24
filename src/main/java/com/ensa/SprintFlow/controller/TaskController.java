@@ -5,6 +5,8 @@ import com.ensa.SprintFlow.dto.task.request.TaskUpdateRequestDto;
 import com.ensa.SprintFlow.dto.task.response.TaskDetailsResponseDto;
 import com.ensa.SprintFlow.dto.task.response.TaskMetaDataResponseDto;
 import com.ensa.SprintFlow.enums.TaskStatus;
+import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeMember;
+import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeScrumMaster;
 import com.ensa.SprintFlow.service.TaskService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,7 @@ import java.util.List;
 public class TaskController {
     private TaskService taskService;
 
+    @AuthorizeScrumMaster
     @PostMapping("/projects/{project_id}/user_stories/{user_story_id}/tasks")
     public ResponseEntity<?> createTask(@PathVariable("project_id") Long projectId,
                                         @PathVariable("user_story_id") Long userStoryId,
@@ -28,6 +31,7 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @AuthorizeScrumMaster
     @GetMapping("/projects/{project_id}/tasks")
     public ResponseEntity<?> getAllTasks(@PathVariable("project_id") Long projectId,
                                          @RequestParam(required = false) Long sprintId,
@@ -37,9 +41,13 @@ public class TaskController {
                                          @RequestParam(required = false) String tester){
 
         List<TaskMetaDataResponseDto> taskList = taskService.getAllTasks( projectId, sprintId, userStoryId, status, developer, tester);
+        if(taskList.isEmpty()){
+            return ResponseEntity.status( HttpStatus.NO_CONTENT).build();
+        }
         return ResponseEntity.status(HttpStatus.OK).body( taskList);
     }
 
+    @AuthorizeMember
     @GetMapping("/projects/{project_id}/tasks/me")
     public ResponseEntity<?> getCurrentUserTasks(@PathVariable("project_id") Long projectId,
                                                  @RequestParam(required = false) Long sprintId,
@@ -47,9 +55,13 @@ public class TaskController {
                                                  @RequestParam(required = false) List<TaskStatus> status){
 
         List<TaskMetaDataResponseDto> taskList = taskService.getCurrentUserTasks(projectId, sprintId, userStoryId, status);
+        if(taskList.isEmpty()){
+            return ResponseEntity.status( HttpStatus.NO_CONTENT).build();
+        }
         return ResponseEntity.status(HttpStatus.OK).body( taskList);
     }
 
+    @AuthorizeMember
     @GetMapping("/projects/{project_id}/user_stories/{user_story_id}/tasks/{task_id}")
     public ResponseEntity<?> getTask(@PathVariable("project_id") Long projectId,
                                                 @PathVariable("user_story_id") Long userStoryId,
@@ -58,6 +70,7 @@ public class TaskController {
         return ResponseEntity.status( HttpStatus.OK).body( taskResponseDto);
     }
 
+    @AuthorizeScrumMaster
     @PutMapping("/projects/{project_id}/user_stories/{user_story_id}/tasks/{task_id}")
     public ResponseEntity<?> updateTaskDetails(@PathVariable("project_id") Long projectId,
                                                @PathVariable("user_story_id") Long userStoryId,
@@ -67,15 +80,17 @@ public class TaskController {
         return ResponseEntity.status( HttpStatus.OK).build();
     }
 
+    @AuthorizeMember
     @PutMapping("/projects/{project_id}/user_stories/{user_story_id}/tasks/{task_id}/status")
     public ResponseEntity<?> updateTaskStatus(@PathVariable("project_id") Long projectId,
                                                @PathVariable("user_story_id") Long userStoryId,
                                                @PathVariable("task_id") Long taskId,
                                                @Validated @RequestBody TaskUpdateRequestDto taskUpdateRequestDto){
-        taskService.updateTaskStatus( taskId, taskUpdateRequestDto);
+        taskService.updateTaskStatus( projectId ,taskId, taskUpdateRequestDto);
         return ResponseEntity.status( HttpStatus.OK).build();
     }
 
+    @AuthorizeScrumMaster
     @DeleteMapping("/projects/{project_id}/user_stories/{user_story_id}/tasks/{task_id}")
     public ResponseEntity<?> deleteTask(@PathVariable("project_id") Long projectId,
                                         @PathVariable("user_story_id") Long userStoryId,

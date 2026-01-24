@@ -16,13 +16,18 @@ public class PrioritizationStrategyHandler {
     public PrioritizationStrategyHandler(List<PrioritizationStrategy> strategyList) {
         strategyMap = new EnumMap<>( PrioritizationType.class);
         for( PrioritizationStrategy strategy : strategyList){
+            if (strategyMap.containsKey( strategy.getStrategyType())){
+                throw new RuntimeException("Fatal dependency injection error: multiple strategy instances found for the same type.");
+            }
             strategyMap.put( strategy.getStrategyType(), strategy);
         }
     }
 
     public PrioritizationStrategy getStrategy(PrioritizationType type){
         if( !strategyMap.containsKey( type)){
-            return null;   // return default
+            throw new RuntimeException(
+                    String.format("No prioritization strategy implementation found for the requested type %s.", type)
+            );
         }
         return strategyMap.get( type);
     }

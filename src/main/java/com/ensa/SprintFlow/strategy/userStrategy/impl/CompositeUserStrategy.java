@@ -1,18 +1,20 @@
-package com.ensa.SprintFlow.strategy.taskStrategy.impl;
+package com.ensa.SprintFlow.strategy.userStrategy.impl;
 
 import com.ensa.SprintFlow.enums.Role;
 import com.ensa.SprintFlow.enums.TaskStatus;
-import com.ensa.SprintFlow.strategy.taskStrategy.TaskTransitionStrategy;
+import com.ensa.SprintFlow.strategy.userStrategy.UserStrategy;
 
-import java.util.*;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
 
-public class CompositeTransitionStrategy implements TaskTransitionStrategy {
+public class CompositeUserStrategy implements UserStrategy {
         private final Set<TaskStatus> allowedStatus;
 
-        public CompositeTransitionStrategy( List<TaskTransitionStrategy> strategies){
+        public CompositeUserStrategy(List<UserStrategy> strategies){
             this.allowedStatus = EnumSet.noneOf( TaskStatus.class);
-            for (TaskTransitionStrategy strategy : strategies) {
-                allowedStatus.addAll( strategy.getAllowedStatus());
+            for (UserStrategy strategy : strategies) {
+                allowedStatus.addAll( strategy.getAllowedTaskStatuses());
             }
         }
 
@@ -24,7 +26,7 @@ public class CompositeTransitionStrategy implements TaskTransitionStrategy {
         }
 
         @Override
-        public Set<TaskStatus> getAllowedStatus(){
+        public Set<TaskStatus> getAllowedTaskStatuses(){
             return allowedStatus;
         }
 }

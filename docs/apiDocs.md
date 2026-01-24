@@ -534,7 +534,10 @@ Get project user stories
     {
       "id": "number",
       "title": "string",
-      "priority": "number",
+      "priority": {
+        "score": "number",
+        "label": "DO_NOW | DO_NEXT | DO_LATER | DONT_DO"
+      },
       "epic": {
         "id": "number",
         "title": "string"
@@ -552,18 +555,23 @@ Get project user stories
 Create user story
 
 - **Auth:** Required (Product Owner only)
-- **Request Body:**
-  ```json
-  {
-    "title": "string (required)",
-    "priority": "number (optional)",
-    "description": {
-      "as": "string (required, 'As a [user type]')",
-      "what": "string (required, 'I want [goal]')",
-      "for": "string (required, 'So that [benefit]')"
+  - **Request Body:**
+    ```json
+    {
+      "title": "string (required)",
+      "metrics": {
+        "businessValue": "1|2|3|5|8|13|20",
+        "urgency": "1|2|3|5|8|13|20",
+        "riskReduction": "1|2|3|5|8|13|20",
+        "effort": "1|2|3|5|8|13|20"
+      },
+      "description": {
+        "as": "string (required, 'As a [user type]')",
+        "what": "string (required, 'I want [goal]')",
+        "for": "string (required, 'So that [benefit]')"
+      }
     }
-  }
-  ```
+    ```
 - **Response (201):** Created user story
 
 ### GET `/projects/{projectId}/user-stories/{userStoryId}`
@@ -576,10 +584,19 @@ Get user story details with tasks and criteria
   {
     "id": "number",
     "title": "string",
-    "priority": "number",
     "epic": {
       "id": "number",
       "title": "string"
+    },
+    "metrics": {
+        "businessValue": "1|2|3|5|8|13|20",
+        "urgency": "1|2|3|5|8|13|20",
+        "riskReduction": "1|2|3|5|8|13|20",
+        "effort": "1|2|3|5|8|13|20"
+    },
+    "priority": {
+      "score": "number",
+      "label": "DO_NOW | DO_NEXT | DO_LATER | DONT_DO"
     },
     "sprint": {
       "id": "number",

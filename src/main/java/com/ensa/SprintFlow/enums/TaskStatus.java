@@ -1,5 +1,8 @@
 package com.ensa.SprintFlow.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum TaskStatus {
   TODO(1),
   IN_PROGRESS(2),
@@ -12,9 +15,5 @@ public enum TaskStatus {
 
   TaskStatus( int value){
       this.value = value;
-  }
-
-  public int getValue(){
-    return value;
   }
 }

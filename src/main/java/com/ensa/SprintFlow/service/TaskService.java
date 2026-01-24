@@ -6,6 +6,7 @@ import com.ensa.SprintFlow.dto.task.response.TaskDetailsResponseDto;
 import com.ensa.SprintFlow.dto.task.response.TaskMetaDataResponseDto;
 import com.ensa.SprintFlow.enums.Role;
 import com.ensa.SprintFlow.enums.TaskStatus;
+import com.ensa.SprintFlow.exception.generalException.ForbiddenExeption;
 import com.ensa.SprintFlow.exception.generalException.NotFoundException;
 import com.ensa.SprintFlow.exception.generalException.UnauthorizedException;
 import com.ensa.SprintFlow.mapper.TaskMapper;
@@ -16,9 +17,11 @@ import com.ensa.SprintFlow.model.UserStory;
 import com.ensa.SprintFlow.repository.TaskRepository;
 import com.ensa.SprintFlow.repository.specification.TaskSpecification;
 import com.ensa.SprintFlow.security.service.UserAuthorizationService;
-import com.ensa.SprintFlow.strategy.taskStrategy.TaskTransitionStrategy;
-import com.ensa.SprintFlow.strategy.taskStrategy.TaskTransitionStrategyHandler;
+import com.ensa.SprintFlow.strategy.userStrategy.UserStrategy;
+import com.ensa.SprintFlow.strategy.userStrategy.UserStrategyHandler;
+
 import java.util.List;
+
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -32,7 +35,8 @@ public class TaskService {
   private UserAuthorizationService userAuthorizationService;
   private UserStoryService userStoryService;
   private TaskRepository taskRepository;
-  private TaskTransitionStrategyHandler taskTransitionStrategyHandler;
+  private UserStrategyHandler userStrategyHandler;
+  private TaskTransitionService taskTransitionService;
 
   public void createTask(Long projectId, Long userStoryId, TaskRequestDto dto) {
     Task task = mapper.mapToTask(dto);
@@ -42,7 +46,7 @@ public class TaskService {
     if (dto.getDeveloper() != null) {
       String username = dto.getDeveloper();
       if( !userAuthorizationService.hasRoleInProject( projectId, username, Role.DEVELOPER)){
-        throw new UnauthorizedException("The given user cannot be assigned as a developer");
+        throw new ForbiddenExeption("The given user cannot be assigned as a developer");
       }
       developer = userService.findByUsername( username);
     }
@@ -51,15 +55,15 @@ public class TaskService {
     if (dto.getTester() != null) {
       String username = dto.getTester();
       if( !userAuthorizationService.hasRoleInProject( projectId, username, Role.TESTER)){
-        throw new UnauthorizedException("The given user cannot be assigned as a tester");
+        throw new ForbiddenExeption("The given user cannot be assigned as a tester");
       }
       tester = userService.findByUsername( username);
     }
 
-    UserStory userStory = userStoryService.findUserStory(userStoryId);
     // Check if the userStory belongs to any sprint or not
+    UserStory userStory = userStoryService.findUserStory(userStoryId);
     if( userStory.getSprint() == null){
-      throw new UnauthorizedException("This userStory are not belongs yet to any sprint");
+      throw new ForbiddenExeption("This userStory are not belongs yet to any sprint");
     }
 
     task.setDeveloper(developer);
@@ -127,17 +131,8 @@ public class TaskService {
   }
 
   public TaskDetailsResponseDto getTask(Long taskId) {
-    // Get the current user name and roles
-    String username = userAuthorizationService.getAuthenticatedUser().getUsername();
-    List<Role> roles = userAuthorizationService.getAuthenticatedUserRoles();
-
+    // get the task or throw a not found exception
     Task task = findTask( taskId);
-
-    if (!task.getDeveloper().getUsername().equals(username)
-        && !task.getTester().getUsername().equals(username)
-        && !roles.contains(Role.SCRUM_MASTER)) {
-      throw new UnauthorizedException("Unauthorized to access this task");
-    }
 
     TaskDetailsResponseDto test = mapper.mapToTaskDetailsResponseDto(task);
     return mapper.mapToTaskDetailsResponseDto(task);
@@ -160,7 +155,7 @@ public class TaskService {
     if (dto.getDeveloper() != null) {
       String username = dto.getDeveloper();
       if( !userAuthorizationService.hasRoleInProject( projectId, username, Role.DEVELOPER)){
-        throw new UnauthorizedException("The given user cannot be assigned as a developer");
+        throw new ForbiddenExeption("The given user cannot be assigned as a developer");
       }
       User developer = userService.findByUsername( username);
       task.setDeveloper( developer);
@@ -169,7 +164,7 @@ public class TaskService {
     if (dto.getTester() != null) {
       String username = dto.getTester();
       if( !userAuthorizationService.hasRoleInProject( projectId, username, Role.TESTER)){
-        throw new UnauthorizedException("The given user cannot be assigned as a tester");
+        throw new ForbiddenExeption("The given user cannot be assigned as a tester");
       }
       User tester = userService.findByUsername( username);
       task.setTester( tester);
@@ -177,29 +172,20 @@ public class TaskService {
   }
 
   @Transactional
-  public void updateTaskStatus(Long taskId, TaskUpdateRequestDto dto) {
+  public void updateTaskStatus(Long projectId, Long taskId, TaskUpdateRequestDto dto) {
     // Get the task we want to update
     Task task = findTask( taskId);
 
-    // Get the current user name and roles
-    String username = userAuthorizationService.getAuthenticatedUser().getUsername();
-    List<Role> roles = userAuthorizationService.getAuthenticatedUserRoles();
-
-    // The user must be assigned to the task (as a TESTER and/or DEVELOPER)
-    // or have the SCRUM_MASTER role.
-    if (!task.getDeveloper().getUsername().equals(username)
-            && !task.getTester().getUsername().equals(username)
-            && !roles.contains(Role.SCRUM_MASTER)) {
-      throw new UnauthorizedException("Unauthorized to access this task");
-    }
+    // Get assigned roles of auth user in this task
+    List<Role> roles = userAuthorizationService.getUserRolesByTask( projectId,task);
 
     // get the appropriate stategy for roles list of the current user
-    TaskTransitionStrategy strategy = taskTransitionStrategyHandler.getStrategy(roles);
+    UserStrategy userStrategy = userStrategyHandler.getStrategy(roles);
 
     // validate if the current user is allowed to modify the task status
     // and also verify the status transition is it logic
-    strategy.validateStatus(task.getStatus(), dto.getStatus());
-    task.setStatus(dto.getStatus());
+    taskTransitionService.validateTaskStatus( userStrategy, task.getStatus(), dto.getStatus());
+    task.setStatus( dto.getStatus());
 
     // If the task's status is uptated to 'TEST_FAILED', the tester should provide a report
     if (dto.getStatus() == TaskStatus.TEST_FAILED && dto.getReportDescription() != null) {
@@ -221,3 +207,20 @@ public class TaskService {
     );
   }
 }
+
+/*  // get task can be performed by developer/tester/scrumMaster
+// get the current user name and roles
+String username = userAuthorizationService.getAuthenticatedUser().getUsername();
+List<Role> roles = userAuthorizationService.getAuthenticatedUserRoles();
+
+// get the task or throw a not found exception
+Task task = findTask( taskId);
+
+// get the appropriate stategy for roles list of the current user
+UserStrategy userStrategy = userStrategyHandler.getStrategy(roles);
+
+// can the user access this task
+    if ( !userStrategy.canAccessTask( username, task)) {
+        throw new UnauthorizedException("Unauthorized to access this task");
+}
+*/
