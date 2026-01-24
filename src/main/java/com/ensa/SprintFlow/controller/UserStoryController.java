@@ -4,6 +4,8 @@ import com.ensa.SprintFlow.dto.userStory.request.UserStoryRequestDto;
 import com.ensa.SprintFlow.dto.userStory.response.UserStoryResponseDto;
 import com.ensa.SprintFlow.dto.userStory.response.UserStoryViewDto;
 import com.ensa.SprintFlow.enums.PrioritizationType;
+import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeMember;
+import com.ensa.SprintFlow.security.annotation.projectAuthorization.AuthorizeProductOwner;
 import com.ensa.SprintFlow.service.UserStoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +20,8 @@ import java.util.List;
 @AllArgsConstructor
 public class UserStoryController {
     private UserStoryService userStoryService;
-    
+
+    @AuthorizeMember
     @GetMapping("/projects/{project_id}/user_stories")
     public ResponseEntity<?> getUserStories(@PathVariable("project_id") Long projectId,
                                             @RequestParam(value = "epic_id", required = false) Long epicId,
@@ -31,7 +34,8 @@ public class UserStoryController {
         }
         return ResponseEntity.status( HttpStatus.OK).body( userStoryViewDtoList);
     }
-    
+
+    @AuthorizeMember
     @GetMapping("/projects/{project_id}/user_stories/{id}")
     public ResponseEntity<?> getUserStory(@PathVariable("project_id") Long projectId,
                                           @PathVariable("id") Long userStoryId,
@@ -40,6 +44,7 @@ public class UserStoryController {
         return ResponseEntity.status(HttpStatus.OK).body( userStory);
     }
 
+    @AuthorizeProductOwner
     @PostMapping("/projects/{project_id}/user_stories")
     public ResponseEntity<?> createUserStory(@PathVariable("project_id") Long projectId,
                                              @Validated @RequestBody UserStoryRequestDto userStoryRequestDto){
@@ -47,6 +52,7 @@ public class UserStoryController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @AuthorizeProductOwner
     @PatchMapping("/projects/{project_id}/user_stories/{id}")
     public ResponseEntity<?> updateUserStory(@PathVariable("project_id") Long projectId,
                                              @PathVariable("id") Long userStoryId,
@@ -55,6 +61,7 @@ public class UserStoryController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @AuthorizeProductOwner
     @DeleteMapping("/projects/{project_id}/user_stories/{id}")
     public ResponseEntity<?> deleteUserStory(@PathVariable("project_id") Long projectId,
                                              @PathVariable("id") Long userStoryId){
