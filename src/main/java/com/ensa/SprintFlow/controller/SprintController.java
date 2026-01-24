@@ -25,11 +25,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class SprintController {
   SprintService sprintService;
 
+  @AuthorizeScrumMaster
+  @GetMapping("/projects/{projectId}/sprints/{sprintId}/chart")
+  public ResponseEntity<?> getSprintChart(
+      @PathVariable Long projectId, @PathVariable Long sprintId) {
+    return ResponseEntity.status(HttpStatus.OK).body(sprintService.getBurndownChart(sprintId));
+  }
+
   @AuthorizeMember
   @GetMapping("/projects/{projectId}/sprints")
   public ResponseEntity<?> getAllSprints(
-      @RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate) {
-    List<SprintResponseDto> sprints = sprintService.getAllSprints(startDate, endDate);
+      @PathVariable Long projectId,
+      @RequestParam(name = "startDate", required = false) LocalDateTime startDate,
+      @RequestParam(name = "endDate", required = false) LocalDateTime endDate) {
+    List<SprintResponseDto> sprints = sprintService.getAllSprints(projectId, startDate, endDate);
     return ResponseEntity.status(sprints.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK)
         .body(sprints);
   }

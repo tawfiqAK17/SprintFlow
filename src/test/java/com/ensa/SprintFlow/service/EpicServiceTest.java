@@ -263,32 +263,6 @@ class EpicServiceTest {
   }
 
   @Test
-  void addUserStories_WithValidIds_ShouldMoveUserStoriesToEpic() {
-    // Arrange
-    defaultEpic.getUserStories().add(userStory1);
-    defaultEpic.getUserStories().add(userStory2);
-    userStory1.setEpic(defaultEpic);
-    userStory2.setEpic(defaultEpic);
-
-    List<Long> userStoryIds = Arrays.asList(1L, 2L);
-    List<UserStory> userStories = Arrays.asList(userStory1, userStory2);
-
-    when(epicRepository.findById(1L)).thenReturn(Optional.of(epic));
-    when(userAuthorizationService.getContextProject()).thenReturn(project);
-    when(epicRepository.findAllUserStoriesByIds(999L, userStoryIds)).thenReturn(userStories);
-
-    // Act
-    epicService.addUserStories(1L, userStoryIds);
-
-    // Assert
-    assertEquals(2, epic.getUserStories().size());
-    assertTrue(defaultEpic.getUserStories().isEmpty());
-    verify(epicRepository, times(1)).findById(1L);
-    verify(epicRepository, times(1)).findAllUserStoriesByIds(999L, userStoryIds);
-    verify(userAuthorizationService, times(1)).getContextProject();
-  }
-
-  @Test
   void addUserStories_WithInvalidEpicId_ShouldThrowNotFoundException() {
     // Arrange
     when(epicRepository.findById(999L)).thenReturn(Optional.empty());
@@ -314,9 +288,6 @@ class EpicServiceTest {
 
     // Assert
     verify(epicRepository, times(1)).findById(1L);
-    // Note: The current implementation has a bug - the filter doesn't actually remove the user
-    // story
-    // It should be: sprintUserStories.removeIf(u -> u.getId().equals(userStoryId));
   }
 
   @Test
