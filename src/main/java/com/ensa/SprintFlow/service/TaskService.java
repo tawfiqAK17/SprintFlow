@@ -6,6 +6,7 @@ import com.ensa.SprintFlow.dto.task.response.TaskDetailsResponseDto;
 import com.ensa.SprintFlow.dto.task.response.TaskMetaDataResponseDto;
 import com.ensa.SprintFlow.enums.Role;
 import com.ensa.SprintFlow.enums.TaskStatus;
+import com.ensa.SprintFlow.exception.generalException.ForbiddenExeption;
 import com.ensa.SprintFlow.exception.generalException.NotFoundException;
 import com.ensa.SprintFlow.exception.generalException.UnauthorizedException;
 import com.ensa.SprintFlow.mapper.TaskMapper;
@@ -45,7 +46,7 @@ public class TaskService {
     if (dto.getDeveloper() != null) {
       String username = dto.getDeveloper();
       if( !userAuthorizationService.hasRoleInProject( projectId, username, Role.DEVELOPER)){
-        throw new UnauthorizedException("The given user cannot be assigned as a developer");
+        throw new ForbiddenExeption("The given user cannot be assigned as a developer");
       }
       developer = userService.findByUsername( username);
     }
@@ -54,7 +55,7 @@ public class TaskService {
     if (dto.getTester() != null) {
       String username = dto.getTester();
       if( !userAuthorizationService.hasRoleInProject( projectId, username, Role.TESTER)){
-        throw new UnauthorizedException("The given user cannot be assigned as a tester");
+        throw new ForbiddenExeption("The given user cannot be assigned as a tester");
       }
       tester = userService.findByUsername( username);
     }
@@ -62,7 +63,7 @@ public class TaskService {
     // Check if the userStory belongs to any sprint or not
     UserStory userStory = userStoryService.findUserStory(userStoryId);
     if( userStory.getSprint() == null){
-      throw new UnauthorizedException("This userStory are not belongs yet to any sprint");
+      throw new ForbiddenExeption("This userStory are not belongs yet to any sprint");
     }
 
     task.setDeveloper(developer);
@@ -154,7 +155,7 @@ public class TaskService {
     if (dto.getDeveloper() != null) {
       String username = dto.getDeveloper();
       if( !userAuthorizationService.hasRoleInProject( projectId, username, Role.DEVELOPER)){
-        throw new UnauthorizedException("The given user cannot be assigned as a developer");
+        throw new ForbiddenExeption("The given user cannot be assigned as a developer");
       }
       User developer = userService.findByUsername( username);
       task.setDeveloper( developer);
@@ -163,7 +164,7 @@ public class TaskService {
     if (dto.getTester() != null) {
       String username = dto.getTester();
       if( !userAuthorizationService.hasRoleInProject( projectId, username, Role.TESTER)){
-        throw new UnauthorizedException("The given user cannot be assigned as a tester");
+        throw new ForbiddenExeption("The given user cannot be assigned as a tester");
       }
       User tester = userService.findByUsername( username);
       task.setTester( tester);

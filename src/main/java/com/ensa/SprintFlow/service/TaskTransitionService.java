@@ -1,6 +1,7 @@
 package com.ensa.SprintFlow.service;
 
 import com.ensa.SprintFlow.enums.TaskStatus;
+import com.ensa.SprintFlow.exception.generalException.ForbiddenExeption;
 import com.ensa.SprintFlow.exception.generalException.UnauthorizedException;
 import com.ensa.SprintFlow.strategy.userStrategy.UserStrategy;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,7 @@ public class TaskTransitionService {
         boolean isValidMove = canTransition(currentStatus, newStatus);
 
         if( !isUserAllowed || !isValidMove){
-            throw new UnauthorizedException("You can't mark this task as "+ newStatus.toString());
+            throw new ForbiddenExeption("You can't mark this task as "+ newStatus.toString());
         }
     }
 }
