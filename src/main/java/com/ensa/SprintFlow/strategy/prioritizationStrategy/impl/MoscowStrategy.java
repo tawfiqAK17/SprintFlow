@@ -37,6 +37,9 @@ public class MoscowStrategy implements PrioritizationStrategy {
     @Override
     public UserStoryPriority getUserStoryPriority(UserStory userStory) {
         UserStoryMetrics metrics = userStory.getMetrics();
+        if(metrics ==null){
+            return null;
+        }
         double score = calculateUserStoryScore(
                 metrics.getBusinessValue(),
                 metrics.getUrgency(),
