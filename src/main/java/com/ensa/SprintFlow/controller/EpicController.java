@@ -36,7 +36,7 @@ public class EpicController {
 
   @AuthorizeMember
   @GetMapping("/projects/{projectId}/epics/{epicId}")
-  public ResponseEntity<?> getEpic(@PathVariable Long epicId) {
+  public ResponseEntity<?> getEpic(@PathVariable Long projectId, @PathVariable Long epicId) {
     return ResponseEntity.status(HttpStatus.OK).body(epicService.getEpic(epicId));
   }
 
@@ -50,13 +50,14 @@ public class EpicController {
 
   @AuthorizeProductOwner
   @PutMapping("/projects/{projectId}/epics/{epicId}")
-  public ResponseEntity<?> update(@PathVariable Long epicId, @RequestBody EpicRequestDto dto) {
+  public ResponseEntity<?> update(
+      @PathVariable Long projectId, @PathVariable Long epicId, @RequestBody EpicRequestDto dto) {
     return ResponseEntity.status(HttpStatus.OK).body(epicService.update(epicId, dto));
   }
 
   @AuthorizeProductOwner
   @DeleteMapping("/projects/{projectId}/epics/{epicId}")
-  public ResponseEntity<?> delete(@PathVariable Long epicId) {
+  public ResponseEntity<?> delete(@PathVariable Long projectId, @PathVariable Long epicId) {
     epicService.delete(epicId);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
@@ -74,7 +75,7 @@ public class EpicController {
   @AuthorizeProductOwner
   @DeleteMapping("/projects/{projectId}/epics/{epicId}/user_stories/{userStoryId}")
   public ResponseEntity<?> removeUserStory(
-      @PathVariable Long epicId, @PathVariable Long userStoryId) {
+      @PathVariable Long projectId, @PathVariable Long epicId, @PathVariable Long userStoryId) {
     epicService.removeUserStory(epicId, userStoryId);
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }

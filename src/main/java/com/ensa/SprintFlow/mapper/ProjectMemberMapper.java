@@ -8,9 +8,9 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ProjectMemberMapper {
 
-    @Mapping(target = "username", source = "user.username")
-    @Mapping(target = "firstName", source = "user.firstName")
-    @Mapping(target = "email", source = "user.email")
-    @Mapping(target = "role", source = "userRole")
-    ProjectMemberResponseDto mapToProjectMemberResponseDto(ProjectMember projectMember);
+  @Mapping(target = "username", source = "user.username")
+  @Mapping(target = "firstName", source = "user.firstName")
+  @Mapping(target = "email", source = "user.email")
+  @Mapping(target = "role", source = "userRole")
+  ProjectMemberResponseDto mapToProjectMemberResponseDto(ProjectMember projectMember);
 }

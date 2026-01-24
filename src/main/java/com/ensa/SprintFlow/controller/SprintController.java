@@ -45,7 +45,7 @@ public class SprintController {
 
   @AuthorizeMember
   @GetMapping("/projects/{projectId}/sprints/{sprintId}")
-  public ResponseEntity<?> getSprint(@PathVariable Long sprintId) {
+  public ResponseEntity<?> getSprint(@PathVariable Long projectId, @PathVariable Long sprintId) {
     return ResponseEntity.status(HttpStatus.OK).body(sprintService.getSprint(sprintId));
   }
 
@@ -58,20 +58,26 @@ public class SprintController {
 
   @AuthorizeScrumMaster
   @PutMapping("/projects/{projectId}/sprints/{sprintId}")
-  public ResponseEntity<?> update(@PathVariable Long sprintId, @RequestBody SprintRequestDto dto) {
+  public ResponseEntity<?> update(
+      @PathVariable Long porjectId,
+      @PathVariable Long sprintId,
+      @RequestBody SprintRequestDto dto) {
     return ResponseEntity.status(HttpStatus.OK).body(sprintService.update(sprintId, dto));
   }
 
   @AuthorizeScrumMaster
   @DeleteMapping("/projects/{projectId}/sprints/{sprintId}")
-  public ResponseEntity<?> delete(@PathVariable Long sprintId) {
+  public ResponseEntity<?> delete(@PathVariable Long projectId, @PathVariable Long sprintId) {
+    sprintService.delete(sprintId);
     return ResponseEntity.status(HttpStatus.OK).build();
   }
 
   @AuthorizeScrumMaster
   @PostMapping("/projects/{projectId}/sprints/{sprintId}/user_stories")
   public ResponseEntity<?> addUserStories(
-      @PathVariable Long sprintId, @RequestBody List<Long> userStoriesIds) {
+      @PathVariable Long projectId,
+      @PathVariable Long sprintId,
+      @RequestBody List<Long> userStoriesIds) {
     sprintService.addUserStories(sprintId, userStoriesIds);
     return ResponseEntity.status(HttpStatus.OK).build();
   }
@@ -79,7 +85,7 @@ public class SprintController {
   @AuthorizeScrumMaster
   @DeleteMapping("/projects/{projectId}/sprints/{sprintId}/user_stories/{userStoryId}")
   public ResponseEntity<?> removeUserStory(
-      @PathVariable Long sprintId, @PathVariable Long userStoryId) {
+      @PathVariable Long projectId, @PathVariable Long sprintId, @PathVariable Long userStoryId) {
     sprintService.removeUserStory(sprintId, userStoryId);
     return ResponseEntity.status(HttpStatus.OK).build();
   }
