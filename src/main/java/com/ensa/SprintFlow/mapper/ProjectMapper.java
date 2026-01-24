@@ -1,5 +1,9 @@
 package com.ensa.SprintFlow.mapper;
 
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+
 import com.ensa.SprintFlow.dto.project.request.ProjectRequestDto;
 import com.ensa.SprintFlow.dto.project.response.ProjectMetaDataResponseDto;
 import com.ensa.SprintFlow.dto.project.response.ProjectResponseDto;
@@ -8,9 +12,8 @@ import com.ensa.SprintFlow.model.Project;
 import com.ensa.SprintFlow.model.ProjectMember;
 import com.ensa.SprintFlow.model.User;
 import com.ensa.SprintFlow.service.ProjectMemberService;
-import java.util.List;
+
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
