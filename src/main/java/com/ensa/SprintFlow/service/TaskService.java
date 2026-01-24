@@ -16,9 +16,11 @@ import com.ensa.SprintFlow.model.UserStory;
 import com.ensa.SprintFlow.repository.TaskRepository;
 import com.ensa.SprintFlow.repository.specification.TaskSpecification;
 import com.ensa.SprintFlow.security.service.UserAuthorizationService;
-import com.ensa.SprintFlow.strategy.taskStrategy.TaskTransitionStrategy;
-import com.ensa.SprintFlow.strategy.taskStrategy.TaskTransitionStrategyHandler;
+import com.ensa.SprintFlow.strategy.userStrategy.UserStrategy;
+import com.ensa.SprintFlow.strategy.userStrategy.UserStrategyHandler;
+
 import java.util.List;
+
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -32,7 +34,8 @@ public class TaskService {
   private UserAuthorizationService userAuthorizationService;
   private UserStoryService userStoryService;
   private TaskRepository taskRepository;
-  private TaskTransitionStrategyHandler taskTransitionStrategyHandler;
+  private UserStrategyHandler userStrategyHandler;
+  private TaskTransitionService taskTransitionService;
 
   public void createTask(Long projectId, Long userStoryId, TaskRequestDto dto) {
     Task task = mapper.mapToTask(dto);
@@ -194,12 +197,12 @@ public class TaskService {
     }
 
     // get the appropriate stategy for roles list of the current user
-    TaskTransitionStrategy strategy = taskTransitionStrategyHandler.getStrategy(roles);
+    UserStrategy userStrategy = userStrategyHandler.getStrategy(roles);
 
     // validate if the current user is allowed to modify the task status
     // and also verify the status transition is it logic
-    strategy.validateStatus(task.getStatus(), dto.getStatus());
-    task.setStatus(dto.getStatus());
+    taskTransitionService.validateTaskStatus( userStrategy, task.getStatus(), dto.getStatus());
+    task.setStatus( dto.getStatus());
 
     // If the task's status is uptated to 'TEST_FAILED', the tester should provide a report
     if (dto.getStatus() == TaskStatus.TEST_FAILED && dto.getReportDescription() != null) {
