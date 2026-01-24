@@ -71,7 +71,8 @@ public class EpicService {
     }
     Epic epic = optionalEpic.get();
 
-    Epic defaultEpic = userAuthorizationService.getContextProject().getDefaultEpic();
+    Epic defaultEpic =
+        findById(userAuthorizationService.getContextProject().getDefaultEpic().getId());
 
     Iterator<UserStory> iterator = epic.getUserStories().iterator();
     while (iterator.hasNext()) {
@@ -93,9 +94,7 @@ public class EpicService {
 
     // the project is guaranteed to have a default epic
     Epic defaultEpic =
-        epicRepository
-            .findById(userAuthorizationService.getContextProject().getDefaultEpic().getId())
-            .get();
+        findById(userAuthorizationService.getContextProject().getDefaultEpic().getId());
 
     List<UserStory> userStories =
         epicRepository.findAllUserStoriesByIds(defaultEpic.getId(), userStoriesIds);
