@@ -86,18 +86,24 @@ public class EpicService {
 
   @Transactional
   public void addUserStories(Long epicId, List<Long> userStoriesIds) {
-    Optional<Epic> optionalEpic = epicRepository.findById(epicId);
-    if (optionalEpic.isEmpty()) {
-      throw new NotFoundException("there is no epic with the given id");
-    }
-    Epic epic = optionalEpic.get();
-    Epic defaultEpic = userAuthorizationService.getContextProject().getDefaultEpic();
-    List<UserStory> epicUserStories = epic.getUserStories();
+    Epic epic =
+        epicRepository
+            .findById(epicId)
+            .orElseThrow(() -> new NotFoundException("there is no epic with the given id"));
+
+    // the project is guaranteed to have a default epic
+    Epic defaultEpic =
+        epicRepository
+            .findById(userAuthorizationService.getContextProject().getDefaultEpic().getId())
+            .get();
+
     List<UserStory> userStories =
         epicRepository.findAllUserStoriesByIds(defaultEpic.getId(), userStoriesIds);
+
     for (UserStory userStory : userStories) {
       defaultEpic.getUserStories().remove(userStory);
-      epicUserStories.add(userStory);
+      epic.getUserStories().add(userStory);
+      userStory.setEpic(epic);
     }
   }
 

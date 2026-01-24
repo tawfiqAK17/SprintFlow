@@ -68,7 +68,7 @@ public class ProjectController {
 
   @AuthorizeMember
   @GetMapping("/projects/{projectId}/members")
-  public ResponseEntity<?> getAllMembers(@RequestParam Role role, @PathVariable Long projectId) {
+  public ResponseEntity<?> getAllMembers(@RequestParam(name = "role", required = false) Role role, @PathVariable Long projectId) {
     List<ProjectMemberResponseDto> members = projectService.getProjectMembers(projectId, role);
     return ResponseEntity.status(members.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK)
         .body(members);

@@ -237,14 +237,12 @@ Get all projects where user is a member
         "description": "string",
         "creationDate": "datetime",
         "scrumMaster": {
-          "id": "number",
           "firstName": "string",
           "lastName": "string",
           "username": "string",
           "email": "string"
         },
         "productOwner": {
-          "id": "number",
           "firstName": "string",
           "lastName": "string",
           "username": "string",
@@ -678,6 +676,22 @@ Delete acceptance criteria
 ---
 
 ## 7. SPRINTS
+
+### GET `/projects/{projectId}/sprints/{sprintId}/chart`
+
+Get a sprint burn down chart
+
+- **Auth:** Required (must be SCRUM_MASTER)
+- **Response (200):**
+
+  ```json
+  {
+  "sprintStartDate": "date";
+  "numberOfTasks": "number";
+  "numberOfDays": number;
+  "numberOfTasksDoneForDay": "number[]"; //number[i] is the number of tasks done in the sprintStartDate + i
+  }
+  ```
 
 ### GET `/projects/{projectId}/sprints`
 

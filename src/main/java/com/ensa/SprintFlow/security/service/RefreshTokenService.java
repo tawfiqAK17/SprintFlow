@@ -1,23 +1,28 @@
 package com.ensa.SprintFlow.security.service;
 
-import java.security.SecureRandom;
-import java.time.LocalDateTime;
-import java.util.Base64;
-
-import org.springframework.stereotype.Service;
-
 import com.ensa.SprintFlow.exception.generalException.NotFoundException;
 import com.ensa.SprintFlow.exception.generalException.ResourceExpiredException;
 import com.ensa.SprintFlow.model.User;
 import com.ensa.SprintFlow.security.model.RefreshToken;
 import com.ensa.SprintFlow.security.repository.RefreshTokenRepository;
-
+import java.security.SecureRandom;
+import java.time.LocalDateTime;
+import java.util.Base64;
 import lombok.AllArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
 public class RefreshTokenService {
   RefreshTokenRepository refreshTokenRepository;
+
+  // Runs every day at 2 AM
+  @Scheduled(cron = "0 0 2 * * ?")
+  public void cleanupExpiredTokens() {
+    LocalDateTime now = LocalDateTime.now();
+    refreshTokenRepository.deleteByExpirationDateBefore(now);
+  }
 
   public String generateToken(User user) {
     String refreshTokenString = generateTokenString();
