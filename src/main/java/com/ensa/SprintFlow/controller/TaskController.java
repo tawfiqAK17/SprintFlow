@@ -78,7 +78,7 @@ public class TaskController {
                                                @PathVariable("user_story_id") Long userStoryId,
                                                @PathVariable("task_id") Long taskId,
                                                @Validated @RequestBody TaskUpdateRequestDto taskUpdateRequestDto){
-        taskService.updateTaskStatus( taskId, taskUpdateRequestDto);
+        taskService.updateTaskStatus( projectId ,taskId, taskUpdateRequestDto);
         return ResponseEntity.status( HttpStatus.OK).build();
     }
 

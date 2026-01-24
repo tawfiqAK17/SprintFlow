@@ -59,8 +59,8 @@ public class TaskService {
       tester = userService.findByUsername( username);
     }
 
-    UserStory userStory = userStoryService.findUserStory(userStoryId);
     // Check if the userStory belongs to any sprint or not
+    UserStory userStory = userStoryService.findUserStory(userStoryId);
     if( userStory.getSprint() == null){
       throw new UnauthorizedException("This userStory are not belongs yet to any sprint");
     }
@@ -130,17 +130,8 @@ public class TaskService {
   }
 
   public TaskDetailsResponseDto getTask(Long taskId) {
-    // Get the current user name and roles
-    String username = userAuthorizationService.getAuthenticatedUser().getUsername();
-    List<Role> roles = userAuthorizationService.getAuthenticatedUserRoles();
-
+    // get the task or throw a not found exception
     Task task = findTask( taskId);
-
-    if (!task.getDeveloper().getUsername().equals(username)
-        && !task.getTester().getUsername().equals(username)
-        && !roles.contains(Role.SCRUM_MASTER)) {
-      throw new UnauthorizedException("Unauthorized to access this task");
-    }
 
     TaskDetailsResponseDto test = mapper.mapToTaskDetailsResponseDto(task);
     return mapper.mapToTaskDetailsResponseDto(task);
@@ -180,21 +171,12 @@ public class TaskService {
   }
 
   @Transactional
-  public void updateTaskStatus(Long taskId, TaskUpdateRequestDto dto) {
+  public void updateTaskStatus(Long projectId, Long taskId, TaskUpdateRequestDto dto) {
     // Get the task we want to update
     Task task = findTask( taskId);
 
-    // Get the current user name and roles
-    String username = userAuthorizationService.getAuthenticatedUser().getUsername();
-    List<Role> roles = userAuthorizationService.getAuthenticatedUserRoles();
-
-    // The user must be assigned to the task (as a TESTER and/or DEVELOPER)
-    // or have the SCRUM_MASTER role.
-    if (!task.getDeveloper().getUsername().equals(username)
-            && !task.getTester().getUsername().equals(username)
-            && !roles.contains(Role.SCRUM_MASTER)) {
-      throw new UnauthorizedException("Unauthorized to access this task");
-    }
+    // Get assigned roles of auth user in this task
+    List<Role> roles = userAuthorizationService.getUserRolesByTask( projectId,task);
 
     // get the appropriate stategy for roles list of the current user
     UserStrategy userStrategy = userStrategyHandler.getStrategy(roles);
@@ -224,3 +206,20 @@ public class TaskService {
     );
   }
 }
+
+/*  // get task can be performed by developer/tester/scrumMaster
+// get the current user name and roles
+String username = userAuthorizationService.getAuthenticatedUser().getUsername();
+List<Role> roles = userAuthorizationService.getAuthenticatedUserRoles();
+
+// get the task or throw a not found exception
+Task task = findTask( taskId);
+
+// get the appropriate stategy for roles list of the current user
+UserStrategy userStrategy = userStrategyHandler.getStrategy(roles);
+
+// can the user access this task
+    if ( !userStrategy.canAccessTask( username, task)) {
+        throw new UnauthorizedException("Unauthorized to access this task");
+}
+*/
